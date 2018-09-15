@@ -1,17 +1,42 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using SomeName.Core;
 using SomeName.Core.Domain;
+using SomeName.Core.IO;
 using UnityEngine;
 
-public class GameState : MonoBehaviour {
+public class GameState : MonoBehaviour
+{
+    public PlayerIO PlayerIO { get; set; } = new PlayerIO();
 
     public Player Player { get; set; }
 
-	// Use this for initialization
-	void Start ()
+    public GameState New()
     {
-        DontDestroyOnLoad(this);
         Player = PlayerIO.StartNew();
-	}
+        PlayerIO.Save(Player);
+        return this;
+    }
+
+    public GameState Load()
+    {
+        Player player;
+        if (PlayerIO.TryLoad(out player))
+        {
+            Player = player;
+            return this;
+        }
+        else
+            throw new IOException("Не удалось загрузить сохранение");
+    }
+
+    // Use this for initialization
+    void Start()
+        => DontDestroyOnLoad(this);
+
+    private void OnLevelWasLoaded(int level)
+    {
+        PlayerIO.Save(Player);
+    }
 }

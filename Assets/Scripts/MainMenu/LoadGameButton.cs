@@ -4,16 +4,16 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class NewGameButton : MonoBehaviour {
+public class LoadGameButton : MonoBehaviour {
 
-    public void NewGame()
+    public void LoadGame()
     {
-        FindObjectOfType<GameState>().New();
+        FindObjectOfType<GameState>().Load();
         SceneManager.LoadScene("Game");
     }
 
     private void Start()
     {
-        GetComponent<Button>().onClick.AddListener(NewGame);
+        GetComponent<Button>().onClick.AddListener(LoadGame);
     }
 }

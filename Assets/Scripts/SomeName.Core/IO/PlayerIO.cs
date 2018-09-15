@@ -11,14 +11,15 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using SomeName.Core.Domain;
+using UnityEngine;
 
-namespace SomeName.Core
+namespace SomeName.Core.IO
 {
-    public static class PlayerIO
+    public class PlayerIO
     {
-        public static string SavePath { get; set; } = @"Saves\PlayerSave.dat";
+        public Crypto Crypto { get; set; } = new Crypto();
 
-        public static Player StartNew()
+        public Player StartNew()
         {
             return new Player()
             {
@@ -31,49 +32,29 @@ namespace SomeName.Core
             };
         }
 
-        // TODO : Добавить зашифровку данных.
-        public static bool TrySave(Player player)
+        public void Save(Player player)
         {
             var data = JsonConvert.SerializeObject(player, Formatting.None, new JsonSerializerSettings()
             {
                 TypeNameHandling = TypeNameHandling.Objects,
                 TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple
             });
-            var stream = new FileStream(SavePath, FileMode.OpenOrCreate);
-            var binaryFormatter = new BinaryFormatter();
-            try
-            {
-                binaryFormatter.Serialize(stream, data);
-            }
-            catch (SerializationException)
-            {
-                return false;
-            }
-            finally
-            {
-                stream.Close();
-            }
-
-            return true;
+            var encryptedData = Crypto.Encrypt(data);
+            PlayerPrefs.SetString("Player", encryptedData);
         }
 
-        public static bool TryLoad(out Player player)
+        public bool TryLoad(out Player player)
         {
-            var stream = new FileStream(SavePath, FileMode.OpenOrCreate);
-            var binaryFormatter = new BinaryFormatter();
             try
             {
-                var data = (string)binaryFormatter.Deserialize(stream);
+                var encryptedData = PlayerPrefs.GetString("Player");
+                var data = Crypto.Decrypt(encryptedData);
                 player = JsonConvert.DeserializeObject<Player>(data, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Objects });
             }
             catch (JsonSerializationException)
             {
                 player = null;
                 return false;
-            }
-            finally
-            {
-                stream.Close();
             }
 
             return true;
