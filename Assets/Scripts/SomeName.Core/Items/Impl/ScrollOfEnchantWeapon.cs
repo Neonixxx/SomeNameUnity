@@ -8,7 +8,7 @@ namespace SomeName.Core.Items.Impl
         public ScrollOfEnchantWeapon()
         {
             Description = "Свиток заточки оружия";
-            Image = Resources.Load<Sprite>("ScrollOfEnchantWeapon.jpg");
+            ImageId = "ScrollOfEnchantWeapon";
         }
     }
 }

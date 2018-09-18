@@ -52,7 +52,7 @@ namespace SomeName.Core.Domain
         IEnumerator IEnumerable.GetEnumerator()
             => GetEnumerator();
 
-        public void Remove(IEquippment equippment)
+        public void Remove(IItem equippment)
         {
             if (equippment == Weapon)
                 Weapon = null;

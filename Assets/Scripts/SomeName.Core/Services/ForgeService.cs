@@ -1,6 +1,7 @@
 ﻿using SomeName.Core.Domain;
 using SomeName.Core.Items.Impl;
 using SomeName.Core.Items.Interfaces;
+using SomeName.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,13 +12,13 @@ namespace SomeName.Core
 {
     public class ForgeService
     {
-        public Player Player { get; set; }
+        public InventoryService InventoryService { get; set; }
 
         public EnchantManager EnchantManager { get; set; } = EnchantManager.Standard;
 
         public ForgeService(Player player)
         {
-            Player = player;
+            InventoryService = player.InventoryService;
         }
 
         /// <summary>
@@ -31,24 +32,24 @@ namespace SomeName.Core
             if (!CanBeEnchantedWith(itemToEnchant, scrollOfEnchant))
                 throw new ArgumentException($"Предмет типа {itemToEnchant.GetType()} нельзя улучшить с помощью {scrollOfEnchant.GetType()}");
 
-            if (!Player.Inventory.Contains(scrollOfEnchant))
+            if (!InventoryService.BagContains(scrollOfEnchant))
                 throw new InvalidOperationException($"{nameof(scrollOfEnchant)} не содержится в {nameof(Player.Inventory)}");
 
-            var isItemInInventory = Player.Inventory.Contains(itemToEnchant);
-            var isItemEquipped = Player.EquippedItems.Contains(itemToEnchant);
+            var isItemInInventory = InventoryService.BagContains(itemToEnchant);
+            var isItemEquipped = InventoryService.IsEquipped(itemToEnchant);
 
             if (!isItemInInventory && !isItemEquipped)
-                throw new InvalidOperationException($"{nameof(itemToEnchant)} не содержится в {nameof(Player.Inventory)} и {nameof(Player.EquippedItems)}");
+                throw new InvalidOperationException($"{nameof(itemToEnchant)} не содержится в {nameof(Player.Inventory)}");
 
-            Player.Inventory.Remove(scrollOfEnchant);
+            InventoryService.Remove(scrollOfEnchant);
             var enchantResult = EnchantManager.TryEnchant(itemToEnchant, scrollOfEnchant);
 
             if (!enchantResult)
             {
                 if (isItemInInventory)
-                    Player.Inventory.Remove(itemToEnchant);
+                    InventoryService.Remove(scrollOfEnchant);
                 else
-                    Player.EquippedItems.Remove(itemToEnchant);
+                    InventoryService.Remove(itemToEnchant);
             }
 
             return enchantResult;

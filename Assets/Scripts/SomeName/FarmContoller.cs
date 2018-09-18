@@ -54,7 +54,7 @@ public class FarmContoller : MonoBehaviour {
         ExpBar.UpdateBar(_player.Exp, _player.ExpForNextLevel);
 
         LevelText.text = $"Level: {_player.Level.ToString()}";
-        GoldText.text = _player.Gold.ToString();
+        GoldText.text = _player.Inventory.Gold.ToString();
 
         if (_player.IsDead)
             SceneManager.LoadScene("Game");

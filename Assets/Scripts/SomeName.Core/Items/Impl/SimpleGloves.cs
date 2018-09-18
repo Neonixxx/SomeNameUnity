@@ -13,7 +13,7 @@ namespace SomeName.Core.Items.Impl
         public SimpleGloves()
         {
             Description = "Кожанные перчатки";
-            Image = Resources.Load<Sprite>("SimpleGloves.jpg");
+            ImageId = "SimpleGloves";
         }
     }
 }

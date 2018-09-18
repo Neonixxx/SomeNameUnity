@@ -17,7 +17,7 @@ namespace SomeName.Core.Items.Interfaces
         public string Description { get; set; }
 
         [JsonIgnore]
-        public Sprite Image { get; set; }
+        public string ImageId { get; set; }
 
         public override string ToString()
             => $"{Description}" +

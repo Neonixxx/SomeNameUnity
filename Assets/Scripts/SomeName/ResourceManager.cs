@@ -1,8 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class ResourceManager : MonoBehaviour {
 
-    private Sprite[] _images;
+    public Sprite[] Images;
+
+    private Dictionary<string, int> _images = new Dictionary<string, int>();
 
     private string[] _imagePaths = new string[]
     {
@@ -14,15 +17,18 @@ public class ResourceManager : MonoBehaviour {
         "ScrollOfEnchantArmor.jpg",
     };
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start()
     {
-        var imagesCount = _imagePaths.Length;
-        _images = new Sprite[imagesCount];
-        for (int i = 0; i < imagesCount; i++)
-            _images[i] = Resources.Load<Sprite>(_imagePaths[i]);
-	}
+        DontDestroyOnLoad(this);
+        for (var i = 0; i < Images.Length; i++)
+            _images.Add(Images[i].name, i);
+        //var imagesCount = _imagePaths.Length;
+        //Images = new Sprite[imagesCount];
+        //for (int i = 0; i < imagesCount; i++)
+        //    Images[i] = Resources.Load<Sprite>(_imagePaths[i]);
+    }
 
-    public Sprite GetImage(int id)
-        => _images[id];
+    public Sprite GetSprite(string id)
+        => Images[_images[id]];
 }

@@ -13,6 +13,6 @@ namespace SomeName.Core.Items.Interfaces
 
         string Description { get; set; }
 
-        Sprite Image { get; set; }
+        string ImageId { get; set; }
     }
 }

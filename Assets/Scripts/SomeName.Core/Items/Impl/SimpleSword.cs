@@ -8,7 +8,7 @@ namespace SomeName.Core.Items.Impl
         public SimpleSword()
         {
             Description = "Стальной меч";
-            Image = Resources.Load<Sprite>("SimpleSword.jpg");
+            ImageId = "SimpleSword";
         }
     }
 }

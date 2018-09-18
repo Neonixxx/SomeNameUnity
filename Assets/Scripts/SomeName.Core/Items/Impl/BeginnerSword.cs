@@ -17,7 +17,7 @@ namespace SomeName.Core.Items.Impl
             Damage.Base = 5;
             Damage.Koef = 1.0;
             Bonuses = new Bonuses.ItemBonuses();
-            Image = Resources.Load<Sprite>("BeginnerSword.jpg");
+            ImageId = "BeginnerSword";
         }
     }
 }

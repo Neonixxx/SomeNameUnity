@@ -8,7 +8,7 @@ namespace SomeName.Core.Items.Impl
         public ScrollOfEnchantArmor()
         {
             Description = "Свиток заточки брони";
-            Image = Resources.Load<Sprite>("ScrollOfEnchantArmor.jpg");
+            ImageId = "ScrollOfEnchantArmor";
         }
     }
 }

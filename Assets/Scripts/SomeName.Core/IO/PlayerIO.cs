@@ -21,15 +21,20 @@ namespace SomeName.Core.IO
 
         public Player StartNew()
         {
-            return new Player()
+            var player = new Player()
             {
                 Level = 1,
                 Exp = 0,
                 ExpForNextLevel = DropBalance.Standard.GetExp(1),
-                Gold = 0,
-                EquippedItems = new EquippedItems { Weapon = new BeginnerSword() },
-                Inventory = new List<IItem>()
+                Inventory = new Domain.Inventory
+                {
+                    Gold = 0,
+                    Bag = new List<IItem>(),
+                    EquippedItems = new EquippedItems { Weapon = new BeginnerSword() }
+                }
             };
+            player.Initialize();
+            return player;
         }
 
         public void Save(Player player)
@@ -50,6 +55,7 @@ namespace SomeName.Core.IO
                 var encryptedData = PlayerPrefs.GetString("Player");
                 var data = Crypto.Decrypt(encryptedData);
                 player = JsonConvert.DeserializeObject<Player>(data, new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Objects });
+                player.Initialize();
             }
             catch (JsonSerializationException)
             {

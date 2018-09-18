@@ -41,7 +41,7 @@ namespace SomeName.Core.Domain
 
 
         public long CalculateDamage(Player player)
-            => CalculateDamage(player.GetPower(), player.EquippedItems.Weapon);
+            => CalculateDamage(player.GetPower(), player.Inventory.EquippedItems.Weapon);
 
         public long CalculateDamage(int power, Weapon weapon)
             => CalculateDamage(power, weapon?.Damage.Value ?? 1);
@@ -58,7 +58,7 @@ namespace SomeName.Core.Domain
 
 
         public long CalculateDefence(Player player)
-            => CalculateDefence(player.Level, player.EquippedItems);
+            => CalculateDefence(player.Level, player.Inventory.EquippedItems);
 
         public long CalculateDefence(int level, EquippedItems equippedItems)
             => CalculateDefence(level, equippedItems.GetDefence());
@@ -68,7 +68,7 @@ namespace SomeName.Core.Domain
 
 
         public int CalculatePower(Player player)
-            => CalculatePower(player.Level, player.EquippedItems);
+            => CalculatePower(player.Level, player.Inventory.EquippedItems);
 
         public int CalculatePower(int level, EquippedItems equippedItems)
             => CalculatePower(level, equippedItems.GetPower());
@@ -85,7 +85,7 @@ namespace SomeName.Core.Domain
 
 
         public int CalculateVitality(Player player)
-            => CalculateVitality(player.Level, player.EquippedItems);
+            => CalculateVitality(player.Level, player.Inventory.EquippedItems);
 
         public int CalculateVitality(int level, EquippedItems equippedItems)
             => CalculateVitality(level, equippedItems.GetVitality());
@@ -104,7 +104,7 @@ namespace SomeName.Core.Domain
 
 
         public int CalculateAccuracy(Player player)
-            => CalculateAccuracy(player.Level, player.EquippedItems);
+            => CalculateAccuracy(player.Level, player.Inventory.EquippedItems);
 
         public int CalculateAccuracy(int level, EquippedItems equippedItems)
             => CalculateAccuracy(level, equippedItems.GetAccuracy());
@@ -114,7 +114,7 @@ namespace SomeName.Core.Domain
 
 
         public int CalculateEvasion(Player player)
-            => CalculateEvasion(player.Level, player.EquippedItems);
+            => CalculateEvasion(player.Level, player.Inventory.EquippedItems);
 
         public int CalculateEvasion(int level, EquippedItems equippedItems)
             => CalculateEvasion(level, equippedItems.GetEvasion());
@@ -124,7 +124,7 @@ namespace SomeName.Core.Domain
 
 
         public double CalculateCritChance(Player player)
-            => CalculateCritChance(player.EquippedItems);
+            => CalculateCritChance(player.Inventory.EquippedItems);
 
         public double CalculateCritChance(EquippedItems equippedItems)
             => CalculateCritChance(equippedItems.GetCritChance());
@@ -134,7 +134,7 @@ namespace SomeName.Core.Domain
 
 
         public double CalculateCritDamage(Player player)
-            => CalculateCritDamage(player.EquippedItems);
+            => CalculateCritDamage(player.Inventory.EquippedItems);
 
         public double CalculateCritDamage(EquippedItems equippedItems)
             => CalculateCritDamage(equippedItems.GetCritDamage());
@@ -144,7 +144,7 @@ namespace SomeName.Core.Domain
 
 
         public long CalculateHealthPerHit(Player player)
-            => CalculateHealthPerHit(player.EquippedItems);
+            => CalculateHealthPerHit(player.Inventory.EquippedItems);
 
         public long CalculateHealthPerHit(EquippedItems equippedItems)
             => CalculateHealthPerHit(equippedItems.GetHealthPerHit());

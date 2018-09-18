@@ -8,6 +8,7 @@ using SomeName.Core.Balance;
 using SomeName.Core.Domain;
 using SomeName.Core.Items.Impl;
 using Newtonsoft.Json;
+using SomeName.Core.Services;
 
 namespace SomeName.Core.Domain
 {
@@ -20,10 +21,18 @@ namespace SomeName.Core.Domain
         [JsonIgnore]
         public AttackManager AttackManager { get; set; }
 
+        [JsonIgnore]
+        public InventoryService InventoryService { get; set; }
+
         public Player()
         {
             PlayerStatsCalculator = PlayerStatsCalculator.Standard;
             AttackManager = new AttackManager(this);
+        }
+
+        public void Initialize()
+        {
+            InventoryService = new InventoryService(Inventory);
         }
 
         public int Level { get; set; }
@@ -32,15 +41,11 @@ namespace SomeName.Core.Domain
 
         public long Exp { get; set; }
 
-        public long Gold { get; set; }
-
         public long Health { get; set; }
 
         public bool IsDead { get; set; }
 
-        public EquippedItems EquippedItems { get; set; }
-
-        public List<IItem> Inventory { get; set; }
+        public Inventory Inventory { get; set; }
 
         public long GetDamage()
             => PlayerStatsCalculator.CalculateDamage(this);
@@ -92,84 +97,83 @@ namespace SomeName.Core.Domain
             IsDead = false;
         }
 
-        public void SellItem(ShopManager shopService, IItem item)
-        {
-            if (Inventory.Contains(item))
-            {
-                Inventory.Remove(item);
-                Gold += shopService.GetSellItemValue(item);
-            }
-        }
+        //public void SellItem(ShopManager shopService, IItem item)
+        //{
+        //    if (Inventory.Contains(item))
+        //    {
+        //        Inventory.Remove(item);
+        //        Gold += shopService.GetSellItemValue(item);
+        //    }
+        //}
 
         public long Attack(IAttackTarget attackTarget)
             => AttackManager.Attack(attackTarget);
 
         // TODO : Решить, как можно сделать метод более расширяемым к добавлению новых типов предметов.
-        public bool Equip(IItem item)
-        {
-            if (item as Weapon != null)
-            {
-                if (EquippedItems.Weapon != null)
-                    Inventory.Add(EquippedItems.Weapon);
-                Inventory.Remove(item);
-                EquippedItems.Weapon = (Weapon)item;
-                return true;
-            }
-            if (item as Weapon != null)
-            {
-                if (EquippedItems.Chest != null)
-                    Inventory.Add(EquippedItems.Chest);
-                Inventory.Remove(item);
-                EquippedItems.Chest = (Chest)item;
-                return true;
-            }
-            if (item as Weapon != null)
-            {
-                if (EquippedItems.Gloves != null)
-                    Inventory.Add(EquippedItems.Gloves);
-                Inventory.Remove(item);
-                EquippedItems.Gloves = (Gloves)item;
-                return true;
-            }
+        //public bool Equip(IItem item)
+        //{
+        //    if (item as Weapon != null)
+        //    {
+        //        if (EquippedItems.Weapon != null)
+        //            Inventory.Add(EquippedItems.Weapon);
+        //        Inventory.Remove(item);
+        //        EquippedItems.Weapon = (Weapon)item;
+        //        return true;
+        //    }
+        //    if (item as Weapon != null)
+        //    {
+        //        if (EquippedItems.Chest != null)
+        //            Inventory.Add(EquippedItems.Chest);
+        //        Inventory.Remove(item);
+        //        EquippedItems.Chest = (Chest)item;
+        //        return true;
+        //    }
+        //    if (item as Weapon != null)
+        //    {
+        //        if (EquippedItems.Gloves != null)
+        //            Inventory.Add(EquippedItems.Gloves);
+        //        Inventory.Remove(item);
+        //        EquippedItems.Gloves = (Gloves)item;
+        //        return true;
+        //    }
 
-            return false;
-        }
+        //    return false;
+        //}
 
-        public void Unequip(ItemType itemType)
-        {
-            switch (itemType)
-            {
-                case ItemType.Weapon:
-                    if (EquippedItems.Weapon != null)
-                    {
-                        Inventory.Add(EquippedItems.Weapon);
-                        EquippedItems.Weapon = null;
-                    }
-                    break;
+        //public void Unequip(ItemType itemType)
+        //{
+        //    switch (itemType)
+        //    {
+        //        case ItemType.Weapon:
+        //            if (EquippedItems.Weapon != null)
+        //            {
+        //                Inventory.Add(EquippedItems.Weapon);
+        //                EquippedItems.Weapon = null;
+        //            }
+        //            break;
 
-                case ItemType.Chest:
-                    if (EquippedItems.Chest != null)
-                    {
-                        Inventory.Add(EquippedItems.Chest);
-                        EquippedItems.Chest = null;
-                    }
-                    break;
+        //        case ItemType.Chest:
+        //            if (EquippedItems.Chest != null)
+        //            {
+        //                Inventory.Add(EquippedItems.Chest);
+        //                EquippedItems.Chest = null;
+        //            }
+        //            break;
 
-                case ItemType.Gloves:
-                    if (EquippedItems.Gloves != null)
-                    {
-                        Inventory.Add(EquippedItems.Gloves);
-                        EquippedItems.Gloves = null;
-                    }
-                    break;
-            }
-        }
+        //        case ItemType.Gloves:
+        //            if (EquippedItems.Gloves != null)
+        //            {
+        //                Inventory.Add(EquippedItems.Gloves);
+        //                EquippedItems.Gloves = null;
+        //            }
+        //            break;
+        //    }
+        //}
 
         public void TakeDrop(Drop drop)
         {
             TakeExp(drop.Exp);
-            Gold += drop.Gold;
-            TakeItems(drop.Items);
+            InventoryService.AddDrop(drop);
         }
 
         public void TakeExp(long exp)
@@ -185,9 +189,9 @@ namespace SomeName.Core.Domain
         }
 
         public void TakeItem(IItem item)
-            => Inventory.Add(item);
+            => InventoryService.AddItem(item);
 
         public void TakeItems(List<IItem> items)
-            => Inventory.AddRange(items);
+            => InventoryService.AddItems(items);
     }
 }
