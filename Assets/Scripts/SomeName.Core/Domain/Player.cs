@@ -109,67 +109,6 @@ namespace SomeName.Core.Domain
         public long Attack(IAttackTarget attackTarget)
             => AttackManager.Attack(attackTarget);
 
-        // TODO : Решить, как можно сделать метод более расширяемым к добавлению новых типов предметов.
-        //public bool Equip(IItem item)
-        //{
-        //    if (item as Weapon != null)
-        //    {
-        //        if (EquippedItems.Weapon != null)
-        //            Inventory.Add(EquippedItems.Weapon);
-        //        Inventory.Remove(item);
-        //        EquippedItems.Weapon = (Weapon)item;
-        //        return true;
-        //    }
-        //    if (item as Weapon != null)
-        //    {
-        //        if (EquippedItems.Chest != null)
-        //            Inventory.Add(EquippedItems.Chest);
-        //        Inventory.Remove(item);
-        //        EquippedItems.Chest = (Chest)item;
-        //        return true;
-        //    }
-        //    if (item as Weapon != null)
-        //    {
-        //        if (EquippedItems.Gloves != null)
-        //            Inventory.Add(EquippedItems.Gloves);
-        //        Inventory.Remove(item);
-        //        EquippedItems.Gloves = (Gloves)item;
-        //        return true;
-        //    }
-
-        //    return false;
-        //}
-
-        //public void Unequip(ItemType itemType)
-        //{
-        //    switch (itemType)
-        //    {
-        //        case ItemType.Weapon:
-        //            if (EquippedItems.Weapon != null)
-        //            {
-        //                Inventory.Add(EquippedItems.Weapon);
-        //                EquippedItems.Weapon = null;
-        //            }
-        //            break;
-
-        //        case ItemType.Chest:
-        //            if (EquippedItems.Chest != null)
-        //            {
-        //                Inventory.Add(EquippedItems.Chest);
-        //                EquippedItems.Chest = null;
-        //            }
-        //            break;
-
-        //        case ItemType.Gloves:
-        //            if (EquippedItems.Gloves != null)
-        //            {
-        //                Inventory.Add(EquippedItems.Gloves);
-        //                EquippedItems.Gloves = null;
-        //            }
-        //            break;
-        //    }
-        //}
-
         public void TakeDrop(Drop drop)
         {
             TakeExp(drop.Exp);

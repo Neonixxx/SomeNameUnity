@@ -18,6 +18,17 @@ namespace SomeName.Core.Services
 
         public int Count => _inventory.Bag.Count;
 
+        public IItem GetEquipped(ItemType itemType)
+        {
+            switch(itemType)
+            {
+                case ItemType.Weapon: return _inventory.EquippedItems.Weapon;
+                case ItemType.Gloves: return _inventory.EquippedItems.Gloves;
+                case ItemType.Chest: return _inventory.EquippedItems.Chest;
+            }
+            throw new ArgumentException();
+        }
+
         public IItem Get(int index)
         {
 
@@ -74,5 +85,72 @@ namespace SomeName.Core.Services
 
         public bool IsEquipped(IItem item)
             => _inventory.EquippedItems.Any(i => i == item);
+
+        public bool IsEquipped(ItemType itemType)
+            => GetEquipped(itemType) != null;
+
+        public bool Equip(int itemIndex)
+            => Equip(Get(itemIndex));
+
+        //TODO : Решить, как можно сделать метод более расширяемым к добавлению новых типов предметов.
+        public bool Equip(IItem item)
+        {
+            if (item as Weapon != null)
+            {
+                if (_inventory.EquippedItems.Weapon != null)
+                    AddItem(_inventory.EquippedItems.Weapon);
+                Remove(item);
+                _inventory.EquippedItems.Weapon = (Weapon)item;
+                return true;
+            }
+            if (item as Chest != null)
+            {
+                if (_inventory.EquippedItems.Chest != null)
+                    AddItem(_inventory.EquippedItems.Chest);
+                Remove(item);
+                _inventory.EquippedItems.Chest = (Chest)item;
+                return true;
+            }
+            if (item as Gloves != null)
+            {
+                if (_inventory.EquippedItems.Gloves != null)
+                    AddItem(_inventory.EquippedItems.Gloves);
+                Remove(item);
+                _inventory.EquippedItems.Gloves = (Gloves)item;
+                return true;
+            }
+
+            return false;
+        }
+
+        public void Unequip(ItemType itemType)
+        {
+            switch (itemType)
+            {
+                case ItemType.Weapon:
+                    if (_inventory.EquippedItems.Weapon != null)
+                    {
+                        AddItem(_inventory.EquippedItems.Weapon);
+                        _inventory.EquippedItems.Weapon = null;
+                    }
+                    break;
+
+                case ItemType.Chest:
+                    if (_inventory.EquippedItems.Chest != null)
+                    {
+                        AddItem(_inventory.EquippedItems.Chest);
+                        _inventory.EquippedItems.Chest = null;
+                    }
+                    break;
+
+                case ItemType.Gloves:
+                    if (_inventory.EquippedItems.Gloves != null)
+                    {
+                        AddItem(_inventory.EquippedItems.Gloves);
+                        _inventory.EquippedItems.Gloves = null;
+                    }
+                    break;
+            }
+        }
     }
 }
