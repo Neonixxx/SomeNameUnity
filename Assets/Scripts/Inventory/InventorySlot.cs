@@ -35,7 +35,8 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         FirstClick?.Invoke(this, null);
-        if (eventData.clickCount == 2 || Input.GetTouch(0).tapCount == 2)
+        if (eventData.clickCount == 2 
+            || (Input.touchCount > 0 && Input.GetTouch(0).tapCount == 2))
             DoubleClick?.Invoke(this, null);
     }
 

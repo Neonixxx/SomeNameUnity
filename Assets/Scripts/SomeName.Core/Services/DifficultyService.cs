@@ -1,13 +1,8 @@
 ﻿using SomeName.Core.Difficulties;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SomeName.Core
+namespace SomeName.Core.Services
 {
-    public class GameController
+    public class DifficultyService
     {
         public readonly string[] BattleDifficulties = BattleDifficulty.GetStrings();
 
@@ -16,5 +11,7 @@ namespace SomeName.Core
 
         public void SetBattleDifficulty(int battleDifficultyIndex)
             => BattleDifficulty.SetBattleDifficulty(battleDifficultyIndex);
+
+        public static readonly DifficultyService Standard = new DifficultyService();
     }
 }
