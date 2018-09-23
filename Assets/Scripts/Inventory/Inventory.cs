@@ -13,20 +13,28 @@ namespace Inventory
         public List<GameObject> InventorySlotsObject = new List<GameObject>();
         public Text ActiveSlotDescription;
         public Text ActivePageDescription;
+        public GameObject DraggingInventorySlot;
 
         private ResourceManager _resourceManager;
         private InventoryService InventoryService;
 
+        private RectTransform _canvasRect;
+        private RectTransform _draggingItemRect;
         private Dictionary<InventorySlot, ItemType> _equippedItemSlots;
         private List<InventorySlot> _inventorySlots;
         private InventorySlot _activeSlot;
+        private InventorySlot _draggingSlot;
         private int _currentPage = 1;
         private int _maxPage = 1;
         private int _itemsPerPage;
+        private bool _isDragging;
 
         // Use this for initialization
         void Start()
         {
+            DraggingInventorySlot.SetActive(false);
+            _canvasRect = GameObject.FindGameObjectWithTag("Canvas").GetComponent<RectTransform>();
+            _draggingItemRect = DraggingInventorySlot.GetComponent<RectTransform>();
             InventoryService = FindObjectOfType<GameState>().Player.InventoryService;
             _resourceManager = FindObjectOfType<ResourceManager>();
             _inventorySlots = InventorySlotsObject.Select(s => s.GetComponent<InventorySlot>()).ToList();
@@ -50,12 +58,54 @@ namespace Inventory
             {
                 item.FirstClick += (obj, e) => SetActiveSlot((InventorySlot)obj);
                 item.DoubleClick += (obj, e) => EquipItem((InventorySlot)obj);
+                item.DragStarted += (obj, e) => DragStarted((InventorySlot)obj);
+                item.DragEnded += (obj, e) => DragEnded((InventorySlot)obj);
             }
             foreach (var item in _equippedItemSlots)
             {
                 item.Key.FirstClick += (obj, e) => SetActiveSlot((InventorySlot)obj);
                 item.Key.DoubleClick += (obj, e) => UnequipItem((InventorySlot)obj);
             }
+        }
+
+        private void DragStarted(InventorySlot inventorySlot)
+        {
+            if (!_isDragging)
+            {
+                _isDragging = true;
+                _draggingSlot = inventorySlot;
+                DraggingInventorySlot.GetComponent<InventorySlot>().SetMainSprite(inventorySlot.MainSprite);
+                DraggingInventorySlot.SetActive(true);
+            }
+        }
+
+        private void DragEnded(InventorySlot inventorySlot)
+        {
+            var pointerPos = Input.mousePosition;
+            InventorySlot equippedItem = null;
+            foreach (var item in _equippedItemSlots)
+            {
+                var rectTransform = item.Key.GetComponent<RectTransform>();
+                var localPos = pointerPos - rectTransform.position;
+                if (rectTransform.rect.Contains(localPos))
+                {
+                    equippedItem = item.Key;
+                    break;
+                }
+            }
+
+            if (equippedItem != null && InventoryService.CompareItemTypes(
+                InventoryService.Get(
+                    _inventorySlots.IndexOf(_draggingSlot))
+                , _equippedItemSlots[equippedItem]))
+            {
+                EquipItem(inventorySlot);
+            }
+
+            _isDragging = false;
+            _draggingSlot = null;
+            DraggingInventorySlot.GetComponent<InventorySlot>().SetMainSprite(null);
+            DraggingInventorySlot.SetActive(false);
         }
 
         // Update is called once per frame
@@ -80,6 +130,11 @@ namespace Inventory
                 }
             }
             ActiveSlotUpdate();
+
+            if (_isDragging)
+            {
+                _draggingItemRect.localPosition = Input.mousePosition - _canvasRect.localPosition;
+            }
         }
 
         /// <summary>

@@ -3,15 +3,18 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InventorySlot : MonoBehaviour, IPointerClickHandler
+public class InventorySlot : MonoBehaviour, IPointerClickHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
     private Inventory.Inventory _inventory;
     private Image _image;
     private Image _backgroundImage;
 
+    public Sprite MainSprite { get { return _image.sprite; } }
+
     public Sprite ActiveBackgroudSprite;
     public Sprite UnactiveBackgroundSprite;
 
+    public bool IsUnderPointer;
     public bool IsWithItem;
 	// Use this for initialization
 	void Start ()
@@ -32,6 +35,8 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler
             : UnactiveBackgroundSprite;
     }
 
+
+
     public void OnPointerClick(PointerEventData eventData)
     {
         FirstClick?.Invoke(this, null);
@@ -40,7 +45,29 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler
             DoubleClick?.Invoke(this, null);
     }
 
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (IsWithItem)
+            DragStarted?.Invoke(this, null);
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        if (IsWithItem)
+            DragEnded?.Invoke(this, null);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+        => IsUnderPointer = true;
+
+    public void OnPointerExit(PointerEventData eventData)
+        => IsUnderPointer = false;
+
     public event EventHandler FirstClick;
 
     public event EventHandler DoubleClick;
+
+    public event EventHandler DragStarted;
+
+    public event EventHandler DragEnded;
 }

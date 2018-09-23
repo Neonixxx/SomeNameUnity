@@ -152,5 +152,23 @@ namespace SomeName.Core.Services
                     break;
             }
         }
+
+        public bool CompareItemTypes(IItem item, ItemType itemType)
+        {
+            ItemType anotherItemType;
+            if (item as Weapon != null)
+                anotherItemType = ItemType.Weapon;
+            else if (item as Chest != null)
+                anotherItemType = ItemType.Chest;
+            else if (item as Gloves != null)
+                anotherItemType = ItemType.Gloves;
+            else
+                return false;
+
+            if (anotherItemType == itemType)
+                return true;
+            else
+                return false;
+        }
     }
 }

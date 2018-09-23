@@ -480,7 +480,7 @@ RectTransform:
   m_Children:
   - {fileID: 948508763}
   m_Father: {fileID: 445096107}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1337,9 +1337,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 1404026879}
-  - {fileID: 540928381}
-  - {fileID: 523250706}
   - {fileID: 260435749}
+  - {fileID: 523250706}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1613,19 +1612,19 @@ RectTransform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 540928380}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1052584935}
   - {fileID: 576384324}
-  m_Father: {fileID: 445096107}
-  m_RootOrder: 1
+  m_Father: {fileID: 1404026879}
+  m_RootOrder: 41
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -319.59995, y: 199}
-  m_SizeDelta: {x: -639.2, y: -1528.7}
+  m_AnchoredPosition: {x: -319.59995, y: 677.2999}
+  m_SizeDelta: {x: -639.2, y: -571.99994}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &540928382
 MonoBehaviour:
@@ -3691,7 +3690,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u041F\u043E\u0434\u0441\u043A\u0430\u0437\u043A\u0430"
+  m_Text: "\u0418\u043D\u0444\u043E\u0440\u043C\u0430\u0446\u0438\u044F"
 --- !u!222 &1052584937
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4533,6 +4532,7 @@ RectTransform:
   - {fileID: 494002956}
   - {fileID: 923714685}
   - {fileID: 1495181571}
+  - {fileID: 540928381}
   m_Father: {fileID: 445096107}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4623,6 +4623,7 @@ MonoBehaviour:
   - {fileID: 11208055}
   ActiveSlotDescription: {fileID: 576384325}
   ActivePageDescription: {fileID: 1495181572}
+  DraggingInventorySlot: {fileID: 2017471816}
 --- !u!1 &1495181570
 GameObject:
   m_ObjectHideFlags: 0
@@ -5416,17 +5417,17 @@ Prefab:
     - target: {fileID: 224444403511963182, guid: 29405e390f90c9745909fa493930bb14,
         type: 2}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 224444403511963182, guid: 29405e390f90c9745909fa493930bb14,
         type: 2}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 224444403511963182, guid: 29405e390f90c9745909fa493930bb14,
         type: 2}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 224444403511963182, guid: 29405e390f90c9745909fa493930bb14,
         type: 2}
@@ -5441,12 +5442,12 @@ Prefab:
     - target: {fileID: 224444403511963182, guid: 29405e390f90c9745909fa493930bb14,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: -884
+      value: -783
       objectReference: {fileID: 0}
     - target: {fileID: 224444403511963182, guid: 29405e390f90c9745909fa493930bb14,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -49
+      value: 42.700073
       objectReference: {fileID: 0}
     - target: {fileID: 224444403511963182, guid: 29405e390f90c9745909fa493930bb14,
         type: 2}
@@ -5492,9 +5493,26 @@ Prefab:
       propertyPath: m_Name
       value: DragObj
       objectReference: {fileID: 0}
+    - target: {fileID: 114794257988338868, guid: 29405e390f90c9745909fa493930bb14,
+        type: 2}
+      propertyPath: ActiveBackgroudSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: e9fec0920112db64e87d326d1bf439e3,
+        type: 3}
+    - target: {fileID: 114794257988338868, guid: 29405e390f90c9745909fa493930bb14,
+        type: 2}
+      propertyPath: UnactiveBackgroundSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: e9fec0920112db64e87d326d1bf439e3,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 29405e390f90c9745909fa493930bb14, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &2017471816 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1268399937082660, guid: 29405e390f90c9745909fa493930bb14,
+    type: 2}
+  m_PrefabInternal: {fileID: 2017471815}
 --- !u!1001 &2071323514
 Prefab:
   m_ObjectHideFlags: 0
