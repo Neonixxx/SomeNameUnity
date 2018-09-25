@@ -1006,6 +1006,11 @@ Prefab:
       propertyPath: m_Name
       value: InventorySlot (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 114794257988338868, guid: 29405e390f90c9745909fa493930bb14,
+        type: 2}
+      propertyPath: Canvas
+      value: 
+      objectReference: {fileID: 445096106}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 29405e390f90c9745909fa493930bb14, type: 2}
   m_IsPrefabParent: 0
@@ -5442,12 +5447,12 @@ Prefab:
     - target: {fileID: 224444403511963182, guid: 29405e390f90c9745909fa493930bb14,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: -783
+      value: -646
       objectReference: {fileID: 0}
     - target: {fileID: 224444403511963182, guid: 29405e390f90c9745909fa493930bb14,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 42.700073
+      value: -57.65
       objectReference: {fileID: 0}
     - target: {fileID: 224444403511963182, guid: 29405e390f90c9745909fa493930bb14,
         type: 2}

@@ -32,7 +32,6 @@ namespace Inventory
         // Use this for initialization
         void Start()
         {
-            DraggingInventorySlot.SetActive(false);
             _canvasRect = GameObject.FindGameObjectWithTag("Canvas").GetComponent<RectTransform>();
             _draggingItemRect = DraggingInventorySlot.GetComponent<RectTransform>();
             InventoryService = FindObjectOfType<GameState>().Player.InventoryService;
@@ -58,8 +57,9 @@ namespace Inventory
             {
                 item.FirstClick += (obj, e) => SetActiveSlot((InventorySlot)obj);
                 item.DoubleClick += (obj, e) => EquipItem((InventorySlot)obj);
-                item.DragStarted += (obj, e) => DragStarted((InventorySlot)obj);
-                item.DragEnded += (obj, e) => DragEnded((InventorySlot)obj);
+                item.DragStarted += (obj, e) => DragStarted((InventorySlot)obj, e);
+                item.Drag += (obj, e) => Drag((InventorySlot)obj, e);
+                item.DragEnded += (obj, e) => DragEnded((InventorySlot)obj, e);
             }
             foreach (var item in _equippedItemSlots)
             {
@@ -68,20 +68,22 @@ namespace Inventory
             }
         }
 
-        private void DragStarted(InventorySlot inventorySlot)
+        private void DragStarted(InventorySlot inventorySlot, Vector2 pointerPosition)
         {
-            if (!_isDragging)
-            {
-                _isDragging = true;
-                _draggingSlot = inventorySlot;
-                DraggingInventorySlot.GetComponent<InventorySlot>().SetMainSprite(inventorySlot.MainSprite);
-                DraggingInventorySlot.SetActive(true);
-            }
+            _isDragging = true;
+            _draggingSlot = inventorySlot;
+            DraggingInventorySlot.GetComponent<InventorySlot>().SetMainSprite(inventorySlot.MainSprite);
+            DraggingInventorySlot.SetActive(true);
         }
 
-        private void DragEnded(InventorySlot inventorySlot)
+        private void Drag(InventorySlot inventorySlot, Vector2 pointerPosition)
         {
-            var pointerPos = Input.mousePosition;
+            _draggingItemRect.localPosition = new Vector3(pointerPosition.x, pointerPosition.y) - _canvasRect.localPosition;
+        }
+
+        private void DragEnded(InventorySlot inventorySlot, Vector2 pointerPosition)
+        {
+            var pointerPos = new Vector3(pointerPosition.x, pointerPosition.y);
             InventorySlot equippedItem = null;
             foreach (var item in _equippedItemSlots)
             {
@@ -96,7 +98,7 @@ namespace Inventory
 
             if (equippedItem != null && InventoryService.CompareItemTypes(
                 InventoryService.Get(
-                    _inventorySlots.IndexOf(_draggingSlot))
+                    GetIndexOfInventorySlot(_draggingSlot))
                 , _equippedItemSlots[equippedItem]))
             {
                 EquipItem(inventorySlot);
@@ -130,11 +132,6 @@ namespace Inventory
                 }
             }
             ActiveSlotUpdate();
-
-            if (_isDragging)
-            {
-                _draggingItemRect.localPosition = Input.mousePosition - _canvasRect.localPosition;
-            }
         }
 
         /// <summary>
@@ -171,6 +168,9 @@ namespace Inventory
             }
         }
 
+        private int GetIndexOfInventorySlot(InventorySlot inventorySlot)
+            => _inventorySlots.IndexOf(inventorySlot) + GetFirstItemIndex();
+
         private int GetFirstItemIndex()
             => _itemsPerPage * (_currentPage - 1);
 
@@ -187,7 +187,7 @@ namespace Inventory
                 _activeSlot.BackgroundSpriteIsActive(true);
                 ActiveSlotDescription.text = _equippedItemSlots.Keys.Contains(_activeSlot)
                     ? InventoryService.GetEquipped(_equippedItemSlots[_activeSlot]).ToString()
-                    : InventoryService.Get(_inventorySlots.IndexOf(_activeSlot) + GetFirstItemIndex()).ToString();
+                    : InventoryService.Get(GetIndexOfInventorySlot(_activeSlot)).ToString();
             }
             else
                 ActiveSlotDescription.text = string.Empty;
@@ -199,7 +199,7 @@ namespace Inventory
         public void EquipItem(InventorySlot inventorySlot)
         {
             if (inventorySlot.IsWithItem)
-                InventoryService.Equip(_inventorySlots.IndexOf(inventorySlot) + GetFirstItemIndex());
+                InventoryService.Equip(GetIndexOfInventorySlot(inventorySlot));
         }
 
         public void UnequipItem(InventorySlot inventorySlot)
