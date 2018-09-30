@@ -503,7 +503,6 @@ GameObject:
   - component: {fileID: 505171974}
   - component: {fileID: 505171973}
   - component: {fileID: 505171972}
-  - component: {fileID: 505171971}
   m_Layer: 5
   m_Name: CubeButton
   m_TagString: Untagged
@@ -530,17 +529,6 @@ RectTransform:
   m_AnchoredPosition: {x: -190.25, y: -511}
   m_SizeDelta: {x: 380.6, y: 232.1}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &505171971
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 505171969}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e983654f41aa6ce40a6a5dca32c1c5b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &505171972
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -579,7 +567,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 505171973}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114382484979461122, guid: 7dc54d0d0d16f84449ba769d129af618,
+          type: 2}
+        m_MethodName: LoadScene
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Cube
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &505171973
@@ -700,7 +700,6 @@ GameObject:
   - component: {fileID: 531072648}
   - component: {fileID: 531072647}
   - component: {fileID: 531072646}
-  - component: {fileID: 531072645}
   m_Layer: 5
   m_Name: InventoryButton
   m_TagString: Untagged
@@ -727,17 +726,6 @@ RectTransform:
   m_AnchoredPosition: {x: -190.25, y: 216}
   m_SizeDelta: {x: 380.6, y: 232.1}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &531072645
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 531072643}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61d0036b9d7a2e84797cffabfbe1477a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &531072646
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -776,7 +764,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 531072647}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114382484979461122, guid: 7dc54d0d0d16f84449ba769d129af618,
+          type: 2}
+        m_MethodName: LoadScene
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Inventory
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &531072647
@@ -1024,7 +1024,6 @@ GameObject:
   - component: {fileID: 807429581}
   - component: {fileID: 807429580}
   - component: {fileID: 807429579}
-  - component: {fileID: 807429578}
   m_Layer: 5
   m_Name: FarmButton
   m_TagString: Untagged
@@ -1051,17 +1050,6 @@ RectTransform:
   m_AnchoredPosition: {x: 190.3, y: 579}
   m_SizeDelta: {x: 380.6, y: 232.1}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &807429578
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 807429576}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d65147546f58f24f992293a6cb446d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &807429579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1100,7 +1088,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 807429580}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114382484979461122, guid: 7dc54d0d0d16f84449ba769d129af618,
+          type: 2}
+        m_MethodName: LoadScene
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Farm
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &807429580
@@ -1682,7 +1682,6 @@ GameObject:
   - component: {fileID: 1527772326}
   - component: {fileID: 1527772325}
   - component: {fileID: 1527772324}
-  - component: {fileID: 1527772323}
   m_Layer: 5
   m_Name: ShopButton
   m_TagString: Untagged
@@ -1709,17 +1708,6 @@ RectTransform:
   m_AnchoredPosition: {x: 190.3, y: -152}
   m_SizeDelta: {x: 380.6, y: 232.1}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1527772323
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1527772321}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e983654f41aa6ce40a6a5dca32c1c5b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1527772324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1758,7 +1746,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1527772325}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114382484979461122, guid: 7dc54d0d0d16f84449ba769d129af618,
+          type: 2}
+        m_MethodName: LoadScene
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Shop
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1527772325
@@ -2095,7 +2095,6 @@ GameObject:
   - component: {fileID: 1883383471}
   - component: {fileID: 1883383470}
   - component: {fileID: 1883383469}
-  - component: {fileID: 1883383468}
   m_Layer: 5
   m_Name: MenuButton
   m_TagString: Untagged
@@ -2122,17 +2121,6 @@ RectTransform:
   m_AnchoredPosition: {x: -429.40005, y: 895.05}
   m_SizeDelta: {x: 221.2, y: 129.9}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1883383468
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1883383466}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 938c35a16b9480449823226225da7d73, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1883383469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2171,7 +2159,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1883383470}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114382484979461122, guid: 7dc54d0d0d16f84449ba769d129af618,
+          type: 2}
+        m_MethodName: LoadScene
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: MainMenu
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1883383470
