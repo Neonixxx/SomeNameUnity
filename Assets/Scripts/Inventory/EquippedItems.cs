@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using SomeName.Core;
 using SomeName.Core.Services;
 using UnityEngine;

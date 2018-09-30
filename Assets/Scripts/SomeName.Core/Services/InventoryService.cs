@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using SomeName.Core.Domain;
 using SomeName.Core.Items.Interfaces;
-using System.Linq;
 
 namespace SomeName.Core.Services
 {
-    public class InventoryService
+    public class InventoryService : IInventoryBag
     {
         private readonly SomeName.Core.Domain.Inventory _inventory;
 

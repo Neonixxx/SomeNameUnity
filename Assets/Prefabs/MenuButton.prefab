@@ -118,16 +118,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114793243027385130, guid: 7dc54d0d0d16f84449ba769d129af618,
+      - m_Target: {fileID: 114382484979461122, guid: 7dc54d0d0d16f84449ba769d129af618,
           type: 2}
-        m_MethodName: LoadGameScene
-        m_Mode: 1
+        m_MethodName: LoadScene
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Game
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
@@ -205,6 +205,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -429.4, y: 895.05005}
+  m_AnchoredPosition: {x: 429.4, y: 329.58}
   m_SizeDelta: {x: 221.2, y: 129.9}
   m_Pivot: {x: 0.5, y: 0.5}

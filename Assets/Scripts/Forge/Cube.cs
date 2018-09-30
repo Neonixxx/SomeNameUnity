@@ -29,6 +29,7 @@ namespace Forge
         {
             var player = FindObjectOfType<GameState>().Player;
             InventoryService = player.InventoryService;
+            Inventory.InventoryService = InventoryService;
             CubeService = new CubeService(player);
             _resourceManager = FindObjectOfType<ResourceManager>();
 

@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using SomeName.Core;
+using SomeName.Core.Domain;
+using SomeName.Core.Items.Interfaces;
 using SomeName.Core.Services;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,7 +16,7 @@ namespace Inventory
         public Text ActivePageDescription;
         public GameObject DraggingInventorySlot;
 
-        public InventoryService InventoryService { get; set; }
+        public IInventoryBag InventoryService { get; set; }
         private ResourceManager _resourceManager;
 
         private RectTransform _canvasRect;
@@ -33,7 +33,7 @@ namespace Inventory
         // Use this for initialization
         protected virtual void Start()
         {
-            _canvasRect = GameObject.FindGameObjectWithTag("Canvas").GetComponent<RectTransform>();
+            _canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>();
             _panelRect = GetComponent<RectTransform>();
             _draggingItemRect = DraggingInventorySlot.GetComponent<RectTransform>();
             _resourceManager = FindObjectOfType<ResourceManager>();
@@ -126,6 +126,9 @@ namespace Inventory
                 _inventorySlots[i].SetMainSprite(null);
             }
         }
+
+        public IItem GetItemOfInventorySlot(InventorySlot inventorySlot)
+            => InventoryService.Get(GetIndexOfInventorySlot(inventorySlot));
 
         public int GetIndexOfInventorySlot(InventorySlot inventorySlot)
             => _inventorySlots.IndexOf(inventorySlot) + GetFirstItemIndex();

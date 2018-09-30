@@ -1,15 +1,12 @@
-﻿using SomeName.Core.Domain;
+﻿using System;
+using System.Collections.Generic;
+using SomeName.Core.Domain;
 using SomeName.Core.Items.Interfaces;
 using SomeName.Core.Items.ItemFactories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SomeName.Core
+namespace SomeName.Core.Services
 {
-    public class ShopService
+    public class ShopService : IInventoryBag
     {
         public Player Player { get; set; }
 
@@ -23,8 +20,14 @@ namespace SomeName.Core
         };
 
         private const int SellingItemsRounds = 2;
+        private const double SellItemsKoef = 0.3;
 
         private List<IItem> _sellingItems = new List<IItem>();
+
+        public int Count { get { return _sellingItems.Count; } }
+
+        public IItem Get(int index)
+            => _sellingItems[index];
 
         public List<IItem> GetSellingItems()
             => _sellingItems;
@@ -55,10 +58,29 @@ namespace SomeName.Core
 
         public bool CanBuy(IItem item)
         {
-            if (_sellingItems.Contains(item) && Player.Inventory.Gold >= item.GoldValue.Value)
+            if (_sellingItems.Contains(item) && Player.Inventory.Gold >= GetBuyGoldCost(item))
                 return true;
 
             return false;
         }
+
+        public long GetBuyGoldCost(IItem item)
+            => item.GoldValue.Value;
+
+        public void Sell(IItem item)
+        {
+            if (!CanSell(item))
+                throw new ArgumentException("Ошибка при продаже предмета.");
+
+            Player.Inventory.Bag.Remove(item);
+            _sellingItems.Add(item);
+            Player.Inventory.Gold += GetSellGoldCost(item);
+        }
+
+        public bool CanSell(IItem item)
+            => Player.Inventory.Bag.Contains(item);
+
+        public long GetSellGoldCost(IItem item)
+            => Convert.ToInt64(item.GoldValue.Value * SellItemsKoef);
     }
 }
