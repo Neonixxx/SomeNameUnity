@@ -20,6 +20,7 @@ namespace Inventory
         private InventoryService InventoryService;
 
         private RectTransform _canvasRect;
+        private RectTransform _panelRect;
         private RectTransform _draggingItemRect;
         private List<InventorySlot> _inventorySlots;
         private InventorySlot _activeSlot;
@@ -33,6 +34,7 @@ namespace Inventory
         protected virtual void Start()
         {
             _canvasRect = GameObject.FindGameObjectWithTag("Canvas").GetComponent<RectTransform>();
+            _panelRect = GetComponent<RectTransform>();
             _draggingItemRect = DraggingInventorySlot.GetComponent<RectTransform>();
             InventoryService = FindObjectOfType<GameState>().Player.InventoryService;
             _resourceManager = FindObjectOfType<ResourceManager>();
@@ -64,7 +66,7 @@ namespace Inventory
 
         private void Drag(InventorySlot inventorySlot, Vector2 pointerPosition)
         {
-            _draggingItemRect.localPosition = new Vector3(pointerPosition.x, pointerPosition.y) - _canvasRect.localPosition;
+            _draggingItemRect.localPosition = new Vector3(pointerPosition.x, pointerPosition.y) - _canvasRect.localPosition - _panelRect.localPosition;
         }
 
         private void OnDragEnded(InventorySlot inventorySlot, Vector2 pointerPosition)

@@ -14,6 +14,8 @@ namespace SomeName.Core.Domain
 
         public List<IItem> Bag { get; set; }
 
+        public List<IItem> Cube { get; set; } = new List<IItem>();
+
         public long Gold { get; set; }
     }
 }

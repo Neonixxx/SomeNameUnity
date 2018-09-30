@@ -10,6 +10,8 @@ namespace SomeName.Core.Services
     {
         private readonly SomeName.Core.Domain.Inventory _inventory;
 
+        public SomeName.Core.Domain.Inventory Inventory { get { return _inventory; } }
+
         public InventoryService(SomeName.Core.Domain.Inventory inventory)
         {
             _inventory = inventory;

@@ -30,7 +30,8 @@ namespace SomeName.Core.IO
                 {
                     Gold = 0,
                     Bag = new List<IItem>(),
-                    EquippedItems = new EquippedItems { Weapon = new BeginnerSword() }
+                    EquippedItems = new EquippedItems { Weapon = new BeginnerSword() },
+                    Cube = new List<IItem>()
                 }
             };
             player.Initialize();

@@ -13,12 +13,20 @@ namespace SomeName.Core
     {
         protected static readonly double BaseEnchantChance = 1.0;
 
-        protected static readonly double BaseEnchantmentValue = 0.08;
+        protected static readonly double BaseEnchantmentValue = 0.07;
 
-        protected static readonly double EnchantmentValueEnc = 0.02;
+        protected static readonly double EnchantmentValueEnc = 0.03;
 
         protected static readonly double EnchantmentChanceKoef = 0.95;
 
+        public bool CanBeEnchantedWith(ICanBeEnchanted itemToEnchant, ScrollOfEnchant scrollOfEnchant)
+        {
+            if (scrollOfEnchant is ScrollOfEnchantWeapon && itemToEnchant is Weapon
+                || scrollOfEnchant is ScrollOfEnchantArmor && itemToEnchant is Armor)
+                return true;
+
+            return false;
+        }
 
         public bool TryEnchant(ICanBeEnchanted itemToEnchant, ScrollOfEnchant scrollOfEnchant)
         {

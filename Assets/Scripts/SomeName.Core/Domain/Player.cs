@@ -24,6 +24,9 @@ namespace SomeName.Core.Domain
         [JsonIgnore]
         public InventoryService InventoryService { get; set; }
 
+        [JsonIgnore]
+        public CubeService CubeService { get; set; }
+
         public Player()
         {
             PlayerStatsCalculator = PlayerStatsCalculator.Standard;
@@ -33,6 +36,7 @@ namespace SomeName.Core.Domain
         public void Initialize()
         {
             InventoryService = new InventoryService(Inventory);
+            CubeService = new CubeService(this);
         }
 
         public int Level { get; set; }

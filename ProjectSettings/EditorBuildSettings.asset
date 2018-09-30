@@ -17,3 +17,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Inventory.unity
     guid: dc9a6154b6592224587775ba749647a3
+  - enabled: 1
+    path: Assets/Scenes/Cube.unity
+    guid: 7a51a989e9b08c74b99956d4776da869

@@ -8,7 +8,5 @@ public class FarmButton : MonoBehaviour {
         => SceneManager.LoadScene("Farm");
 
     private void Start()
-    {
-        GetComponent<Button>().onClick.AddListener(NewGame);
-    }
+        => GetComponent<Button>().onClick.AddListener(NewGame);
 }
