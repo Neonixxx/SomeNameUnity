@@ -16,8 +16,8 @@ namespace Inventory
         public Text ActivePageDescription;
         public GameObject DraggingInventorySlot;
 
+        public InventoryService InventoryService { get; set; }
         private ResourceManager _resourceManager;
-        private InventoryService InventoryService;
 
         private RectTransform _canvasRect;
         private RectTransform _panelRect;
@@ -36,7 +36,6 @@ namespace Inventory
             _canvasRect = GameObject.FindGameObjectWithTag("Canvas").GetComponent<RectTransform>();
             _panelRect = GetComponent<RectTransform>();
             _draggingItemRect = DraggingInventorySlot.GetComponent<RectTransform>();
-            InventoryService = FindObjectOfType<GameState>().Player.InventoryService;
             _resourceManager = FindObjectOfType<ResourceManager>();
             _inventorySlots = InventorySlotsObject.Select(s => s.GetComponent<InventorySlot>()).ToList();
             _itemsPerPage = _inventorySlots.Count;
@@ -82,10 +81,13 @@ namespace Inventory
 
         public event EventHandler<Vector2> DragEnded;
 
+        public event EventHandler ActiveSlotChanged;
+
         // Update is called once per frame
         void Update()
         {
             InventoryBagUpdate();
+            ActiveSlotUpdate();
         }
 
         /// <summary>
@@ -93,6 +95,9 @@ namespace Inventory
         /// </summary>
         private void InventoryBagUpdate()
         {
+            if (InventoryService == null)
+                return;
+
             var itemsCount = InventoryService.Count;
 
             _maxPage = itemsCount % _itemsPerPage == 0 && itemsCount != 0
@@ -128,9 +133,10 @@ namespace Inventory
         private int GetFirstItemIndex()
             => _itemsPerPage * (_currentPage - 1);
 
-        public void SetActiveSlot(InventorySlot inventorySlot)
+        private void ActiveSlotUpdate()
         {
-            _activeSlot = inventorySlot;
+            if (InventoryService == null || _activeSlot == null)
+                return;
 
             if (_activeSlot.IsWithItem)
             {
@@ -139,7 +145,17 @@ namespace Inventory
                     .ToString();
             }
             else
+            {
+                _activeSlot.BackgroundSpriteIsActive(false);
                 ActiveSlotDescription.text = string.Empty;
+            }
+        }
+
+        public void SetActiveSlot(InventorySlot inventorySlot)
+        {
+            _activeSlot = inventorySlot;
+            if (inventorySlot != null)
+                ActiveSlotChanged?.Invoke(inventorySlot, null);
         }
 
         public void PreviousPage()

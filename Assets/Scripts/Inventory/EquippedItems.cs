@@ -36,12 +36,15 @@ namespace Inventory
                 { glovesSlot, ItemType.Gloves },
                 { chestSlot, ItemType.Chest }
             };
+            Inventory.InventoryService = InventoryService;
             EventsSubscribe();
         }
 
         private void EventsSubscribe()
         {
             Inventory.DragEnded += (obj, e) => OnDragEnded((InventorySlot)obj, e);
+            Inventory.DoubleClick += (obj, e) => EquipItem((InventorySlot)obj);
+            Inventory.ActiveSlotChanged += (obj, e) => _activeSlot = null;
             foreach (var item in _equippedItemSlots)
             {
                 item.Key.FirstClick += (obj, e) => SetActiveSlot((InventorySlot)obj);
@@ -93,6 +96,7 @@ namespace Inventory
                     item.Key.SetMainSprite(null);
                 }
             }
+            ActiveSlotUpdate();
         }
 
         /// <summary>
@@ -106,24 +110,20 @@ namespace Inventory
             if (_activeSlot.IsWithItem)
             {
                 _activeSlot.BackgroundSpriteIsActive(true);
-                ActiveSlotDescription.text = InventoryService.GetEquipped(_equippedItemSlots[_activeSlot]).ToString();
-            }
-            else
-                ActiveSlotDescription.text = string.Empty;
-        }
-
-        public void SetActiveSlot(InventorySlot inventorySlot)
-        {
-            _activeSlot = inventorySlot;
-
-            if (_activeSlot.IsWithItem)
-            {
-                _activeSlot.BackgroundSpriteIsActive(true);
                 ActiveSlotDescription.text = InventoryService.GetEquipped(_equippedItemSlots[_activeSlot])
                     .ToString();
             }
             else
+            {
                 ActiveSlotDescription.text = string.Empty;
+                _activeSlot.BackgroundSpriteIsActive(false);
+            }
+        }
+
+        public void SetActiveSlot(InventorySlot inventorySlot)
+        {
+            Inventory.SetActiveSlot(null);
+            _activeSlot = inventorySlot;
         }
 
         public void EquipItem(InventorySlot inventorySlot)
