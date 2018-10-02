@@ -4,7 +4,7 @@ namespace SomeName.Core.Services
 {
     public class DifficultyService
     {
-        public readonly string[] BattleDifficulties = BattleDifficulty.GetStrings();
+        public string[] BattleDifficulties { get { return BattleDifficulty.GetStrings(); } }
 
         public int GetCurrentDifficultyIndex()
             => BattleDifficulty.CurrentIndex;

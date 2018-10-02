@@ -20,7 +20,7 @@ namespace SomeName.Core.Difficulties
 
         public double ItemAdditionalKoef { get; private set; }
 
-        private static readonly BattleDifficulty[] BattleDifficulties = new BattleDifficulty[]
+        private static readonly List<BattleDifficulty> BattleDifficulties = new List<BattleDifficulty>
         {
             new BattleDifficulty("Very easy", 0.8, 0.6, 0.6, 0.6, 0.8),
             new BattleDifficulty("Easy", 1.0, 1.0, 1.0, 1.0, 1.0),
