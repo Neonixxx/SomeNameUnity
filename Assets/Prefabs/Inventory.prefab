@@ -143,7 +143,6 @@ GameObject:
   - component: {fileID: 222586102110246220}
   - component: {fileID: 114888089099768136}
   - component: {fileID: 114719849259741226}
-  - component: {fileID: 114138939528686216}
   m_Layer: 5
   m_Name: PreviousPageButton
   m_TagString: Untagged
@@ -1615,7 +1614,6 @@ GameObject:
   - component: {fileID: 222936745123930118}
   - component: {fileID: 114395037342208440}
   - component: {fileID: 114766221561725762}
-  - component: {fileID: 114941217846627384}
   m_Layer: 5
   m_Name: NextPageButton
   m_TagString: Untagged
@@ -2623,17 +2621,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114138939528686216
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1065595340067678}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46ffe7a00175abd48a9d27c608fdf7c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114160359251954388
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6045,6 +6032,8 @@ MonoBehaviour:
   ActiveSlotDescription: {fileID: 114984160571382420}
   ActivePageDescription: {fileID: 114433737458891874}
   DraggingInventorySlot: {fileID: 1527109824974932}
+  NextPageButton: {fileID: 114766221561725762}
+  PreviousPageButton: {fileID: 114719849259741226}
 --- !u!114 &114756290179696000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7187,17 +7176,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114941217846627384
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1796956016393434}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a9af572f0c2bdf49a74a0608c16baf6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114941296345244226
 MonoBehaviour:
   m_ObjectHideFlags: 1

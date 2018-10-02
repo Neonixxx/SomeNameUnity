@@ -4953,7 +4953,6 @@ GameObject:
   - component: {fileID: 1567462594}
   - component: {fileID: 1567462593}
   - component: {fileID: 1567462592}
-  - component: {fileID: 1567462591}
   m_Layer: 5
   m_Name: PreviousPageButton
   m_TagString: Untagged
@@ -4981,18 +4980,6 @@ RectTransform:
   m_AnchoredPosition: {x: -134, y: -226}
   m_SizeDelta: {x: 150, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1567462591
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114138939528686216, guid: 4bcd8c1a06d58fa44909aafddaef2a4d,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1567462589}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46ffe7a00175abd48a9d27c608fdf7c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1567462592
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5082,7 +5069,6 @@ GameObject:
   - component: {fileID: 1584196645}
   - component: {fileID: 1584196644}
   - component: {fileID: 1584196643}
-  - component: {fileID: 1584196642}
   m_Layer: 5
   m_Name: NextPageButton
   m_TagString: Untagged
@@ -5110,18 +5096,6 @@ RectTransform:
   m_AnchoredPosition: {x: 131.40001, y: -225.98004}
   m_SizeDelta: {x: 150, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1584196642
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114941217846627384, guid: 4bcd8c1a06d58fa44909aafddaef2a4d,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1584196640}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a9af572f0c2bdf49a74a0608c16baf6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1584196643
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7375,6 +7349,8 @@ MonoBehaviour:
   ActiveSlotDescription: {fileID: 619475774}
   ActivePageDescription: {fileID: 1796576989}
   DraggingInventorySlot: {fileID: 1626306413}
+  NextPageButton: {fileID: 1584196643}
+  PreviousPageButton: {fileID: 1567462592}
 --- !u!114 &2068689014
 MonoBehaviour:
   m_ObjectHideFlags: 0

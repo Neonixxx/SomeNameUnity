@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using SomeName.Core.Domain;
 using SomeName.Core.Items.Interfaces;
-using SomeName.Core.Services;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,6 +14,8 @@ namespace Inventory
         public Text ActiveSlotDescription;
         public Text ActivePageDescription;
         public GameObject DraggingInventorySlot;
+        public Button NextPageButton;
+        public Button PreviousPageButton;
 
         public IInventoryBag InventoryService { get; set; }
         private ResourceManager _resourceManager;
@@ -39,6 +40,8 @@ namespace Inventory
             _resourceManager = FindObjectOfType<ResourceManager>();
             _inventorySlots = InventorySlotsObject.Select(s => s.GetComponent<InventorySlot>()).ToList();
             _itemsPerPage = _inventorySlots.Count;
+            NextPageButton.onClick.AddListener(NextPage);
+            PreviousPageButton.onClick.AddListener(PreviousPage);
 
             EventsSubscribe();
         }

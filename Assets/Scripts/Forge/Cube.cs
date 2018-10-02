@@ -40,6 +40,7 @@ namespace Forge
         private void EventsSubscribe()
         {
             Inventory.DoubleClick += (obj, e) => PutInCube((InventorySlot)obj, e);
+            Inventory.ActiveSlotChanged += (obj, e) => _activeSlot = null;
             //Inventory.DragEnded += (obj, e) => OnDragEnded((InventorySlot)obj, e);
             foreach (var item in _cubeItemSlots)
             {
@@ -127,6 +128,9 @@ namespace Forge
         }
 
         public void SetActiveSlot(InventorySlot inventorySlot)
-            => _activeSlot = inventorySlot;
+        {
+            _activeSlot = inventorySlot;
+            Inventory.SetActiveSlot(null);
+        }
     }
 }
