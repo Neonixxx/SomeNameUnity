@@ -10,9 +10,9 @@ namespace SomeName.Core.Domain
 {
     public class Inventory
     {
-        public EquippedItems EquippedItems { get; set; }
+        public EquippedItems EquippedItems { get; set; } = new EquippedItems();
 
-        public List<IItem> Bag { get; set; }
+        public List<IItem> Bag { get; set; } = new List<IItem>();
 
         public List<IItem> Cube { get; set; } = new List<IItem>();
 

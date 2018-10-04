@@ -28,7 +28,7 @@ namespace SomeName.Core.Domain
             if (Dice.TryGetChance(critChance))
                 damage = Convert.ToInt64(damage * Attacker.GetCritDamage());
 
-            var damageDealt = TakeDamage(attackTarget, damage);
+            var damageDealt = DealDamage(attackTarget, damage);
             Attacker.OnHit();
             
             return damageDealt;
@@ -40,16 +40,16 @@ namespace SomeName.Core.Domain
             return Dice.TryGetChance(hitChance);
         }
 
-        private long TakeDamage(IAttackTarget attackTarget, long damage)
+        private long DealDamage(IAttackTarget attackTarget, long damage)
         {
-            var dealtDamage = GetTakenDamage(attackTarget, damage);
+            var dealtDamage = GetDealtDamage(attackTarget, damage);
             attackTarget.Health -= dealtDamage;
             if (attackTarget.Health == 0)
                 attackTarget.IsDead = true;
             return dealtDamage;
         }
 
-        private long GetTakenDamage(IAttackTarget attackTarget, long damage)
+        private long GetDealtDamage(IAttackTarget attackTarget, long damage)
         {
             var dealtDamage = Convert.ToInt64(damage * (1 - attackTarget.GetDefenceKoef()));
             return attackTarget.Health - dealtDamage >= 0
