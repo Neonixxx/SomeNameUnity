@@ -19,24 +19,24 @@ namespace SomeName.Core.Domain
         public PlayerStatsCalculator PlayerStatsCalculator { get; set; }
 
         [JsonIgnore]
-        public AttackManager AttackManager { get; set; }
-
-        [JsonIgnore]
         public InventoryService InventoryService { get; set; }
 
         [JsonIgnore]
         public CubeService CubeService { get; set; }
 
+        [JsonIgnore]
+        public SkillService SkillService { get; set; }
+
         public Player()
         {
             PlayerStatsCalculator = PlayerStatsCalculator.Standard;
-            AttackManager = new AttackManager(this);
         }
 
         public void Initialize()
         {
             InventoryService = new InventoryService(Inventory);
             CubeService = new CubeService(this);
+            SkillService = new SkillService(this, Skills);
         }
 
         public int Level { get; set; }
@@ -49,7 +49,9 @@ namespace SomeName.Core.Domain
 
         public bool IsDead { get; set; }
 
-        public Inventory Inventory { get; set; }
+        public Inventory Inventory { get; set; } = new Inventory();
+
+        public Skills.Skills Skills { get; set; } = new Skills.Skills();
 
         public long GetDamage()
             => PlayerStatsCalculator.CalculateDamage(this);
@@ -110,8 +112,8 @@ namespace SomeName.Core.Domain
         //    }
         //}
 
-        public long Attack(IAttackTarget attackTarget)
-            => AttackManager.Attack(attackTarget);
+        public void Attack()
+            => SkillService.Skills.DefaultSkill.StartCasting();
 
         public void TakeDrop(Drop drop)
         {

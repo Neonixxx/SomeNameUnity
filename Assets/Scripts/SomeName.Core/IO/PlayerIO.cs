@@ -1,16 +1,7 @@
-﻿using SomeName.Core.Items.Impl;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SomeName.Core.Items.Interfaces;
+﻿using Newtonsoft.Json;
 using SomeName.Core.Balance;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Runtime.Serialization;
-using Newtonsoft.Json;
 using SomeName.Core.Domain;
+using SomeName.Core.Items.Impl;
 using UnityEngine;
 
 namespace SomeName.Core.IO
@@ -29,9 +20,7 @@ namespace SomeName.Core.IO
                 Inventory = new Domain.Inventory
                 {
                     Gold = 0,
-                    Bag = new List<IItem>(),
                     EquippedItems = new EquippedItems { Weapon = new BeginnerSword() },
-                    Cube = new List<IItem>()
                 }
             };
             player.Initialize();
