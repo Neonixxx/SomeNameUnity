@@ -5,6 +5,7 @@ using SomeName.Core.Domain;
 using SomeName.Core.Monsters.Impl;
 using SomeName.Core.Monsters.Interfaces;
 using SomeName.Core.Services;
+using SomeName.Core.Skills;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -18,8 +19,10 @@ public class FarmContoller : MonoBehaviour {
     public Text LevelText;
     public Text GoldText;
 
-    public Button DefaultSkillButton;
+    public InventorySlot DefaultSkillSlot;
     public InventorySlot[] ActiveSkillSlots;
+
+    private SimpleHealthBar _defaultSkillCooldownBar;
     private SimpleHealthBar[] _activeSkillCooldownBars;
 
     private Player _player;
@@ -37,7 +40,7 @@ public class FarmContoller : MonoBehaviour {
         _skillService = _player.SkillService;
         _resourceManager = FindObjectOfType<ResourceManager>();
 
-        DefaultSkillButton.onClick.AddListener(DefaultSkillActivate);
+        _defaultSkillCooldownBar = DefaultSkillSlot.GetComponentInChildren<SimpleHealthBar>();
         _activeSkillCooldownBars = ActiveSkillSlots.Select(s => s.GetComponentInChildren<SimpleHealthBar>()).ToArray();
 
         EventsSubscribe();
@@ -49,6 +52,7 @@ public class FarmContoller : MonoBehaviour {
 
     private void EventsSubscribe()
     {
+        DefaultSkillSlot.FirstClick += (obj, e) => DefaultSkillActivate();
         for (int i = 0; i < ActiveSkillSlots.Length; i++)
         {
             var index = i;
@@ -86,29 +90,33 @@ public class FarmContoller : MonoBehaviour {
     {
         _skillService.Update(_monster, Time.deltaTime);
 
+        UpdateSkillSlot(_skillService.Skills.DefaultSkill, DefaultSkillSlot, _defaultSkillCooldownBar);
+
         var min = Mathf.Min(ActiveSkillSlots.Length, _skillService.Skills.ActiveSkills.Count);
         for (int i = 0; i < min; i++)
         {
             var skill = _skillService.Skills.ActiveSkills[i];
-            var bar = _activeSkillCooldownBars[i];
-            var sprite = _resourceManager.GetSprite(_skillService.Skills.ActiveSkills[i].ImageId);
-            ActiveSkillSlots[i].SetMainSprite(sprite);
-            if (skill.IsCasting)
-            {
-                bar.displayText = SimpleHealthBar.DisplayText.Percentage;
-                bar.UpdateColor(Color.green);
-                bar.UpdateBar((float)skill.CurrentCastingTime, (float)skill.CastingTime);
-            }
-            else
-            {
-                bar.displayText = SimpleHealthBar.DisplayText.CurrentValue;
-                bar.UpdateColor(Color.white);
-                bar.UpdateBar((float)skill.CurrentCooldown, (float)skill.Cooldown);
-            }
+            var skillSlot = ActiveSkillSlots[i];
+            var cooldownBar = _activeSkillCooldownBars[i];
+            UpdateSkillSlot(skill, skillSlot, cooldownBar);
         }
-        for (int i = min; i < ActiveSkillSlots.Length; i++)
+    }
+
+    private void UpdateSkillSlot(ISkill skill, InventorySlot skillSlot, SimpleHealthBar cooldownBar)
+    {
+        var sprite = _resourceManager.GetSprite(skill.ImageId);
+        skillSlot.SetMainSprite(sprite);
+        if (skill.IsCasting)
         {
-            //_activeSkillCooldownBars[i].gameObject.SetActive(false);
+            cooldownBar.displayText = SimpleHealthBar.DisplayText.Percentage;
+            cooldownBar.UpdateColor(Color.green);
+            cooldownBar.UpdateBar((float)skill.CurrentCastingTime, (float)skill.CastingTime);
+        }
+        else
+        {
+            cooldownBar.displayText = SimpleHealthBar.DisplayText.CurrentValue;
+            cooldownBar.UpdateColor(Color.white);
+            cooldownBar.UpdateBar((float)skill.CurrentCooldown, (float)skill.Cooldown);
         }
     }
 

@@ -1,11 +1,7 @@
-﻿using SomeName.Core.Balance.ItemStats;
+﻿using System.Linq;
+using SomeName.Core.Balance.ItemStats;
 using SomeName.Core.Difficulties;
 using SomeName.Core.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static System.Convert;
 
 namespace SomeName.Core.Balance
@@ -25,7 +21,7 @@ namespace SomeName.Core.Balance
 
 
         public static double GetTapsPerSecond(int level)
-            => 2 + 0.03 * level;
+            => 1.5 + 0.01 * level;
 
 
         public long GetDefaultDPS(int level)
