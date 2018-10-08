@@ -1,4 +1,6 @@
-﻿namespace SomeName.Core.Domain
+﻿using System;
+
+namespace SomeName.Core.Domain
 {
     public interface IAttacker
     {
@@ -6,10 +8,14 @@
 
         int GetAccuracy();
 
+        int GetEvasion();
+
         double GetCritChance();
 
         double GetCritDamage();
 
         void OnHit();
+
+        event EventHandler OnEvade;
     }
 }

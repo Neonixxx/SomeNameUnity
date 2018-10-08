@@ -39,6 +39,7 @@ namespace SomeName.Core.Monsters.Interfaces
 
         public string Description { get; private set; } = "Not implemented";
 
+        public event EventHandler OnEvade;
 
         // TODO : Сделать разную скорость атаки монстров.
         public virtual void Respawn(int level)
@@ -92,5 +93,7 @@ namespace SomeName.Core.Monsters.Interfaces
 
         public void OnHit() { }
 
+        public void OnEvadeActivate(object obj, EventArgs e)
+            => OnEvade?.Invoke(obj, e);
     }
 }

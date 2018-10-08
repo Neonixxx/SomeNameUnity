@@ -71,7 +71,7 @@ namespace SomeName.Core.Balance.ItemStats
             => ToInt32(GetBaseAccuracyEvasion(level) * EvasionKoef);
 
         private int GetBaseAccuracyEvasion(int level)
-            => ToInt32(Pow(level, 1.4));
+            => ToInt32(Pow(level, 1.3));
 
 
         public BaseKoefValue<double> GetCritChance(int level, double damageValueKoef)

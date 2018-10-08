@@ -24,5 +24,7 @@ namespace SomeName.Core.Skills
         void Initialize(SkillService skillService, IAttacker attacker);
 
         void StartBattle();
+
+        void EndBattle();
     }
 }

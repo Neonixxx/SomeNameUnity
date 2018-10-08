@@ -22,7 +22,10 @@ namespace SomeName.Core.Domain
             var damage = Attacker.GetDamage();
 
             if (!IsHitSuccesful(Attacker.GetAccuracy(), attackTarget.GetEvasion()))
+            {
+                attackTarget.OnEvadeActivate(Attacker, null);
                 return 0;
+            }
 
             var critChance = Attacker.GetCritChance();
             if (Dice.TryGetChance(critChance))

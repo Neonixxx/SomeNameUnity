@@ -1,4 +1,6 @@
-﻿namespace SomeName.Core.Domain
+﻿using System;
+
+namespace SomeName.Core.Domain
 {
     public interface IAttackTarget : ICanDie
     {
@@ -7,5 +9,7 @@
         double GetDefenceKoef();
 
         int GetEvasion();
+
+        void OnEvadeActivate(object obj, EventArgs e);
     }
 }

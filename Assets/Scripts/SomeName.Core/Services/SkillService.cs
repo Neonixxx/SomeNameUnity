@@ -10,6 +10,7 @@ namespace SomeName.Core.Services
             Skills = skills;
             Skills.DefaultSkill?.Initialize(this, Attacker);
             Skills.ActiveSkills.ForEach(s => s.Initialize(this, Attacker));
+            Skills.TrigerringSkills.ForEach(s => s.Initialize(this, Attacker));
         }
 
         public IAttacker Attacker { get; set; }
@@ -23,6 +24,8 @@ namespace SomeName.Core.Services
             Skills.DefaultSkill.Update(attackTarget, timeDelta);
             foreach (var skill in Skills.ActiveSkills)
                 skill.Update(attackTarget, timeDelta);
+            foreach (var skill in Skills.TrigerringSkills)
+                skill.Update(attackTarget, timeDelta);
         }
         
         public void StartBattle()
@@ -31,6 +34,18 @@ namespace SomeName.Core.Services
             Skills.DefaultSkill.StartBattle();
             foreach (var skill in Skills.ActiveSkills)
                 skill.StartBattle();
+            foreach (var skill in Skills.TrigerringSkills)
+                skill.StartBattle();
+        }
+
+        public void EndBattle()
+        {
+            IsCasting = false;
+            Skills.DefaultSkill.EndBattle();
+            foreach (var skill in Skills.ActiveSkills)
+                skill.EndBattle();
+            foreach (var skill in Skills.TrigerringSkills)
+                skill.EndBattle();
         }
     }
 }

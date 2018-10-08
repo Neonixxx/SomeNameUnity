@@ -61,12 +61,16 @@ namespace SomeName.Core.Skills
             }
         }
 
+        // TODO : Вынести в отдельное место.
         protected void DealStrike(IAttackTarget attackTarget)
         {
             var damage = Convert.ToInt64(Attacker.GetDamage() * DamageKoef) + BonusDamage;
 
             if (!IsHitSuccesful(Convert.ToInt32(Attacker.GetAccuracy() * AccuracyKoef), attackTarget.GetEvasion()))
+            {
+                attackTarget.OnEvadeActivate(Attacker, null);
                 return;
+            }
 
             var critChance = Attacker.GetCritChance();
             if (Dice.TryGetChance(critChance))

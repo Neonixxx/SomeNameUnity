@@ -168,12 +168,16 @@ namespace Inventory
         {
             if (_currentPage > 1)
                 _currentPage--;
+            else if (_currentPage == 1)
+                _currentPage = _maxPage;
         }
 
         public void NextPage()
         {
             if (_currentPage < _maxPage)
                 _currentPage++;
+            else if (_currentPage == _maxPage)
+                _currentPage = 1;
         }
     }
 }

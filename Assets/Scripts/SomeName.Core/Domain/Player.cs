@@ -32,6 +32,11 @@ namespace SomeName.Core.Domain
             PlayerStatsCalculator = PlayerStatsCalculator.Standard;
         }
 
+        public event EventHandler OnEvade;
+
+        public void OnEvadeActivate(object obj, EventArgs e)
+            => OnEvade?.Invoke(obj, e);
+
         public void Initialize()
         {
             InventoryService = new InventoryService(Inventory);

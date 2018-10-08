@@ -50,6 +50,11 @@ public class FarmContoller : MonoBehaviour {
         NewMonster();
     }
 
+    private void OnDestroy()
+    {
+        _skillService.EndBattle();
+    }
+
     private void EventsSubscribe()
     {
         DefaultSkillSlot.FirstClick += (obj, e) => DefaultSkillActivate();

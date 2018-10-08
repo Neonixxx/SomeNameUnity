@@ -44,5 +44,10 @@ namespace SomeName.Core.Skills
             CurrentCastingTime = 0;
             CurrentCooldown = 0;
         }
+
+        public virtual void EndBattle()
+        {
+
+        }
     }
 }
