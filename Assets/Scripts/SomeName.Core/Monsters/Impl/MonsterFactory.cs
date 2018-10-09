@@ -1,9 +1,5 @@
-﻿using SomeName.Core.Monsters.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SomeName.Core.Domain;
+using SomeName.Core.Monsters.Interfaces;
 
 namespace SomeName.Core.Monsters.Impl
 {
@@ -14,9 +10,9 @@ namespace SomeName.Core.Monsters.Impl
         /// </summary>
         /// <param name="level">Уровень монстра.</param>
         /// <returns></returns>
-        public static Monster GetRandomMonster(int level)
+        public static Monster GetRandomMonster(Level level)
         {
-            return new SimpleMonster(level);
+            return new SimpleMonster(level.Normal);
         }
     }
 }

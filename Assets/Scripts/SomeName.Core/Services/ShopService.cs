@@ -37,13 +37,13 @@ namespace SomeName.Core.Services
             Player = player;
         }
 
-        public void RefreshSellingItems(int level)
+        public void RefreshSellingItems(Level level)
         {
             _sellingItems.Clear();
             foreach (var itemFactory in SellingItemFactories)
                 for (int i = 0; i < SellingItemsRounds; i++)
                     if (Dice.TryGetChance(itemFactory.Item2))
-                        _sellingItems.Add(itemFactory.Item1.Build(level));
+                        _sellingItems.Add(itemFactory.Item1.Build(level.Normal));
         }
 
         public void Buy(IItem item)

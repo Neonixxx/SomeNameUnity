@@ -9,6 +9,7 @@ using SomeName.Core.Domain;
 using SomeName.Core.Items.Impl;
 using Newtonsoft.Json;
 using SomeName.Core.Services;
+using SomeName.Core.Managers;
 
 namespace SomeName.Core.Domain
 {
@@ -27,6 +28,9 @@ namespace SomeName.Core.Domain
         [JsonIgnore]
         public SkillService SkillService { get; set; }
 
+        [JsonIgnore]
+        public ExperienceManager ExperienceManager { get; set; }
+
         public Player()
         {
             PlayerStatsCalculator = PlayerStatsCalculator.Standard;
@@ -39,12 +43,13 @@ namespace SomeName.Core.Domain
 
         public void Initialize()
         {
+            ExperienceManager = new ExperienceManager(this);
             InventoryService = new InventoryService(Inventory);
             CubeService = new CubeService(this);
             SkillService = new SkillService(this, Skills);
         }
 
-        public int Level { get; set; }
+        public Level Level { get; set; } = new Level();
 
         public long ExpForNextLevel { get; set; }
 
@@ -127,16 +132,7 @@ namespace SomeName.Core.Domain
         }
 
         public void TakeExp(long exp)
-        {
-            var totalExp = Exp + exp;
-            while (totalExp >= ExpForNextLevel)
-            {
-                totalExp -= ExpForNextLevel;
-                Level++;
-                ExpForNextLevel = DropBalance.Standard.GetExp(Level);
-            }
-            Exp = totalExp;
-        }
+            => ExperienceManager.TakeExp(exp);
 
         public void TakeItem(IItem item)
             => InventoryService.AddItem(item);

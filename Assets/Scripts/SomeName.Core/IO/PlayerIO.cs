@@ -14,7 +14,7 @@ namespace SomeName.Core.IO
         {
             var player = new Player()
             {
-                Level = 1,
+                Level = new Level { Normal = 1 },
                 Exp = 0,
                 ExpForNextLevel = DropBalance.Standard.GetExp(1),
                 Inventory = new Domain.Inventory

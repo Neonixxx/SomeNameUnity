@@ -1,10 +1,5 @@
 ﻿using SomeName.Core.Difficulties;
 using SomeName.Core.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static System.Convert;
 using static System.Math;
 
@@ -29,8 +24,16 @@ namespace SomeName.Core.Balance
             => BattleDifficulty.GetCurrent().DropMultiplier;
 
 
-        public long GetExp(int level)
-            => GetBaseDropValuePerLevel(level).Exp;
+        public long GetExp(Level level)
+            => GetExp(level.Normal, level.Paragon);
+
+        public long GetExp(int level, int paragonLevel = -1)
+        {
+            var paragonKoef = paragonLevel == -1
+                ? 1.0
+                : 0.3 + 0.01 * paragonLevel;
+            return ToInt64(GetBaseDropValuePerLevel(level).Exp * paragonKoef);
+        }
 
         public long GetBaseItemValue(int level)
             => ToInt64(GetBaseDropValuePerLevel(level).Items / Pow(level, 0.25));

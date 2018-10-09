@@ -51,14 +51,14 @@ namespace SomeName.Core.Domain
 
 
         public double CalculateDefenceKoef(Player player)
-            => CalculateDefenceKoef(player.Level, CalculateDefence(player));
+            => CalculateDefenceKoef(player.Level.Normal, CalculateDefence(player));
 
         public double CalculateDefenceKoef(int level, long defence)
             => ToDouble(defence) / (defence + GetBaseDefenceValue(level));
 
 
         public long CalculateDefence(Player player)
-            => CalculateDefence(player.Level, player.Inventory.EquippedItems);
+            => CalculateDefence(player.Level.Normal, player.Inventory.EquippedItems);
 
         public long CalculateDefence(int level, EquippedItems equippedItems)
             => CalculateDefence(level, equippedItems.GetDefence());
@@ -68,7 +68,7 @@ namespace SomeName.Core.Domain
 
 
         public int CalculatePower(Player player)
-            => CalculatePower(player.Level, player.Inventory.EquippedItems);
+            => CalculatePower(player.Level.Normal, player.Inventory.EquippedItems);
 
         public int CalculatePower(int level, EquippedItems equippedItems)
             => CalculatePower(level, equippedItems.GetPower());
@@ -78,14 +78,14 @@ namespace SomeName.Core.Domain
 
 
         public long CalculateMaxHealth(Player player)
-            => CalculateMaxHealth(player.Level, CalculateVitality(player));
+            => CalculateMaxHealth(player.Level.Normal, CalculateVitality(player));
 
         public long CalculateMaxHealth(int level, int playerVitality)
             => ToInt64(GetMaxHealthPerVitality(level)) * playerVitality;
 
 
         public int CalculateVitality(Player player)
-            => CalculateVitality(player.Level, player.Inventory.EquippedItems);
+            => CalculateVitality(player.Level.Normal, player.Inventory.EquippedItems);
 
         public int CalculateVitality(int level, EquippedItems equippedItems)
             => CalculateVitality(level, equippedItems.GetVitality());
@@ -104,7 +104,7 @@ namespace SomeName.Core.Domain
 
 
         public int CalculateAccuracy(Player player)
-            => CalculateAccuracy(player.Level, player.Inventory.EquippedItems);
+            => CalculateAccuracy(player.Level.Normal, player.Inventory.EquippedItems);
 
         public int CalculateAccuracy(int level, EquippedItems equippedItems)
             => CalculateAccuracy(level, equippedItems.GetAccuracy());
@@ -114,7 +114,7 @@ namespace SomeName.Core.Domain
 
 
         public int CalculateEvasion(Player player)
-            => CalculateEvasion(player.Level, player.Inventory.EquippedItems);
+            => CalculateEvasion(player.Level.Normal, player.Inventory.EquippedItems);
 
         public int CalculateEvasion(int level, EquippedItems equippedItems)
             => CalculateEvasion(level, equippedItems.GetEvasion());

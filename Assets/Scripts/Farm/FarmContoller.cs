@@ -1,13 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using SomeName.Core.Domain;
 using SomeName.Core.Monsters.Impl;
 using SomeName.Core.Monsters.Interfaces;
 using SomeName.Core.Services;
 using SomeName.Core.Skills;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class FarmContoller : MonoBehaviour {
