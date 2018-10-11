@@ -1,9 +1,4 @@
 ﻿using SomeName.Core.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static System.Convert;
 
 namespace SomeName.Core.Balance
@@ -28,8 +23,8 @@ namespace SomeName.Core.Balance
                 * (1 - GetDefaultEvadeChance(level)));
 
         public long GetDefaultDPS(int level)
-            => ToInt64(PlayerStatsBalance.GetDefaultToughness(level) / GetDefaultBattleLength(level)
-                / GetDefaultHitChance(level)) + PlayerStatsBalance.GetDefaultTouchnessPerSecond(level);
+            => ToInt64(PlayerStatsBalance.GetDefaultToughness(level) * GetHealthPercentPerMonster(level) / GetDefaultBattleLength(level) / GetDefaultHitChance(level)) 
+                + PlayerStatsBalance.GetDefaultTouchnessPerSecond(level);
 
         public long GetDefaultBattleLength(int level)
             => ToInt64(ToDouble(DropBalance.GetSecondsForLevel(level)) / GetMonstersForLevel(level));
@@ -46,6 +41,12 @@ namespace SomeName.Core.Balance
         public int GetDefaultEvasion(int level)
             => PlayerStatsBalance.GetDefaultAccuracy(level);
 
+
+        /// <summary>
+        /// Процент здоровья, который снимает монстр игроку за битву.
+        /// </summary>
+        private double GetHealthPercentPerMonster(int level)
+            => 0.1 + level * 0.001;
 
         private static int GetMonstersForLevel(int level)
             => ToInt32(level / 2.0 + 1);

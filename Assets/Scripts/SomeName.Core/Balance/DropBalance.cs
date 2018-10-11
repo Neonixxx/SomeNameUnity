@@ -1,5 +1,4 @@
-﻿using SomeName.Core.Difficulties;
-using SomeName.Core.Domain;
+﻿using SomeName.Core.Domain;
 using static System.Convert;
 using static System.Math;
 
@@ -7,21 +6,11 @@ namespace SomeName.Core.Balance
 {
     public class DropBalance
     {
+        public PlayerStatsBalance PlayerStatsBalance { get; set; }
+
         public static readonly double DropExpValueKoef = 1.0;
-
         public static readonly double DropGoldValueKoef = 0.3;
-
         public static readonly double DropItemsValueKoef = 1 - DropGoldValueKoef;
-
-
-        public double GetExpKoef()
-            => BattleDifficulty.GetCurrent().ExpMultiplier;
-
-        public double GetGoldKoef()
-            => BattleDifficulty.GetCurrent().GoldMultiplier;
-
-        public double GetItemsKoef()
-            => BattleDifficulty.GetCurrent().DropMultiplier;
 
 
         public long GetExp(Level level)
@@ -51,7 +40,7 @@ namespace SomeName.Core.Balance
 
         public DropValue GetDropValuePerSecond(int level)
             => GetBaseDropValuePerSecond(level)
-                .ApplyKoefs(GetExpKoef(), GetGoldKoef(), GetItemsKoef());
+                .ApplyKoef(PlayerStatsBalance.GetDefaultDPSKoef(level));
 
         private DropValue GetBaseDropValuePerSecond(int level)
         {
@@ -65,6 +54,9 @@ namespace SomeName.Core.Balance
             };
         }
 
-        public static readonly DropBalance Standard = new DropBalance();
+        public static readonly DropBalance Standard = new DropBalance
+        {
+            PlayerStatsBalance = PlayerStatsBalance.Standard
+        };
     }
 }

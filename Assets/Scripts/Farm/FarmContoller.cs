@@ -73,7 +73,6 @@ public class FarmContoller : MonoBehaviour {
         {
             var drop = _monster.GetDrop();
             _player.TakeDrop(drop);
-            _player.Health = _player.GetMaxHealth();
             // FarmForm.UpdateDropInfo(new DropInfo(_monster, drop));
             NewMonster();
         }

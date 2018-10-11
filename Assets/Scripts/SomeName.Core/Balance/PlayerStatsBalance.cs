@@ -14,10 +14,10 @@ namespace SomeName.Core.Balance
 
 
         private double GetDefaultItemDamageKoef(int level)
-            => BattleDifficulty.GetCurrent().ItemDamageKoef * GetBaseItemDamageKoef(level);
+            => GetBaseItemDamageKoef(level);
 
         private double GetBaseItemDamageKoef(int level)
-            => 1 + level * 0.01;
+            => 1.5 + level * 0.015;
 
 
         public static double GetTapsPerSecond(int level)
@@ -53,6 +53,15 @@ namespace SomeName.Core.Balance
 
         public long GetDefaultHealthPerSecond(int level)
             => ToInt64(GetItemsHealthPerHit(level, GetDefaultItemDamageKoef(level)) * GetTapsPerSecond(level));
+
+        /// <summary>
+        /// Коэффициент увеличения DPS игрока в отношении к стандартному (при damageValueKoef = 1.0).
+        /// </summary>
+        public double GetDefaultDPSKoef(int level)
+            => GetDPSKoef(level, GetDefaultItemDamageKoef(level));
+
+        private double GetDPSKoef(int level, double damageValueKoef)
+            => GetDamage(level, damageValueKoef).ToDouble() / GetDamage(level, 1.0);
 
         private long GetDamage(int level, double damageValueKoef)
         {
