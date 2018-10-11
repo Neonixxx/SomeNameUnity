@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using SomeName.Core.Domain;
-using SomeName.Core.Monsters.Impl;
 using SomeName.Core.Monsters.Interfaces;
 using SomeName.Core.Services;
 using SomeName.Core.Skills;
@@ -10,6 +9,7 @@ using UnityEngine.UI;
 public class FarmContoller : MonoBehaviour {
 
     public SimpleHealthBar MonsterHealthBar;
+    public Text MonsterDescription;
     public SimpleHealthBar PlayerHealthBar;
     public SimpleHealthBar ExpBar;
 
@@ -26,6 +26,9 @@ public class FarmContoller : MonoBehaviour {
     private SkillService _skillService;
     private ResourceManager _resourceManager;
 
+    // Тест
+    private SomeName.Core.Locations.Location _baseLocation;
+
     private Monster _monster;
 
     // Use this for initialization
@@ -36,6 +39,15 @@ public class FarmContoller : MonoBehaviour {
         _player = gameState.Player;
         _skillService = _player.SkillService;
         _resourceManager = FindObjectOfType<ResourceManager>();
+
+        #region Тест
+        var minLevel = _player.Level.Normal <= 5
+            ? 0
+            : _player.Level.Normal - 5;
+        var maxLevel = _player.Level.Normal + 5;
+        _baseLocation = new SomeName.Core.Locations.Location(minLevel, maxLevel
+            , new SomeName.Core.Monsters.Factories.MonsterFactory[] { new SomeName.Core.Monsters.Factories.SimpleMonsterFactory() });
+        #endregion
 
         _defaultSkillCooldownBar = DefaultSkillSlot.GetComponentInChildren<SimpleHealthBar>();
         _activeSkillCooldownBars = ActiveSkillSlots.Select(s => s.GetComponentInChildren<SimpleHealthBar>()).ToArray();
@@ -80,6 +92,7 @@ public class FarmContoller : MonoBehaviour {
         _monster.Update(_player, Time.deltaTime);
 
         MonsterHealthBar.UpdateBar(_monster.Health, _monster.MaxHealth);
+        MonsterDescription.text = _monster.ToString();
         PlayerHealthBar.UpdateBar(_player.Health, _player.GetMaxHealth());
         ExpBar.UpdateBar(_player.Exp, _player.ExpForNextLevel);
 
@@ -132,5 +145,5 @@ public class FarmContoller : MonoBehaviour {
     }
 
     private void NewMonster()
-        => _monster = MonsterFactory.GetRandomMonster(_player.Level);
+        => _monster = _baseLocation.GetMonster();
 }

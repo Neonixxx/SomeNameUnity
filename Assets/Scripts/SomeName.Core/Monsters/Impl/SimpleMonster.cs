@@ -1,11 +1,5 @@
 ﻿using SomeName.Core.Balance;
 using SomeName.Core.Monsters.Interfaces;
-using SomeName.Core.Items.ItemFactories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SomeName.Core.Monsters.Impl
 {
@@ -15,6 +9,7 @@ namespace SomeName.Core.Monsters.Impl
         {
             DropFactory = DropService.Standard;
             MonsterStatsBalance = MonsterStatsBalance.Standard;
+            Description = "Simple monster";
             Respawn(level); 
         }
     }

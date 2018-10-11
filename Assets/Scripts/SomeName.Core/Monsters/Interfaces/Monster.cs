@@ -1,11 +1,7 @@
-﻿using SomeName.Core.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using SomeName.Core.Balance;
 using SomeName.Core.Domain;
+using SomeName.Core.Exceptions;
 
 namespace SomeName.Core.Monsters.Interfaces
 {
@@ -37,7 +33,7 @@ namespace SomeName.Core.Monsters.Interfaces
 
         public bool IsDropTaken { get; private set; }
 
-        public string Description { get; private set; } = "Not implemented";
+        public string Description { get; protected set; } = "Not implemented";
 
         public event EventHandler OnEvade;
 

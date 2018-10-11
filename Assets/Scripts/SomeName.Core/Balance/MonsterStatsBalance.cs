@@ -43,7 +43,7 @@ namespace SomeName.Core.Balance
 
 
         /// <summary>
-        /// Процент здоровья, который снимает монстр игроку за битву.
+        /// Получить процент здоровья, который снимает монстр игроку за битву.
         /// </summary>
         private double GetHealthPercentPerMonster(int level)
             => 0.1 + level * 0.001;

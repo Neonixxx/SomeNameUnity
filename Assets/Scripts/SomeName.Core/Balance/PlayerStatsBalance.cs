@@ -55,7 +55,7 @@ namespace SomeName.Core.Balance
             => ToInt64(GetItemsHealthPerHit(level, GetDefaultItemDamageKoef(level)) * GetTapsPerSecond(level));
 
         /// <summary>
-        /// Коэффициент увеличения DPS игрока в отношении к стандартному (при damageValueKoef = 1.0).
+        /// Получить коэффициент увеличения DPS игрока в отношении к стандартному (при damageValueKoef = 1.0).
         /// </summary>
         public double GetDefaultDPSKoef(int level)
             => GetDPSKoef(level, GetDefaultItemDamageKoef(level));
