@@ -1,34 +1,29 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using SomeName.Core.Services;
+﻿using System.Collections.Generic;
+using SomeName.Core.Locations;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class DifficultyDropDown : MonoBehaviour
 {
-    private DifficultyService _difficultyService = DifficultyService.Standard;
+    private SomeName.Core.Services.LocationService _locationService;
+    private List<Location> _locations;
     private Dropdown _dropdown;
 
     // Use this for initialization
     void Start ()
     {
+        _locationService = FindObjectOfType<GameState>().Player.LocationService;
         _dropdown = gameObject.GetComponent<Dropdown>();
-        var battleDifficulties = _difficultyService.BattleDifficulties;
+        _locations = _locationService.GetOpenedLocationStrings();
         var optionDatas = new List<Dropdown.OptionData>();
-        for (int i = 0; i < battleDifficulties.Length; i++)
-            optionDatas.Add(new Dropdown.OptionData(battleDifficulties[i]));
+        for (int i = 0; i < _locations.Count; i++)
+            optionDatas.Add(new Dropdown.OptionData(_locations[i].ToString()));
 
         _dropdown.options = optionDatas;
-        _dropdown.value = _difficultyService.GetCurrentDifficultyIndex();
+        _dropdown.value = _locations.IndexOf(_locationService.GetCurrentLocation());
         _dropdown.onValueChanged.AddListener(delegate { ValueChanged(); });
     }
 
     private void ValueChanged()
-        => _difficultyService.SetBattleDifficulty(_dropdown.value);
-
-    // Update is called once per frame
-    void Update ()
-    {
-		
-	}
+        => _locationService.MoveTo(_locations[_dropdown.value].Id);
 }

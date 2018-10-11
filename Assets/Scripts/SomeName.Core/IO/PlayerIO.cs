@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using SomeName.Core.Balance;
 using SomeName.Core.Domain;
 using SomeName.Core.Items.Impl;
@@ -21,6 +22,11 @@ namespace SomeName.Core.IO
                 {
                     Gold = 0,
                     EquippedItems = new EquippedItems { Weapon = new BeginnerSword() },
+                },
+                LocationInfo = new Locations.LocationInfo
+                {
+                    CurrentLocationId = 1,
+                    OpenedLocationIds = new List<int> { 1 }
                 }
             };
             player.Initialize();

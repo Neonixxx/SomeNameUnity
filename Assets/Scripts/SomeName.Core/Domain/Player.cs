@@ -10,6 +10,7 @@ using SomeName.Core.Items.Impl;
 using Newtonsoft.Json;
 using SomeName.Core.Services;
 using SomeName.Core.Managers;
+using SomeName.Core.Locations;
 
 namespace SomeName.Core.Domain
 {
@@ -31,6 +32,9 @@ namespace SomeName.Core.Domain
         [JsonIgnore]
         public ExperienceManager ExperienceManager { get; set; }
 
+        [JsonIgnore]
+        public LocationService LocationService { get; set; }
+
         public Player()
         {
             PlayerStatsCalculator = PlayerStatsCalculator.Standard;
@@ -43,6 +47,7 @@ namespace SomeName.Core.Domain
 
         public void Initialize()
         {
+            LocationService = new LocationService(LocationInfo);
             ExperienceManager = new ExperienceManager(this);
             InventoryService = new InventoryService(Inventory);
             CubeService = new CubeService(this);
@@ -62,6 +67,8 @@ namespace SomeName.Core.Domain
         public Inventory Inventory { get; set; } = new Inventory();
 
         public Skills.Skills Skills { get; set; } = new Skills.Skills();
+
+        public LocationInfo LocationInfo { get; set; } = new LocationInfo();
 
         public long GetDamage()
             => PlayerStatsCalculator.CalculateDamage(this);
