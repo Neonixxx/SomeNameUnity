@@ -35,6 +35,8 @@ namespace SomeName.Core.Monsters.Interfaces
 
         public string Description { get; protected set; } = "Not implemented";
 
+        public MonsterType MonsterType { get; set; }
+
         public event EventHandler OnEvade;
 
         // TODO : Сделать разную скорость атаки монстров.

@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
-
-namespace SomeName.Core.Locations
+﻿namespace SomeName.Core.Locations
 {
     public class LocationInfo
     {
-        public List<int> OpenedLocationIds { get; set; } = new List<int>();
+        public int Id { get; set; }
 
-        public int CurrentLocationId { get; set; }
+        public int NormalMonstersKilledCount { get; set; }
+
+        public int EliteMonstersKilledCount { get; set; }
+
+        public int BossKilledCount { get; set; }
     }
 }

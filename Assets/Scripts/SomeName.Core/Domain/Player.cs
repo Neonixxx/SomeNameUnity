@@ -1,16 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SomeName.Core.Items.Interfaces;
-using SomeName.Core.Balance;
-using SomeName.Core.Domain;
-using SomeName.Core.Items.Impl;
 using Newtonsoft.Json;
-using SomeName.Core.Services;
-using SomeName.Core.Managers;
+using SomeName.Core.Items.Interfaces;
 using SomeName.Core.Locations;
+using SomeName.Core.Managers;
+using SomeName.Core.Services;
 
 namespace SomeName.Core.Domain
 {
@@ -68,7 +62,7 @@ namespace SomeName.Core.Domain
 
         public Skills.Skills Skills { get; set; } = new Skills.Skills();
 
-        public LocationInfo LocationInfo { get; set; } = new LocationInfo();
+        public LocationsInfo LocationInfo { get; set; } = new LocationsInfo();
 
         public long GetDamage()
             => PlayerStatsCalculator.CalculateDamage(this);

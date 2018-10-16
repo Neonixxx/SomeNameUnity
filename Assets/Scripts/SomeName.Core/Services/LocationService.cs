@@ -7,13 +7,13 @@ namespace SomeName.Core.Services
 {
     public class LocationService
     {
-        public LocationService(LocationInfo locationInfo)
+        public LocationService(LocationsInfo locationsInfo)
         {
-            LocationInfo = locationInfo;
-            _currentLocation = Location.BaseLocations.First(s => s.Id == LocationInfo.CurrentLocationId);
+            LocationsInfo = locationsInfo;
+            _currentLocation = Location.BaseLocations.First(s => s.Id == LocationsInfo.CurrentLocationId);
         }
 
-        public LocationInfo LocationInfo { get; set; }
+        public LocationsInfo LocationsInfo { get; set; }
 
         private Location _currentLocation;
         private Monster _currentMonster;
@@ -27,21 +27,21 @@ namespace SomeName.Core.Services
         public Location GetCurrentLocation()
             => _currentLocation;
 
-        public List<Location> GetOpenedLocationStrings()
+        public List<Location> GetOpenedLocations()
         {
-            return LocationInfo.OpenedLocationIds.Join(Location.BaseLocations
-                , id => id
+            return LocationsInfo.OpenedLocationIds.Join(Location.BaseLocations
+                , li => li.Id
                 , bl => bl.Id
-                , (id, bl) => bl).OrderBy(s => s.Id).ToList();
+                , (li, bl) => bl).OrderBy(s => s.Id).ToList();
         }
 
         public bool MoveTo(int id)
         {
-            if (!LocationInfo.OpenedLocationIds.Contains(id))
+            if (!LocationsInfo.Contains(id))
                 return false;
 
-            LocationInfo.CurrentLocationId = id;
-            _currentLocation = Location.BaseLocations.First(s => s.Id == LocationInfo.CurrentLocationId);
+            LocationsInfo.CurrentLocationId = id;
+            _currentLocation = Location.BaseLocations.First(s => s.Id == LocationsInfo.CurrentLocationId);
             return true;
         }
 
@@ -51,9 +51,23 @@ namespace SomeName.Core.Services
         /// </summary>
         public void MonsterKilled()
         {
+            var locationInfo = LocationsInfo.GetById(_currentLocation.Id);
+            switch (_currentMonster.MonsterType)
+            {
+                case MonsterType.Normal:
+                    locationInfo.NormalMonstersKilledCount++;
+                    break;
+                case MonsterType.Elite:
+                    locationInfo.EliteMonstersKilledCount++;
+                    break;
+                case MonsterType.Boss:
+                    locationInfo.BossKilledCount++;
+                    break;
+            }
+
             var newLocationId = _currentLocation.Id + 1;
-            if (Location.BaseLocations.Any(s => s.Id == newLocationId) && !LocationInfo.OpenedLocationIds.Contains(newLocationId))
-                LocationInfo.OpenedLocationIds.Add(newLocationId);
+            if (Location.BaseLocations.Any(s => s.Id == newLocationId) && !LocationsInfo.Contains(newLocationId))
+                LocationsInfo.Add(newLocationId);
         }
     }
 }

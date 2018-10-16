@@ -14,7 +14,7 @@ public class DifficultyDropDown : MonoBehaviour
     {
         _locationService = FindObjectOfType<GameState>().Player.LocationService;
         _dropdown = gameObject.GetComponent<Dropdown>();
-        _locations = _locationService.GetOpenedLocationStrings();
+        _locations = _locationService.GetOpenedLocations();
         var optionDatas = new List<Dropdown.OptionData>();
         for (int i = 0; i < _locations.Count; i++)
             optionDatas.Add(new Dropdown.OptionData(_locations[i].ToString()));

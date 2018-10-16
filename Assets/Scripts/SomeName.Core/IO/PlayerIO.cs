@@ -23,7 +23,7 @@ namespace SomeName.Core.IO
                     Gold = 0,
                     EquippedItems = new EquippedItems { Weapon = new BeginnerSword() },
                 },
-                LocationInfo = new Locations.LocationInfo
+                LocationInfo = new Locations.LocationsInfo
                 {
                     CurrentLocationId = 1,
                     OpenedLocationIds = new List<int> { 1 }
