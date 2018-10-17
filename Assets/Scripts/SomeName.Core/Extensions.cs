@@ -1,9 +1,8 @@
-﻿using SomeName.Core.Domain;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 
 namespace SomeName.Core
 {
@@ -46,5 +45,10 @@ namespace SomeName.Core
             => number == 0
                 ? 1.0
                 : number;
+
+        public static string GetDescription<TEnum>(this TEnum value)
+        => value.GetType().GetField(value.ToString())
+            .GetCustomAttribute<DescriptionAttribute>()
+            ?.Description ?? "";
     }
 }

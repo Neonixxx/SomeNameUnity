@@ -24,13 +24,23 @@ namespace SomeName.Core.Locations
 
         public int MonstersMaxLevel { get; private set; }
 
+        public double EliteMonsterChance { get; set; } = 0.15;
+
         private MonsterFactory[] _monsterFactories;
 
+        public Monster GetBoss()
+            => _monsterFactories.TakeRandom(1).ElementAt(0).Build(new Level { Normal = MonstersMaxLevel }, MonsterType.Boss);
+
         public Monster GetMonster()
-            => _monsterFactories.TakeRandom(1).ElementAt(0).Build(GetRandomLevel());
+            => _monsterFactories.TakeRandom(1).ElementAt(0).Build(GetRandomLevel(), GetRandomMonsterType());
 
         private Level GetRandomLevel()
             => new Level { Normal = Dice.GetRange(MonstersMinLevel, MonstersMaxLevel) };
+
+        private MonsterType GetRandomMonsterType()
+            => Dice.TryGetChance(EliteMonsterChance)
+                ? MonsterType.Elite
+                : MonsterType.Normal;
 
         public override string ToString()
             => $"{Name} (min {MonstersMinLevel}lvl)";
@@ -54,6 +64,16 @@ namespace SomeName.Core.Locations
             new Location(10, "3", 40, 45, BaseMonsterFactories),
             new Location(11, "4", 45, 50, BaseMonsterFactories),
             new Location(12, "5", 50, 55, BaseMonsterFactories),
+            new Location(13, "6", 55, 60, BaseMonsterFactories),
+            new Location(14, "7", 60, 65, BaseMonsterFactories),
+            new Location(15, "8", 65, 70, BaseMonsterFactories),
+            new Location(16, "9", 70, 75, BaseMonsterFactories),
+            new Location(17, "10", 75, 80, BaseMonsterFactories),
+            new Location(18, "11", 80, 85, BaseMonsterFactories),
+            new Location(19, "12", 85, 90, BaseMonsterFactories),
+            new Location(20, "13", 90, 95, BaseMonsterFactories),
+            new Location(21, "14", 95, 100, BaseMonsterFactories),
+            new Location(22, "15", 100, 102, BaseMonsterFactories),
         };
 
         

@@ -9,11 +9,7 @@ namespace SomeName.Core.Monsters.Interfaces
     {
         public MonsterAttackController Attacker { get; set; }
 
-        public DropService DropFactory { get; set; }
-
-        public MonsterStatsBalance MonsterStatsBalance { get; set; }
-
-        public int Level { get; private set; }
+        public int Level { get; set; }
 
         public long Damage { get; set; }
 
@@ -23,37 +19,22 @@ namespace SomeName.Core.Monsters.Interfaces
 
         public int Evasion { get; set; }
 
-        public long MaxHealth { get; private set; }
+        public long MaxHealth { get; set; }
 
         public long Health { get; set; }
 
-        public Drop DroppedItems { get; private set; }
+        public Drop DroppedItems { get; set; }
 
         public bool IsDead { get; set; }
 
-        public bool IsDropTaken { get; private set; }
+        public bool IsDropTaken { get; set; }
 
-        public string Description { get; protected set; } = "Not implemented";
+        public string Description { get; set; } = "Not implemented";
 
         public MonsterType MonsterType { get; set; }
 
         public event EventHandler OnEvade;
 
-        // TODO : Сделать разную скорость атаки монстров.
-        public virtual void Respawn(int level)
-        {
-            Level = level;
-            Damage = MonsterStatsBalance.GetDefaultDPS(level);
-            AttackSpeed = 1.0;
-            Accuracy = MonsterStatsBalance.GetDefaultAccuracy(level);
-            Evasion = MonsterStatsBalance.GetDefaultEvasion(level);
-            MaxHealth = MonsterStatsBalance.GetDefaultHealth(level);
-            Health = MaxHealth;
-            DroppedItems = DropFactory.Build(level, MonsterStatsBalance.GetDefaultDropValue(level));
-            IsDead = false;
-            IsDropTaken = false;
-            Attacker = new MonsterAttackController(this);
-        }
 
         public void Update(IAttackTarget target, double timeDelta)
             => Attacker.Update(target, timeDelta);
@@ -67,7 +48,8 @@ namespace SomeName.Core.Monsters.Interfaces
         }
 
         public override string ToString()
-            => $"Level {Level} {Description}";
+            => $"{MonsterType.GetDescription()}" +
+            $"{Environment.NewLine}Level {Level} {Description}";
 
         public long GetDamage()
             => Damage;

@@ -9,6 +9,7 @@ namespace SomeName.Core.Monsters.Factories
         /// Получить монстра, производимого этой фабрикой.
         /// </summary>
         /// <param name="level">Уровень монстра.</param>
-        public abstract Monster Build(Level level);
+        /// <param name="monsterType">Тип монстра.</param>
+        public abstract Monster Build(Level level, MonsterType monsterType);
     }
 }

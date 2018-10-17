@@ -1,16 +1,14 @@
-﻿using SomeName.Core.Balance;
-using SomeName.Core.Monsters.Interfaces;
+﻿using SomeName.Core.Monsters.Interfaces;
 
 namespace SomeName.Core.Monsters.Impl
 {
     public class SimpleMonster : Monster
     {
-        public SimpleMonster(int level)
+        public SimpleMonster()
         {
-            DropFactory = DropService.Standard;
-            MonsterStatsBalance = MonsterStatsBalance.Standard;
+            IsDead = false;
+            IsDropTaken = false;
             Description = "Simple monster";
-            Respawn(level); 
         }
     }
 }

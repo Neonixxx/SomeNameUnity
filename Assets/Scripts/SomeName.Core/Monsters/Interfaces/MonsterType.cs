@@ -4,10 +4,10 @@ namespace SomeName.Core.Monsters.Interfaces
 {
     public enum MonsterType
     {
-        [Description("Обычный монстр")]
+        [Description("Обычный")]
         Normal = 0,
 
-        [Description("Элитный монстр")]
+        [Description("Элитный")]
         Elite = 1,
 
         [Description("Босс")]
