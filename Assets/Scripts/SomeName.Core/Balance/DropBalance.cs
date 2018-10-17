@@ -32,7 +32,7 @@ namespace SomeName.Core.Balance
                 .ApplyKoef(GetSecondsForLevel(level));
 
         public long GetSecondsForLevel(int level)
-            => ToInt64(Pow(level, 3) / 500 + 30);
+            => ToInt64(Pow(level, 2.5) / 50 + 30);
 
 
         public DropValue GetDropValue(int level, long seconds)

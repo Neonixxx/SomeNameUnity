@@ -1,4 +1,7 @@
-﻿using SomeName.Core.Domain;
+﻿using System;
+using System.Collections.Generic;
+using SomeName.Core.Domain;
+using SomeName.Core.Monsters.Interfaces;
 using static System.Convert;
 
 namespace SomeName.Core.Balance
@@ -11,7 +14,10 @@ namespace SomeName.Core.Balance
 
         public PlayerStatsCalculator PlayerStatsCalculator { get; set; }
 
+        public Func<int, double> HealthPercentPerMonster { get; set; }
 
+
+        // TODO : Сделать дроп для элитных монстров и боссов.
         public DropValue GetDefaultDropValue(int level)
             => DropBalance.GetDropValue(level, GetDefaultBattleLength(level));
 
@@ -19,15 +25,19 @@ namespace SomeName.Core.Balance
             => ToInt64(GetDefaultHealth(level) / (1 - GetDefaultEvadeChance(level)));
 
         public long GetDefaultHealth(int level)
-            => ToInt64(PlayerStatsBalance.GetDefaultDPS(level) * GetDefaultBattleLength(level)
-                * (1 - GetDefaultEvadeChance(level)));
+            => ToInt64(PlayerStatsBalance.GetDefaultDPS(level) * GetBaseBattleLength(level)
+                * (1 - GetDefaultEvadeChance(level)) * GetHealthKoef(level));
 
         public long GetDefaultDPS(int level)
-            => ToInt64(PlayerStatsBalance.GetDefaultToughness(level) * GetHealthPercentPerMonster(level) / GetDefaultBattleLength(level) / GetDefaultHitChance(level)) 
+        {
+            var playerBattleTouchness = ToDouble(PlayerStatsBalance.GetDefaultToughness(level)) / GetBaseBattleLength(level) 
                 + PlayerStatsBalance.GetDefaultTouchnessPerSecond(level);
+            var dpsKoef = GetBaseHealthPercentPerMonster(level) * GetDPSKoef(level) / GetDefaultHitChance(level);
+            return ToInt64(playerBattleTouchness * dpsKoef);
+        }
 
         public long GetDefaultBattleLength(int level)
-            => ToInt64(ToDouble(DropBalance.GetSecondsForLevel(level)) / GetMonstersForLevel(level));
+            => ToInt64(GetBaseBattleLength(level) * GetHealthKoef(level));
 
         public double GetDefaultHitChance(int level)
             => PlayerStatsCalculator.CalculateHitChance(GetDefaultAccuracy(level), GetDefaultEvasion(level));
@@ -42,21 +52,57 @@ namespace SomeName.Core.Balance
             => PlayerStatsBalance.GetDefaultAccuracy(level);
 
 
+        public static long GetBaseBattleLength(int level)
+            => ToInt64(GetBaseHealthPercentPerMonster(level) * 100 * GetSecondsPerPlayerHealthPercent(level));
+
         /// <summary>
         /// Получить процент здоровья, который снимает монстр игроку за битву.
         /// </summary>
-        private double GetHealthPercentPerMonster(int level)
+        private static double GetBaseHealthPercentPerMonster(int level)
             => 0.1 + level * 0.001;
+
+        private double GetDPSKoef(int level)
+            => Math.Pow(GetHealthPercentKoef(level), 0.25);
+
+        private double GetHealthKoef(int level)
+            => Math.Pow(GetHealthPercentKoef(level), 0.75);
+
+        private double GetHealthPercentKoef(int level)
+            => HealthPercentPerMonster(level) / GetBaseHealthPercentPerMonster(level);
 
         private static int GetMonstersForLevel(int level)
             => ToInt32(level / 2.0 + 1);
 
+        private static double GetSecondsPerPlayerHealthPercent(int level)
+            => Math.Pow(level, 2) / 4000 + 0.3;
 
-        public static readonly MonsterStatsBalance Standard = new MonsterStatsBalance
+
+        public static MonsterStatsBalance Get(MonsterType monsterType)
+            => MonsterStatsBalances[monsterType];
+
+        private static readonly Dictionary<MonsterType, MonsterStatsBalance> MonsterStatsBalances = new Dictionary<MonsterType, MonsterStatsBalance>
         {
-            PlayerStatsBalance = PlayerStatsBalance.Standard,
-            DropBalance = DropBalance.Standard,
-            PlayerStatsCalculator = PlayerStatsCalculator.Standard
+            [MonsterType.Normal] = new MonsterStatsBalance
+            {
+                PlayerStatsBalance = PlayerStatsBalance.Standard,
+                DropBalance = DropBalance.Standard,
+                PlayerStatsCalculator = PlayerStatsCalculator.Standard,
+                HealthPercentPerMonster = level => GetBaseHealthPercentPerMonster(level),
+            },
+            [MonsterType.Elite] = new MonsterStatsBalance
+            {
+                PlayerStatsBalance = PlayerStatsBalance.Standard,
+                DropBalance = DropBalance.Standard,
+                PlayerStatsCalculator = PlayerStatsCalculator.Standard,
+                HealthPercentPerMonster = level => 0.4 + level * 0.003,
+            },
+            [MonsterType.Boss] = new MonsterStatsBalance
+            {
+                PlayerStatsBalance = PlayerStatsBalance.Standard,
+                DropBalance = DropBalance.Standard,
+                PlayerStatsCalculator = PlayerStatsCalculator.Standard,
+                HealthPercentPerMonster = level => 1,
+            },
         };
     }
 }
