@@ -5,7 +5,7 @@ namespace SomeName.Core.Locations
 {
     public class LocationsInfo
     {
-        public List<LocationInfo> OpenedLocationIds { get; set; } = new List<LocationInfo> { new LocationInfo { Id = 1 } };
+        public List<LocationInfo> OpenedLocationIds { get; set; } = new List<LocationInfo>();
 
         public int CurrentLocationId { get; set; }
 

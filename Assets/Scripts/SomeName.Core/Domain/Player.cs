@@ -41,7 +41,7 @@ namespace SomeName.Core.Domain
 
         public void Initialize()
         {
-            LocationService = new LocationService(LocationInfo);
+            LocationService = new LocationService(LocationsInfo);
             ExperienceManager = new ExperienceManager(this);
             InventoryService = new InventoryService(Inventory);
             CubeService = new CubeService(this);
@@ -62,7 +62,7 @@ namespace SomeName.Core.Domain
 
         public Skills.Skills Skills { get; set; } = new Skills.Skills();
 
-        public LocationsInfo LocationInfo { get; set; } = new LocationsInfo();
+        public LocationsInfo LocationsInfo { get; set; } = new LocationsInfo();
 
         public long GetDamage()
             => PlayerStatsCalculator.CalculateDamage(this);

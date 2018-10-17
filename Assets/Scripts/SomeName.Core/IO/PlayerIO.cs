@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using SomeName.Core.Balance;
 using SomeName.Core.Domain;
 using SomeName.Core.Items.Impl;
+using SomeName.Core.Locations;
 using UnityEngine;
 
 namespace SomeName.Core.IO
@@ -23,11 +24,11 @@ namespace SomeName.Core.IO
                     Gold = 0,
                     EquippedItems = new EquippedItems { Weapon = new BeginnerSword() },
                 },
-                LocationInfo = new Locations.LocationsInfo
+                LocationsInfo = new LocationsInfo
                 {
+                    OpenedLocationIds = new List<Locations.LocationInfo> { new Locations.LocationInfo { Id = 1 } },
                     CurrentLocationId = 1,
-                    OpenedLocationIds = new List<int> { 1 }
-                }
+                },
             };
             player.Initialize();
             return player;
