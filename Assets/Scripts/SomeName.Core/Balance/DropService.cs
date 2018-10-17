@@ -43,15 +43,23 @@ namespace SomeName.Core.Balance
         {
             var itemDropValue = Convert.ToDouble(value) / ItemFactories.Sum(s => s.Item2);
             var items = new List<IItem>();
-            var itemAdditionalKoef = BattleDifficulty.GetCurrent().ItemAdditionalKoef;
             foreach (var itemFactory in ItemFactories)
             {
                 var currentItemDropValue = itemDropValue * itemFactory.Item2;
-                var dropChance = currentItemDropValue / itemFactory.Item1.GetItemGoldValue(level);
-                if (Dice.TryGetChance(dropChance))
-                    items.Add(itemFactory.Item1.Build(level, itemAdditionalKoef));
+                var dropKoef = currentItemDropValue / itemFactory.Item1.GetItemGoldValue(level);
+                var itemsCount = GetDroppedItemsCount(dropKoef);
+                for (int i = 0; i < itemsCount; i++)
+                    items.Add(itemFactory.Item1.Build(level));
             }
             return items;
+        }
+
+        private int GetDroppedItemsCount(double dropKoef)
+        {
+            var p = 1 / (dropKoef + 1);
+            var l = Dice.Roll;
+            var n = Math.Log(l, 1 - p);
+            return (int)Math.Truncate(n);
         }
 
         public static readonly DropService Standard = new DropService

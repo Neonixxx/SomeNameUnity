@@ -25,7 +25,7 @@ namespace SomeName.Core.Balance
         }
 
         public long GetBaseItemValue(int level)
-            => ToInt64(GetBaseDropValuePerLevel(level).Items / Pow(level, 0.25));
+            => ToInt64(GetBaseDropValuePerLevel(level).Items / Pow(level, 0.25) + GetBaseDropValuePerLevel(1).Items * 0.2);
 
         private DropValue GetBaseDropValuePerLevel(int level)
             => GetBaseDropValuePerSecond(level)
