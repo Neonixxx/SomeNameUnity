@@ -1,10 +1,6 @@
-﻿using SomeName.Core.Domain;
+﻿using System.Text;
+using SomeName.Core.Domain;
 using SomeName.Core.Items.Bonuses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SomeName.Core.Items.Interfaces
 {
@@ -13,8 +9,6 @@ namespace SomeName.Core.Items.Interfaces
         public ItemBonuses Bonuses { get; set; }
 
         public abstract MainStat<long> MainStat { get; set; }
-
-        public double TotalItemDamageValueKoef { get; set; }
 
         public override void UpdateGoldValueKoef()
         {

@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using SomeName.Core.Balance.ItemStats;
-using SomeName.Core.Difficulties;
 using SomeName.Core.Domain;
 using static System.Convert;
 
@@ -19,7 +18,7 @@ namespace SomeName.Core.Balance
             => GetBaseItemDamageKoef(level);
 
         private double GetBaseItemDamageKoef(int level)
-            => 1.5 + level * 0.025;
+            => 1.2 + level * 0.015;
 
 
         public static double GetTapsPerSecond(int level)

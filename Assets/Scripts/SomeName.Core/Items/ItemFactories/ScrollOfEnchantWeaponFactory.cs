@@ -8,11 +8,11 @@ namespace SomeName.Core.Items.ItemFactories
     public class ScrollOfEnchantWeaponFactory : WeaponFactory
     {
         public override long GetItemGoldValue(int level)
-            => Convert.ToInt64(GetBaseWeaponGoldValue(GetLevel(level)) * 0.30);
+            => Convert.ToInt64(GetBaseWeaponGoldValue(GetItemLevel(level)) * 0.30);
 
-        public override Item Build(int level, double additionalKoef = 1.0)
+        public override Item Build(int level)
         {
-            var newLevel = GetLevel(level);
+            var newLevel = GetItemLevel(level);
             var item = new ScrollOfEnchantWeapon()
             {
                 Level = newLevel,
@@ -23,7 +23,7 @@ namespace SomeName.Core.Items.ItemFactories
             return item;
         }
 
-        protected override int GetLevel(int level)
+        protected override int GetItemLevel(int level)
             => PlayerStatsBalance.MaxLevel;
     }
 }

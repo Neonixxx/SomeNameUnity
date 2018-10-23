@@ -8,18 +8,18 @@ namespace SomeName.Core.Items.ItemFactories
     public class SimpleSwordFactory : WeaponFactory
     {
         public override long GetItemGoldValue(int level)
-            => GetBaseWeaponGoldValue(GetLevel(level));
+            => GetBaseWeaponGoldValue(GetItemLevel(level));
 
-        public override Item Build(int level, double additionalKoef = 1.0)
+        public override Item Build(int level)
         {
-            var newLevel = GetLevel(level);
+            var newLevel = GetItemLevel(level);
 
-            var damageValueKoef = RollItemDamageKoef(additionalKoef);
+            var globalDamageValueKoef = RollGlobalItemDamageKoef(level);
             var item = new SimpleSword()
             {
                 Level = newLevel,
-                Damage = WeaponStatsBalance.GetDamage(newLevel, damageValueKoef),
-                Bonuses = ItemBonusesFactory.Build(WeaponStatsBalance, newLevel, additionalKoef)
+                Damage = WeaponStatsBalance.GetDamage(newLevel, RollItemStatDamageKoef(level, globalDamageValueKoef)),
+                Bonuses = ItemBonusesFactory.Build(WeaponStatsBalance, newLevel, globalDamageValueKoef)
             };
             item.GoldValue.Base = GetBaseWeaponGoldValue(newLevel);
             item.UpdateGoldValueKoef();

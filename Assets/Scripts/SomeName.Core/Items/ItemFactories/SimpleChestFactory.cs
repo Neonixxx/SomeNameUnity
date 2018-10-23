@@ -8,18 +8,18 @@ namespace SomeName.Core.Items.ItemFactories
     public class SimpleChestFactory : ChestFactory
     {
         public override long GetItemGoldValue(int level)
-            => GetBaseChestGoldValue(GetLevel(level));
+            => GetBaseChestGoldValue(GetItemLevel(level));
 
-        public override Item Build(int level, double additionalKoef = 1.0)
+        public override Item Build(int level)
         {
-            var newLevel = GetLevel(level);
+            var newLevel = GetItemLevel(level);
 
-            var damageValueKoef = RollItemDamageKoef(additionalKoef);
+            var globalDamageValueKoef = RollGlobalItemDamageKoef(level);
             var item = new SimpleChest()
             {
                 Level = newLevel,
-                Defence = ChestStatsBalance.GetDefence(newLevel, damageValueKoef),
-                Bonuses = ItemBonusesFactory.Build(ChestStatsBalance, newLevel, additionalKoef),
+                Defence = ChestStatsBalance.GetDefence(newLevel, RollItemStatDamageKoef(level, globalDamageValueKoef)),
+                Bonuses = ItemBonusesFactory.Build(ChestStatsBalance, newLevel, globalDamageValueKoef),
             };
             item.GoldValue.Base = GetBaseChestGoldValue(newLevel);
             item.UpdateGoldValueKoef();
