@@ -4,6 +4,7 @@ using SomeName.Core.Balance;
 using SomeName.Core.Domain;
 using SomeName.Core.Items.Impl;
 using SomeName.Core.Locations;
+using SomeName.Core.Skills;
 using UnityEngine;
 
 namespace SomeName.Core.IO
@@ -30,6 +31,8 @@ namespace SomeName.Core.IO
                     CurrentLocationId = 1,
                 },
             };
+            player.Skills.ActiveSkills.Add(new PowerStrike() { CastingTime = 0.9, DamageKoef = 7, AccuracyKoef = 1.6, Cooldown = 8 });
+            player.Skills.TrigerringSkills.Add(new CounterEvasion() { TriggerChance = 1.0, DamageKoef = 0.6 });
             player.Initialize();
             return player;
         }
