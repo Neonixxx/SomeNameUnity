@@ -8,15 +8,20 @@ namespace SomeName.Core.Services
 {
     public class ShopService : IInventoryBag
     {
+        public ShopService(Player player)
+        {
+            Player = player;
+        }
+
         public Player Player { get; set; }
 
-        public Tuple<ItemFactory, double>[] SellingItemFactories => new Tuple<ItemFactory, double>[]
+        public ShopItem[] ShopItems => new ShopItem[]
         {
-            Tuple.Create<ItemFactory, double>(new SimpleSwordFactory(), 0.4),
-            Tuple.Create<ItemFactory, double>(new SimpleChestFactory(), 0.4),
-            Tuple.Create<ItemFactory, double>(new SimpleGlovesFactory(), 0.4),
-            Tuple.Create<ItemFactory, double>(new ScrollOfEnchantWeaponFactory(), 0.2),
-            Tuple.Create<ItemFactory, double>(new ScrollOfEnchantArmorFactory(), 0.2)
+            new ShopItem(new SimpleSwordFactory(), 0.4),
+            new ShopItem(new SimpleChestFactory(), 0.4),
+            new ShopItem(new SimpleGlovesFactory(), 0.4),
+            new ShopItem(new ScrollOfEnchantWeaponFactory(), 0.2, 80),
+            new ShopItem(new ScrollOfEnchantArmorFactory(), 0.2, 80)
         };
 
         private const int SellingItemsRounds = 2;
@@ -32,18 +37,17 @@ namespace SomeName.Core.Services
         public List<IItem> GetSellingItems()
             => _sellingItems;
 
-        public ShopService(Player player)
-        {
-            Player = player;
-        }
-
         public void RefreshSellingItems(Level level)
         {
             _sellingItems.Clear();
-            foreach (var itemFactory in SellingItemFactories)
+            foreach (var shopItem in ShopItems)
+            {
+                if (level.Normal < shopItem.MinLevel)
+                    continue;
                 for (int i = 0; i < SellingItemsRounds; i++)
-                    if (Dice.TryGetChance(itemFactory.Item2))
-                        _sellingItems.Add(itemFactory.Item1.Build(level.Normal));
+                    if (Dice.TryGetChance(shopItem.SellChance))
+                        _sellingItems.Add(shopItem.ItemFactory.Build(level.Normal));
+            }
         }
 
         public void Buy(IItem item)

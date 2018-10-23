@@ -13,15 +13,13 @@ namespace SomeName.Core.Managers
         public Player Player { get; set; }
         public DropBalance DropBalance { get; set; } = DropBalance.Standard;
 
-        public const int MaxLevel = 100;
-
         public void TakeExp(long exp)
         {
             var totalExp = Player.Exp + exp;
             while (totalExp >= Player.ExpForNextLevel)
             {
                 totalExp -= Player.ExpForNextLevel;
-                if (Player.Level.Normal < MaxLevel)
+                if (Player.Level.Normal < PlayerStatsBalance.MaxLevel)
                     Player.Level.Normal++;
                 else
                     Player.Level.Paragon++;

@@ -1,23 +1,20 @@
-﻿using SomeName.Core.Difficulties;
-using SomeName.Core.Domain;
-using SomeName.Core.Items.ItemFactories;
-using SomeName.Core.Items.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SomeName.Core.Domain;
+using SomeName.Core.Items.Interfaces;
+using SomeName.Core.Items.ItemFactories;
 
 namespace SomeName.Core.Balance
 {
     public class DropService
     {
-        public Tuple<ItemFactory, int>[] ItemFactories { get; }
+        public DropItem[] DropItems { get; }
 
 
-        public DropService(params Tuple<ItemFactory, int>[] itemFactories)
+        public DropService(params DropItem[] dropItems)
         {
-            ItemFactories = itemFactories;
+            DropItems = dropItems;
         }
 
         public Drop Build(int level, DropValue dropValue)
@@ -41,15 +38,16 @@ namespace SomeName.Core.Balance
 
         protected virtual List<IItem> CalculateItemsDrop(int level, long value)
         {
-            var itemDropValue = Convert.ToDouble(value) / ItemFactories.Sum(s => s.Item2);
+            var possibleDropItems = DropItems.Where(s => level >= s.MinLevel).ToArray();
+            var itemDropValue = Convert.ToDouble(value) / possibleDropItems.Sum(s => s.DropKoef);
             var items = new List<IItem>();
-            foreach (var itemFactory in ItemFactories)
+            foreach (var dropItem in possibleDropItems)
             {
-                var currentItemDropValue = itemDropValue * itemFactory.Item2;
-                var dropKoef = currentItemDropValue / itemFactory.Item1.GetItemGoldValue(level);
+                var currentItemDropValue = itemDropValue * dropItem.DropKoef;
+                var dropKoef = currentItemDropValue / dropItem.ItemFactory.GetItemGoldValue(level);
                 var itemsCount = GetDroppedItemsCount(dropKoef);
                 for (int i = 0; i < itemsCount; i++)
-                    items.Add(itemFactory.Item1.Build(level));
+                    items.Add(dropItem.ItemFactory.Build(level));
             }
             return items;
         }
@@ -64,11 +62,11 @@ namespace SomeName.Core.Balance
 
         public static readonly DropService Standard = new DropService
         (
-            Tuple.Create<ItemFactory, int>(new SimpleSwordFactory(), 100),
-            Tuple.Create<ItemFactory, int>(new SimpleChestFactory(), 100),
-            Tuple.Create<ItemFactory, int>(new SimpleGlovesFactory(), 100),
-            Tuple.Create<ItemFactory, int>(new ScrollOfEnchantWeaponFactory(), 20),
-            Tuple.Create<ItemFactory, int>(new ScrollOfEnchantArmorFactory(), 20)
+            new DropItem(new SimpleSwordFactory(), 100),
+            new DropItem(new SimpleChestFactory(), 100),
+            new DropItem(new SimpleGlovesFactory(), 100),
+            new DropItem(new ScrollOfEnchantWeaponFactory(), 20, 80),
+            new DropItem(new ScrollOfEnchantArmorFactory(), 20, 80)
         );
     }
 }

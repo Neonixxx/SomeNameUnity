@@ -12,6 +12,8 @@ namespace SomeName.Core.Balance
 
         public ItemStatsBalance[] ItemStatsBalances { get; set; }
 
+        public const int MaxLevel = 100;
+
 
         private double GetDefaultItemDamageKoef(int level)
             => GetBaseItemDamageKoef(level);
