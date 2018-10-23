@@ -57,5 +57,8 @@ namespace SomeName.Core.Items.ItemFactories
 
         public static double GetAverageItemDamageKoef(double totalPow)
             => 1 - totalPow * K;
+
+        protected virtual int GetLevel(int level)
+            => Math.Min(level, PlayerStatsBalance.MaxLevel);
     }
 }

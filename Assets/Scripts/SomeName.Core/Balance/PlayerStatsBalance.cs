@@ -19,11 +19,11 @@ namespace SomeName.Core.Balance
             => GetBaseItemDamageKoef(level);
 
         private double GetBaseItemDamageKoef(int level)
-            => 1.5 + level * 0.015;
+            => 1.5 + level * 0.025;
 
 
         public static double GetTapsPerSecond(int level)
-            => 1.5 + 0.01 * level;
+            => 1.5 + 0.015 * level;
 
 
         public long GetDefaultDPS(int level)

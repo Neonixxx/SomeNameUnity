@@ -74,6 +74,11 @@ namespace SomeName.Core.Locations
             new Location(20, "13", 90, 95, BaseMonsterFactories),
             new Location(21, "14", 95, 100, BaseMonsterFactories),
             new Location(22, "15", 100, 102, BaseMonsterFactories),
+            new Location(23, "16", 102, 105, BaseMonsterFactories),
+            new Location(24, "17", 105, 107, BaseMonsterFactories),
+            new Location(25, "18", 107, 110, BaseMonsterFactories),
+            new Location(26, "19", 110, 120, BaseMonsterFactories),
+            new Location(27, "20", 120, 130, BaseMonsterFactories),
         };
 
         

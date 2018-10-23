@@ -23,7 +23,7 @@ namespace SomeName.Core.Items.ItemFactories
             return item;
         }
 
-        private int GetLevel(int level)
-            => Math.Max(level, PlayerStatsBalance.MaxLevel);
+        protected override int GetLevel(int level)
+            => PlayerStatsBalance.MaxLevel;
     }
 }
