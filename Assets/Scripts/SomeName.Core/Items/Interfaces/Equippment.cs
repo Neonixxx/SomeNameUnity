@@ -14,6 +14,8 @@ namespace SomeName.Core.Items.Interfaces
 
         public abstract MainStat<long> MainStat { get; set; }
 
+        public double TotalItemDamageValueKoef { get; set; }
+
         public override void UpdateGoldValueKoef()
         {
             var mainStatKoef = MainStat.Koef * MainStat.EnchantKoef;

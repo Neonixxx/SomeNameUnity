@@ -48,6 +48,14 @@ namespace SomeName.Core.Items.ItemFactories
         /// <param name="diceValue">Значение броска кубика (0..1]</param>
         /// <returns></returns>
         public static double GetItemDamageKoef(double diceValue)
-            => Math.Pow(diceValue, -0.35);
+            => Math.Pow(diceValue, -K);
+
+        public const double K = 0.35;
+
+        public static double GetAverageTotalItemDamageKoef(int koefsCount, double totalPow)
+            => Math.Pow(GetAverageItemDamageKoef(totalPow), -koefsCount);
+
+        public static double GetAverageItemDamageKoef(double totalPow)
+            => 1 - totalPow * K;
     }
 }

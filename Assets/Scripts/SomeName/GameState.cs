@@ -1,11 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using SomeName.Core;
+﻿using System.IO;
 using SomeName.Core.Domain;
 using SomeName.Core.IO;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GameState : MonoBehaviour
 {
@@ -34,8 +30,8 @@ public class GameState : MonoBehaviour
 
     // Use this for initialization
     void Start()
-    {
-        DontDestroyOnLoad(this);
-        SceneManager.sceneLoaded += (scene, loadMode) => PlayerIO.Save(Player);
-    }
+        => DontDestroyOnLoad(this);
+
+    public void Save()
+        => PlayerIO.Save(Player);
 }

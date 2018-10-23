@@ -24,6 +24,12 @@ namespace SomeName.Core.Services
             return _currentMonster;
         }
 
+        public Monster GetBoss()
+        {
+            _currentMonster = GetCurrentLocation().GetBoss();
+            return _currentMonster;
+        }
+
         public Location GetCurrentLocation()
             => _currentLocation;
 
@@ -65,8 +71,8 @@ namespace SomeName.Core.Services
                     break;
             }
 
-            var newLocationId = _currentLocation.Id + 1;
-            if (Location.BaseLocations.Any(s => s.Id == newLocationId) && !LocationsInfo.Contains(newLocationId))
+            var newLocationId = locationInfo.Id + 1;
+            if (locationInfo.BossKilledCount > 0 && Location.BaseLocations.Any(s => s.Id == newLocationId) && !LocationsInfo.Contains(newLocationId))
                 LocationsInfo.Add(newLocationId);
         }
     }

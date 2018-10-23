@@ -137,4 +137,7 @@ public class FarmContoller : MonoBehaviour {
 
     private void NewMonster()
         => _monster = _locationService.GetMonster();
+
+    public void FightBoss()
+        => _monster = _locationService.GetBoss();
 }
