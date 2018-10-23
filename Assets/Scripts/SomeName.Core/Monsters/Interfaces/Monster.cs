@@ -1,5 +1,4 @@
 ﻿using System;
-using SomeName.Core.Balance;
 using SomeName.Core.Domain;
 using SomeName.Core.Exceptions;
 
@@ -7,13 +6,13 @@ namespace SomeName.Core.Monsters.Interfaces
 {
     public abstract class Monster : IAttacker, IAttackTarget
     {
-        public MonsterAttackController Attacker { get; set; }
+        public MonsterSkillController MonsterSkillController { get; set; }
+
+        public Skills.Skills Skills { get; set; } = new Skills.Skills();
 
         public int Level { get; set; }
 
         public long Damage { get; set; }
-
-        public double AttackSpeed { get; set; }
 
         public int Accuracy { get; set; }
 
@@ -37,7 +36,7 @@ namespace SomeName.Core.Monsters.Interfaces
 
 
         public void Update(IAttackTarget target, double timeDelta)
-            => Attacker.Update(target, timeDelta);
+            => MonsterSkillController.Update(target, timeDelta);
 
         public Drop GetDrop()
         {

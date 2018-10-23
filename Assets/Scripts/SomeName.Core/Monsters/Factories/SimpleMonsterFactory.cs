@@ -2,6 +2,7 @@
 using SomeName.Core.Domain;
 using SomeName.Core.Monsters.Impl;
 using SomeName.Core.Monsters.Interfaces;
+using SomeName.Core.Skills;
 
 namespace SomeName.Core.Monsters.Factories
 {
@@ -15,14 +16,19 @@ namespace SomeName.Core.Monsters.Factories
 
             monster.Level = level.Normal;
             monster.Damage = monsterStatsBalance.GetDefaultDPS(level.Normal);
-            monster.AttackSpeed = 1.0;
             monster.Accuracy = monsterStatsBalance.GetDefaultAccuracy(level.Normal);
             monster.Evasion = monsterStatsBalance.GetDefaultEvasion(level.Normal);
             monster.MaxHealth = monsterStatsBalance.GetDefaultHealth(level.Normal);
             monster.Health = monster.MaxHealth;
             monster.DroppedItems = dropFactory.Build(level.Normal, monsterStatsBalance.GetDefaultDropValue(level.Normal));
-            monster.Attacker = new MonsterAttackController(monster);
             monster.MonsterType = monsterType;
+
+            monster.Skills.DefaultSkill = new PowerStrike() { CastingTime = 0.5, DamageKoef = 1, AccuracyKoef = 1.0, Cooldown = 0.5 };
+
+            if (monsterType == MonsterType.Boss && level.Normal > 50)
+                monster.Skills.ActiveSkills.Add(new PowerStrike() { CastingTime = 0.9, DamageKoef = 4, AccuracyKoef = 1.5, Cooldown = 8 });
+
+            monster.MonsterSkillController = new MonsterSkillController(monster, monster.Skills);
 
             return monster;
         }

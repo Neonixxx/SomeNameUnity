@@ -19,7 +19,7 @@ namespace SomeName.Core.Services
 
         public bool IsCasting { get; set; }
 
-        public void Update(IAttackTarget attackTarget, double timeDelta)
+        public virtual void Update(IAttackTarget attackTarget, double timeDelta)
         {
             Skills.DefaultSkill.Update(attackTarget, timeDelta);
             foreach (var skill in Skills.ActiveSkills)
