@@ -22,12 +22,17 @@ public class FarmContoller : MonoBehaviour {
     private SimpleHealthBar _defaultSkillCooldownBar;
     private SimpleHealthBar[] _activeSkillCooldownBars;
 
+    // TODO : Внедрить зависимости в Unity.
+    public InventorySlot MonsterCastingSkillSlot;
+    public SimpleHealthBar MonsterCastingSkillCooldownBar;
+
     private Player _player;
     private SkillService _skillService;
     private ResourceManager _resourceManager;
     private SomeName.Core.Services.LocationService _locationService;
 
     private Monster _monster;
+    private SkillService _monsterSkillService;
 
     // Use this for initialization
     void Start ()
@@ -80,7 +85,18 @@ public class FarmContoller : MonoBehaviour {
             NewMonster();
         }
 
-        _monster.Update(_player, Time.deltaTime);
+        // Обновление кастуемого скилла монстра.
+        _monsterSkillService.Update(_player, Time.deltaTime);
+        if (_monsterSkillService.IsCasting)
+        {
+            var castingSkill = _monsterSkillService.GetCastingSkill();
+            // TODO : Добавить сюда показ слота и бара.
+            UpdateSkillSlot(castingSkill, MonsterCastingSkillSlot, MonsterCastingSkillCooldownBar);
+        }
+        else
+        {
+            // TODO : Добавить сюда скрытие слота и бара.
+        }
 
         MonsterHealthBar.UpdateBar(_monster.Health, _monster.MaxHealth);
         MonsterDescription.text = _monster.ToString();
@@ -91,6 +107,9 @@ public class FarmContoller : MonoBehaviour {
         GoldText.text = _player.Inventory.Gold.ToString();
     }
 
+    /// <summary>
+    /// Обновить скиллы игрока.
+    /// </summary>
     private void SkillsUpdate()
     {
         _skillService.Update(_monster, Time.deltaTime);
@@ -136,7 +155,11 @@ public class FarmContoller : MonoBehaviour {
     }
 
     private void NewMonster()
-        => _monster = _locationService.GetMonster();
+    {
+        _monster = _locationService.GetMonster();
+        _monsterSkillService = _monster.MonsterSkillController;
+        _monsterSkillService.StartBattle();
+    }
 
     public void FightBoss()
         => _monster = _locationService.GetBoss();

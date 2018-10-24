@@ -1,4 +1,5 @@
-﻿using SomeName.Core.Domain;
+﻿using System;
+using SomeName.Core.Domain;
 
 namespace SomeName.Core.Services
 {
@@ -46,6 +47,21 @@ namespace SomeName.Core.Services
                 skill.EndBattle();
             foreach (var skill in Skills.TrigerringSkills)
                 skill.EndBattle();
+        }
+
+        /// <summary>
+        /// Получить скилл, который кастуется в данный момент.
+        /// </summary>
+        /// <returns>Скилл, который кастуется в данный момент.</returns>
+        public ISkill GetCastingSkill()
+        {
+            if (!IsCasting)
+                throw new InvalidOperationException("Ни один скилл не кастуется!");
+
+            if (Skills.DefaultSkill.IsCasting)
+                return Skills.DefaultSkill;
+
+            Skills.ActiveSkills.First(s => s.IsCasting);
         }
     }
 }
