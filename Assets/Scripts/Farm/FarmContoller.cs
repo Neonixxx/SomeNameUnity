@@ -94,12 +94,12 @@ public class FarmContoller : MonoBehaviour
         if (_monsterSkillService.IsCasting)
         {
             var castingSkill = _monsterSkillService.GetCastingSkill();
-            // TODO : Добавить сюда показ слота и бара.
+            MonsterCastingSkillSlot.gameObject.SetActive(true);
             UpdateSkillSlot(castingSkill, MonsterCastingSkillSlot, MonsterCastingSkillCooldownBar);
         }
         else
         {
-            // TODO : Добавить сюда скрытие слота и бара.
+            MonsterCastingSkillSlot.gameObject.SetActive(false);
         }
 
         MonsterHealthBar.UpdateBar(_monster.Health, _monster.MaxHealth);
@@ -152,15 +152,15 @@ public class FarmContoller : MonoBehaviour
 
     private void UpdateFightBoss()
     {
+        FightBossValueProgressBar.UpdateBar(_locationService.GetCurrentFightBossValue(), _locationService.GetRequiredFightBossValue());
         if (_locationService.CanFightBoss())
         {
-            // TODO : Показать FightBossButton.
+            FightBossButton.gameObject.SetActive(true);
         }
         else
         {
-            // TODO : Скрыть FightBossButton.
+            FightBossButton.gameObject.SetActive(false);
         }
-        FightBossValueProgressBar.UpdateBar(_locationService.GetCurrentFightBossValue(), _locationService.GetRequiredFightBossValue());
     }
 
     private void DefaultSkillActivate()

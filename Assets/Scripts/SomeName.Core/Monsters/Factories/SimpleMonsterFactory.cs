@@ -23,7 +23,7 @@ namespace SomeName.Core.Monsters.Factories
             monster.DroppedItems = dropFactory.Build(level.Normal, monsterStatsBalance.GetDefaultDropValue(level.Normal));
             monster.MonsterType = monsterType;
 
-            monster.Skills.DefaultSkill = new PowerStrike() { CastingTime = 0.5, DamageKoef = 1, AccuracyKoef = 1.0, Cooldown = 0.5 };
+            monster.Skills.DefaultSkill = new AutoAttackSkill { Cooldown = 0.5, CastingTime = 0.5 };
 
             if (monsterType == MonsterType.Boss && level.Normal > 50)
                 monster.Skills.ActiveSkills.Add(new PowerStrike() { CastingTime = 0.9, DamageKoef = 4, AccuracyKoef = 1.5, Cooldown = 8 });

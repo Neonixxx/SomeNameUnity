@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using SomeName.Core.Domain;
+using SomeName.Core.Skills;
 
 namespace SomeName.Core.Services
 {
@@ -61,7 +63,7 @@ namespace SomeName.Core.Services
             if (Skills.DefaultSkill.IsCasting)
                 return Skills.DefaultSkill;
 
-            Skills.ActiveSkills.First(s => s.IsCasting);
+            return Skills.ActiveSkills.First(s => s.IsCasting);
         }
     }
 }
