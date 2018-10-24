@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using SomeName.Core.Locations;
 using SomeName.Core.Monsters.Interfaces;
@@ -20,13 +21,27 @@ namespace SomeName.Core.Services
 
         public Monster GetMonster()
         {
-            _currentMonster = GetCurrentLocation().GetMonster();
+            _currentMonster = _currentLocation.GetMonster();
             return _currentMonster;
         }
 
+        public int GetCurrentFightBossValue()
+            => LocationsInfo.GetById(_currentLocation.Id).FightBossValue;
+
+        public int GetRequiredFightBossValue()
+            => _currentLocation.RequiredFightBossValue;
+
+        public bool CanFightBoss()
+            => GetCurrentFightBossValue() >= GetRequiredFightBossValue();
+
         public Monster GetBoss()
         {
-            _currentMonster = GetCurrentLocation().GetBoss();
+            if (!CanFightBoss())
+                throw new InvalidOperationException();
+
+            LocationsInfo.GetById(_currentLocation.Id).FightBossValue -= _currentLocation.RequiredFightBossValue;
+
+            _currentMonster = _currentLocation.GetBoss();
             return _currentMonster;
         }
 
@@ -34,12 +49,10 @@ namespace SomeName.Core.Services
             => _currentLocation;
 
         public List<Location> GetOpenedLocations()
-        {
-            return LocationsInfo.OpenedLocationIds.Join(Location.BaseLocations
+            => LocationsInfo.OpenedLocationIds.Join(Location.BaseLocations
                 , li => li.Id
                 , bl => bl.Id
                 , (li, bl) => bl).OrderBy(s => s.Id).ToList();
-        }
 
         public bool MoveTo(int id)
         {
@@ -62,9 +75,11 @@ namespace SomeName.Core.Services
             {
                 case MonsterType.Normal:
                     locationInfo.NormalMonstersKilledCount++;
+                    locationInfo.FightBossValue = Math.Min(locationInfo.FightBossValue + 1, GetRequiredFightBossValue());
                     break;
                 case MonsterType.Elite:
                     locationInfo.EliteMonstersKilledCount++;
+                    locationInfo.FightBossValue = Math.Min(locationInfo.FightBossValue + 3, GetRequiredFightBossValue());
                     break;
                 case MonsterType.Boss:
                     locationInfo.BossKilledCount++;

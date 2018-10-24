@@ -26,13 +26,19 @@ namespace SomeName.Core.Locations
 
         public double EliteMonsterChance { get; set; } = 0.15;
 
+        public int RequiredFightBossValue { get; set; } = 10;
+
         private MonsterFactory[] _monsterFactories;
 
         public Monster GetBoss()
-            => _monsterFactories.TakeRandom(1).ElementAt(0).Build(new Level { Normal = MonstersMaxLevel }, MonsterType.Boss);
+            => _monsterFactories.TakeRandom(1)
+                .ElementAt(0)
+                .Build(new Level { Normal = MonstersMaxLevel }, MonsterType.Boss);
 
         public Monster GetMonster()
-            => _monsterFactories.TakeRandom(1).ElementAt(0).Build(GetRandomLevel(), GetRandomMonsterType());
+            => _monsterFactories.TakeRandom(1)
+                .ElementAt(0)
+                .Build(GetRandomLevel(), GetRandomMonsterType());
 
         private Level GetRandomLevel()
             => new Level { Normal = Dice.GetRange(MonstersMinLevel, MonstersMaxLevel) };

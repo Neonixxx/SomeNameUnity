@@ -6,12 +6,16 @@ using SomeName.Core.Skills;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FarmContoller : MonoBehaviour {
-
+public class FarmContoller : MonoBehaviour
+{
     public SimpleHealthBar MonsterHealthBar;
     public Text MonsterDescription;
     public SimpleHealthBar PlayerHealthBar;
     public SimpleHealthBar ExpBar;
+
+    // TODO : Внедрить зависимости в Unity.
+    public Button FightBossButton;
+    public SimpleHealthBar FightBossValueProgressBar;
 
     public Text LevelText;
     public Text GoldText;
@@ -105,6 +109,8 @@ public class FarmContoller : MonoBehaviour {
 
         LevelText.text = $"Level: {_player.Level.ToString()}";
         GoldText.text = _player.Inventory.Gold.ToString();
+
+        UpdateFightBoss();
     }
 
     /// <summary>
@@ -142,6 +148,19 @@ public class FarmContoller : MonoBehaviour {
             cooldownBar.UpdateColor(Color.white);
             cooldownBar.UpdateBar((float)skill.CurrentCooldown, (float)skill.Cooldown);
         }
+    }
+
+    private void UpdateFightBoss()
+    {
+        if (_locationService.CanFightBoss())
+        {
+            // TODO : Показать FightBossButton.
+        }
+        else
+        {
+            // TODO : Скрыть FightBossButton.
+        }
+        FightBossValueProgressBar.UpdateBar(_locationService.GetCurrentFightBossValue(), _locationService.GetRequiredFightBossValue());
     }
 
     private void DefaultSkillActivate()
