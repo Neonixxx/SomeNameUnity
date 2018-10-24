@@ -6,12 +6,16 @@ using SomeName.Core.Skills;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FarmContoller : MonoBehaviour {
-
+public class FarmContoller : MonoBehaviour
+{
     public SimpleHealthBar MonsterHealthBar;
     public Text MonsterDescription;
     public SimpleHealthBar PlayerHealthBar;
     public SimpleHealthBar ExpBar;
+
+    // TODO : Внедрить зависимости в Unity.
+    public Button FightBossButton;
+    public SimpleHealthBar FightBossValueProgressBar;
 
     public Text LevelText;
     public Text GoldText;
@@ -22,12 +26,17 @@ public class FarmContoller : MonoBehaviour {
     private SimpleHealthBar _defaultSkillCooldownBar;
     private SimpleHealthBar[] _activeSkillCooldownBars;
 
+    // TODO : Внедрить зависимости в Unity.
+    public InventorySlot MonsterCastingSkillSlot;
+    public SimpleHealthBar MonsterCastingSkillCooldownBar;
+
     private Player _player;
     private SkillService _skillService;
     private ResourceManager _resourceManager;
     private SomeName.Core.Services.LocationService _locationService;
 
     private Monster _monster;
+    private SkillService _monsterSkillService;
 
     // Use this for initialization
     void Start ()
@@ -80,7 +89,18 @@ public class FarmContoller : MonoBehaviour {
             NewMonster();
         }
 
-        _monster.Update(_player, Time.deltaTime);
+        // Обновление кастуемого скилла монстра.
+        _monsterSkillService.Update(_player, Time.deltaTime);
+        if (_monsterSkillService.IsCasting)
+        {
+            var castingSkill = _monsterSkillService.GetCastingSkill();
+            MonsterCastingSkillSlot.gameObject.SetActive(true);
+            UpdateSkillSlot(castingSkill, MonsterCastingSkillSlot, MonsterCastingSkillCooldownBar);
+        }
+        else
+        {
+            MonsterCastingSkillSlot.gameObject.SetActive(false);
+        }
 
         MonsterHealthBar.UpdateBar(_monster.Health, _monster.MaxHealth);
         MonsterDescription.text = _monster.ToString();
@@ -89,8 +109,13 @@ public class FarmContoller : MonoBehaviour {
 
         LevelText.text = $"Level: {_player.Level.ToString()}";
         GoldText.text = _player.Inventory.Gold.ToString();
+
+        UpdateFightBoss();
     }
 
+    /// <summary>
+    /// Обновить скиллы игрока.
+    /// </summary>
     private void SkillsUpdate()
     {
         _skillService.Update(_monster, Time.deltaTime);
@@ -125,6 +150,19 @@ public class FarmContoller : MonoBehaviour {
         }
     }
 
+    private void UpdateFightBoss()
+    {
+        FightBossValueProgressBar.UpdateBar(_locationService.GetCurrentFightBossValue(), _locationService.GetRequiredFightBossValue());
+        if (_locationService.CanFightBoss())
+        {
+            FightBossButton.gameObject.SetActive(true);
+        }
+        else
+        {
+            FightBossButton.gameObject.SetActive(false);
+        }
+    }
+
     private void DefaultSkillActivate()
         => _skillService.Skills.DefaultSkill.StartCasting();
 
@@ -136,7 +174,11 @@ public class FarmContoller : MonoBehaviour {
     }
 
     private void NewMonster()
-        => _monster = _locationService.GetMonster();
+    {
+        _monster = _locationService.GetMonster();
+        _monsterSkillService = _monster.MonsterSkillController;
+        _monsterSkillService.StartBattle();
+    }
 
     public void FightBoss()
         => _monster = _locationService.GetBoss();

@@ -1,9 +1,4 @@
 ﻿using SomeName.Core.Items.Bonuses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SomeName.Core.Balance.ItemStats
 {
@@ -24,5 +19,7 @@ namespace SomeName.Core.Balance.ItemStats
         protected override double VitalityKoef => 1.0;
 
         protected override double CritChanceKoef => 1.0;
+
+        protected override double CritDamageKoef => 1.0;
     }
 }

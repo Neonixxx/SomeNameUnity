@@ -9,5 +9,7 @@
         public int EliteMonstersKilledCount { get; set; }
 
         public int BossKilledCount { get; set; }
+
+        public int FightBossValue { get; set; }
     }
 }

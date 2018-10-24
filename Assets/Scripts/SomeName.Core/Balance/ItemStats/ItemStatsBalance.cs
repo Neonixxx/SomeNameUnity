@@ -53,8 +53,9 @@ namespace SomeName.Core.Balance.ItemStats
         private int GetBaseVitality(int level)
             => ToInt32(GetBaseStat(level) * VitalityKoef);
 
+        // f(1) = 2, f(100) = 400.
         private int GetBaseStat(int level)
-            => ToInt32(Pow(level, 1.3));
+            => ToInt32(Pow(level, 1.3) + 2);
 
 
         public BaseKoefValue<int> GetAccuracy(int level, double damageValueKoef)
@@ -70,29 +71,25 @@ namespace SomeName.Core.Balance.ItemStats
         private int GetBaseEvasion(int level)
             => ToInt32(GetBaseAccuracyEvasion(level) * EvasionKoef);
 
+        // f(1) = 2, f(100) = 400.
         private int GetBaseAccuracyEvasion(int level)
-            => ToInt32(Pow(level, 1.3));
+            => ToInt32(Pow(level, 1.3) + 2);
 
 
         public BaseKoefValue<double> GetCritChance(int level, double damageValueKoef)
-        {
-            var baseCritCoef = Sqrt(damageValueKoef);
-            var critKoef = baseCritCoef > 2.0
-                ? 2.0
-                : baseCritCoef;
+            => new BaseKoefValue<double> { Base = GetBaseCritChance(level), Koef = Math.Min(damageValueKoef, 5) };
 
-            return new BaseKoefValue<double> { Base = GetBaseCritChance(level), Koef = critKoef };
-        }
-
+        // f(1) = 0.00515, f(100) = 0.02.
         private double GetBaseCritChance(int level)
-            => CritChanceKoef * level / 2500 + 0.01;
+            => CritChanceKoef * (level * 0.00015 + 0.005);
 
 
         public BaseKoefValue<double> GetCritDamage(int level, double damageValueKoef)
             => new BaseKoefValue<double> { Base = GetBaseCritDamage(level), Koef = damageValueKoef };
 
+        // f(1) = 0.0313, f(100) = 0.16.
         private double GetBaseCritDamage(int level)
-            => CritDamageKoef * level / 300 + 0.05;
+            => CritDamageKoef * (level * 0.0013 + 0.03);
 
 
         public BaseKoefValue<long> GetHealthPerHit(int level, double damageValueKoef)

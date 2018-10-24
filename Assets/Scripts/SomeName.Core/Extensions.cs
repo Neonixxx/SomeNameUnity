@@ -20,6 +20,9 @@ namespace SomeName.Core
         public static long ToInt64(this string word)
             => Int64.Parse(word);
 
+        public static double ToDouble(this int value)
+            => Convert.ToDouble(value);
+
         public static double ToDouble(this long value)
             => Convert.ToDouble(value);
 
