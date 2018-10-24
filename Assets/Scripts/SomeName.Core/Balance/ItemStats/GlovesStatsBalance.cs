@@ -24,5 +24,7 @@ namespace SomeName.Core.Balance.ItemStats
         protected override double VitalityKoef => 1.0;
 
         protected override double CritChanceKoef => 1.0;
+
+        protected override double CritDamagekoef => 1.0;
     }
 }
