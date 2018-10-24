@@ -20,7 +20,7 @@ namespace SomeName.Core.Balance
         {
             var paragonKoef = paragonLevel == -1
                 ? 1.0
-                : 0.3 + 0.01 * paragonLevel;
+                : 0.3 + 0.006 * paragonLevel;
             return ToInt64(GetBaseDropValuePerLevel(level).Exp * paragonKoef);
         }
 

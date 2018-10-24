@@ -59,7 +59,7 @@ namespace SomeName.Core.Balance
         /// Получить процент здоровья, который снимает монстр игроку за битву.
         /// </summary>
         private static double GetBaseHealthPercentPerMonster(int level)
-            => 0.1 + level * 0.001;
+            => 0.1 + level * 0.0003;
 
         private double GetDPSKoef(int level)
             => Math.Pow(GetHealthPercentKoef(level), 0.25);
@@ -69,9 +69,6 @@ namespace SomeName.Core.Balance
 
         private double GetHealthPercentKoef(int level)
             => HealthPercentPerMonster(level) / GetBaseHealthPercentPerMonster(level);
-
-        private static int GetMonstersForLevel(int level)
-            => ToInt32(level / 2.0 + 1);
 
         private static double GetSecondsPerPlayerHealthPercent(int level)
             => Math.Pow(level, 2) / 4000 + 0.3;
@@ -94,7 +91,7 @@ namespace SomeName.Core.Balance
                 PlayerStatsBalance = PlayerStatsBalance.Standard,
                 DropBalance = DropBalance.Standard,
                 PlayerStatsCalculator = PlayerStatsCalculator.Standard,
-                HealthPercentPerMonster = level => 0.4 + level * 0.003,
+                HealthPercentPerMonster = level => 0.3 + level * 0.002,
             },
             [MonsterType.Boss] = new MonsterStatsBalance
             {

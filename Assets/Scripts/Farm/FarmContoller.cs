@@ -181,5 +181,9 @@ public class FarmContoller : MonoBehaviour
     }
 
     public void FightBoss()
-        => _monster = _locationService.GetBoss();
+    {
+        _monster = _locationService.GetBoss();
+        _monsterSkillService = _monster.MonsterSkillController;
+        _monsterSkillService.StartBattle();
+    }
 }
