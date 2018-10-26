@@ -24,5 +24,11 @@ namespace SomeName.Core.Items.Interfaces
                 result.Append($"{NewLine}{bonusesString}");
             return result.ToString();
         }
+
+        protected void CloneTo(Weapon item)
+        {
+            base.CloneTo(item);
+            item.Damage = Damage.Clone();
+        }
     }
 }

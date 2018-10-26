@@ -15,5 +15,12 @@ namespace SomeName.Core.Items.Impl
             Description = "Кожанные перчатки";
             ImageId = "SimpleGloves";
         }
+
+        public override IItem Clone()
+        {
+            var item = new SimpleGloves();
+            base.CloneTo(item);
+            return item;
+        }
     }
 }

@@ -19,8 +19,25 @@ namespace SomeName.Core.Items.Interfaces
         [JsonIgnore]
         public string ImageId { get; set; }
 
+        [JsonIgnore]
+        public bool CanStack { get; set; }
+
+        public int Quantity { get; set; }
+
         public override string ToString()
             => $"{Description}" +
                 $"{NewLine}Level: {Level}";
+
+        public abstract IItem Clone();
+
+        protected void CloneTo(Item item)
+        {
+            item.Level = Level;
+            item.GoldValue = GoldValue.Clone();
+            item.Description = Description;
+            item.ImageId = ImageId;
+            item.CanStack = CanStack;
+            item.Quantity = Quantity;
+        }
     }
 }

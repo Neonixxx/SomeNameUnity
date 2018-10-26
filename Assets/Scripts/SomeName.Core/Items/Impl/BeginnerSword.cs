@@ -19,5 +19,12 @@ namespace SomeName.Core.Items.Impl
             Bonuses = new Bonuses.ItemBonuses();
             ImageId = "BeginnerSword";
         }
+
+        public override IItem Clone()
+        {
+            var item = new BeginnerSword();
+            base.CloneTo(item);
+            return item;
+        }
     }
 }

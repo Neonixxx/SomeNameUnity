@@ -15,5 +15,12 @@ namespace SomeName.Core.Items.Impl
             Description = "Кожанный жилет";
             ImageId = "SimpleChest";
         }
+
+        public override IItem Clone()
+        {
+            var item = new SimpleChest();
+            base.CloneTo(item);
+            return item;
+        }
     }
 }

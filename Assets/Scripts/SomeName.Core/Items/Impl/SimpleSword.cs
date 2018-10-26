@@ -10,5 +10,12 @@ namespace SomeName.Core.Items.Impl
             Description = "Стальной меч";
             ImageId = "SimpleSword";
         }
+
+        public override IItem Clone()
+        {
+            var item = new SimpleSword();
+            base.CloneTo(item);
+            return item;
+        }
     }
 }

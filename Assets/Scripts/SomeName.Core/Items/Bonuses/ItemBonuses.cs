@@ -75,5 +75,17 @@ namespace SomeName.Core.Items.Bonuses
 
             return result.ToString();
         }
+
+        public ItemBonuses Clone()
+            => new ItemBonuses
+            {
+                Power = Power.Clone(),
+                Vitality = Vitality.Clone(),
+                Accuracy = Accuracy.Clone(),
+                Evasion = Evasion.Clone(),
+                CritChance = CritChance.Clone(),
+                CritDamage = CritDamage.Clone(),
+                HealthPerHit = HealthPerHit.Clone()
+            };
     }
 }

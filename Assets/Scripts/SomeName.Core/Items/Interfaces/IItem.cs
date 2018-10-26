@@ -14,5 +14,11 @@ namespace SomeName.Core.Items.Interfaces
         string Description { get; set; }
 
         string ImageId { get; set; }
+
+        bool CanStack { get; set; }
+
+        int Quantity { get; set; }
+
+        IItem Clone();
     }
 }
