@@ -51,35 +51,51 @@ namespace SomeName.Core.Services
             => _inventory.Gold += value;
 
         public void AddItem(IItem item)
-            => _inventory.Bag.Add(item);
+        {
+            // Возможно есть неполные стеки таких же предметов.
+            var stacks = Inventory.Where(i => i.Description == item.Description && i.Quantity < i.MaxQuantity).ToArray();
+            // Заполняем их.
+            foreach (var stack in stacks)
+            {
+                var quantityToAdd = Math.Min(stack.MaxQuantity - stack.Quantity, item.Quantity);
+                stack.Quantity += quantityToAdd;
+                item.Quantity += quantityToAdd;
+                if (item.Quantity == 0)
+                    return;
+            }
+            // Создаем новые стеки.
+            while (item.Quantity > 0)
+            {
+                var quantityToAdd = Math.Min(item.Quantity, item.MaxQuantity);
+                var itemToAdd = item.Clone();
+                itemToAdd.Quantity = quantityToAdd;
+                Inventory.Add(itemToAdd);
+            }
+        }
 
         public void AddItems(List<IItem> items)
-            => _inventory.Bag.AddRange(items);
+        {
+            foreach (var item in items)
+                AddItem(item);
+        }
 
-        public void Remove(int itemIndex)
-            => Remove(Get(itemIndex));
+        public void Remove(int itemIndex, int quantity = 1)
+            => Remove(Get(itemIndex), quantity);
 
-        public void Remove(IItem item)
+        public void Remove(IItem item, int quantity = 1)
         {
             if (BagContains(item))
-                _inventory.Bag.Remove(item);
+            {
+                item.Quantity -= quantity;
+                if (item.Quantity <= 0)
+                    _inventory.Bag.Remove(item);
+            }
             else if (IsEquipped(item))
-                _inventory.EquippedItems.Remove(item);
-        }
-
-        public void Swap(int itemIndex1, int itemIndex2)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Swap(IItem item, int itemIndex)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Swap(IItem item1, IItem item2)
-        {
-            throw new NotImplementedException();
+            {
+                item.Quantity -= quantity;
+                if (item.Quantity <= 0)
+                    _inventory.EquippedItems.Remove(item);
+            }
         }
 
         public bool BagContains(IItem item)

@@ -6,7 +6,7 @@ namespace SomeName.Core.Items.Interfaces
     {
         public ScrollOfEnchant()
         {
-            CanStack = true;
+            MaxQuantity = 100;
         }
     }
 }

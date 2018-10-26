@@ -19,14 +19,18 @@ namespace SomeName.Core.Items.Interfaces
         [JsonIgnore]
         public string ImageId { get; set; }
 
-        [JsonIgnore]
-        public bool CanStack { get; set; }
-
         public int Quantity { get; set; }
 
+        [JsonIgnore]
+        public int MaxQuantity { get; set; }
+
         public override string ToString()
-            => $"{Description}" +
+        {
+            var result = $"{Description}" +
                 $"{NewLine}Level: {Level}";
+            if (Quantity > 1)
+                result += $"{NewLine}Quantity: {Quantity}/{MaxQuantity}";
+        }
 
         public abstract IItem Clone();
 
@@ -36,8 +40,8 @@ namespace SomeName.Core.Items.Interfaces
             item.GoldValue = GoldValue.Clone();
             item.Description = Description;
             item.ImageId = ImageId;
-            item.CanStack = CanStack;
             item.Quantity = Quantity;
+            item.MaxQuantity = MaxQuantity;
         }
     }
 }

@@ -8,8 +8,8 @@ namespace SomeName.Core.Items.Interfaces
     {
         public Equippment()
         {
-            CanStack = false;
             Quantity = 1;
+            MaxQuantity = 1;
         }
 
         public ItemBonuses Bonuses { get; set; }

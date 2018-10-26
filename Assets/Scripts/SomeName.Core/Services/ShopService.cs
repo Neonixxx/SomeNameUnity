@@ -50,41 +50,51 @@ namespace SomeName.Core.Services
             }
         }
 
-        public void Buy(IItem item)
+        public void Buy(IItem item, int quantity = 1)
         {
             if (!CanBuy(item))
                 throw new ArgumentException("Ошибка при покупке предмета.");
 
-            Player.Inventory.Gold -= item.GoldValue.Value;
-            _sellingItems.Remove(item);
-            Player.TakeItem(item);
+            Player.Inventory.Gold -= GetBuyGoldCost(item, quantity);
+            var itemToAdd = item.Clone();
+            itemToAdd.Quantity = quantity;
+            Player.Inventory.AddItem(itemToAdd);
+
+            item.Quantity -= quantity;
+            if (item.Quantity <= 0)
+                _sellingItems.Remove(item);
         }
 
-        public bool CanBuy(IItem item)
+        public bool CanBuy(IItem item, int quantity = 1)
         {
-            if (_sellingItems.Contains(item) && Player.Inventory.Gold >= GetBuyGoldCost(item))
+            if (_sellingItems.Contains(item) && Player.Inventory.Gold >= GetBuyGoldCost(item, quantity))
                 return true;
 
             return false;
         }
 
-        public long GetBuyGoldCost(IItem item)
-            => item.GoldValue.Value;
+        public int GetMaxQuantityCanBuy(IItem item)
+            => Player.Inventory.Gold / GetBuyGoldCost(item);
 
-        public void Sell(IItem item)
+        public long GetBuyGoldCost(IItem item, int quantity = 1)
+            => item.GoldValue.Value * quantity;
+
+        public void Sell(IItem item, int quantity = 1)
         {
-            if (!CanSell(item))
+            if (!CanSell(item) || quantity > item.Quantity)
                 throw new ArgumentException("Ошибка при продаже предмета.");
 
-            Player.Inventory.Bag.Remove(item);
-            _sellingItems.Add(item);
-            Player.Inventory.Gold += GetSellGoldCost(item);
+            Player.Inventory.Remove(item, quantity);
+            Player.Inventory.Gold += GetSellGoldCost(item, quantity);
+            var soldItem = item.Clone();
+            soldItem.Quantity = quantity;
+            _sellingItems.Add(soldItem);
         }
 
         public bool CanSell(IItem item)
             => Player.Inventory.Bag.Contains(item);
 
-        public long GetSellGoldCost(IItem item)
-            => Convert.ToInt64(item.GoldValue.Value * SellItemsKoef);
+        public long GetSellGoldCost(IItem item, int quantity = 1)
+            => Convert.ToInt64(item.GoldValue.Value * SellItemsKoef * quantity);
     }
 }

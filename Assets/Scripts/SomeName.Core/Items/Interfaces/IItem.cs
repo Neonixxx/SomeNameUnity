@@ -15,9 +15,9 @@ namespace SomeName.Core.Items.Interfaces
 
         string ImageId { get; set; }
 
-        bool CanStack { get; set; }
-
         int Quantity { get; set; }
+
+        int MaxQuantity { get; set; }
 
         IItem Clone();
     }
