@@ -7,6 +7,9 @@ namespace SomeName.Core.Items.Interfaces
 {
     public abstract class Item : IItem
     {
+        [JsonIgnore]
+        public ItemType ItemType { get; }
+
         public int Level { get; set; }
 
         public BaseKoefValue<long> GoldValue { get; set; } = new BaseKoefValue<long>();

@@ -10,6 +10,7 @@ namespace SomeName.Core.Items.Impl
         {
             Description = "Свиток заточки брони";
             ImageId = "ScrollOfEnchantArmor";
+            ItemTypes = ItemType.ScrollOfEnchantArmor;
         }
 
         public override IItem Clone()

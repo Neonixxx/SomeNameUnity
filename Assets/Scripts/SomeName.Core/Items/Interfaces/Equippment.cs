@@ -7,9 +7,11 @@ namespace SomeName.Core.Items.Interfaces
     public abstract class Equippment : Item, ICanBeEnchanted, IEquippment
     {
         public Equippment()
+            : base()
         {
             Quantity = 1;
             MaxQuantity = 1;
+            ItemTypes = ItemType.Equippment;
         }
 
         public ItemBonuses Bonuses { get; set; }

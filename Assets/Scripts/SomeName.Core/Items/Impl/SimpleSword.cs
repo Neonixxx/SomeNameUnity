@@ -6,6 +6,7 @@ namespace SomeName.Core.Items.Impl
     public class SimpleSword : Weapon
     {
         public SimpleSword()
+            : base()
         {
             Description = "Стальной меч";
             ImageId = "SimpleSword";

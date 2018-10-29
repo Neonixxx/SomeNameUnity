@@ -11,6 +11,7 @@ namespace SomeName.Core.Items.Impl
     public class SimpleGloves : Gloves
     {
         public SimpleGloves()
+            : base()
         {
             Description = "Кожанные перчатки";
             ImageId = "SimpleGloves";

@@ -5,6 +5,8 @@ namespace SomeName.Core.Items.Interfaces
 {
     public interface IItem
     {
+        ItemType ItemType { get; }
+
         int Level { get; set; }
 
         BaseKoefValue<long> GoldValue { get; set; }

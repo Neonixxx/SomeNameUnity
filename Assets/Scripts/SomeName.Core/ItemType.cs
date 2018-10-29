@@ -2,8 +2,15 @@
 {
     public enum ItemType
     {
-        Weapon = 0,
-        Chest = 1,
-        Gloves
+        Equippment = 0,
+        Armor = 1,
+        Weapon = 2,
+        Chest = 3,
+        Gloves = 4,
+
+
+        ScrollOfEnchant = 20,
+        ScrollOfEnchantWeapon = 21,
+        ScrollOfEnchantArmor = 22,
     }
 }

@@ -12,6 +12,12 @@ namespace SomeName.Core.Items.Interfaces
 {
     public abstract class Armor : Equippment
     {
+        public Armor()
+            : base()
+        {
+            ItemTypes = ItemType.Armor;
+        }
+
         public MainStat<long> Defence { get; set; } = new MainStat<long>();
 
         public override MainStat<long> MainStat { get { return Defence; } set { Defence = value; } }

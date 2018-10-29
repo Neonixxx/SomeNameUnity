@@ -11,6 +11,7 @@ namespace SomeName.Core.Items.Impl
     public class BeginnerSword : Weapon
     {
         public BeginnerSword()
+            : base()
         {
             Level = 1;
             Description = "Меч ученика";

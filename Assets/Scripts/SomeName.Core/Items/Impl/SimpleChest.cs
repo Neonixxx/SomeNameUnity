@@ -11,6 +11,7 @@ namespace SomeName.Core.Items.Impl
     public class SimpleChest : Chest
     {
         public SimpleChest()
+            : base()
         {
             Description = "Кожанный жилет";
             ImageId = "SimpleChest";

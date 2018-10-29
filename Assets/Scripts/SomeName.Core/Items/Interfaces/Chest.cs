@@ -10,6 +10,12 @@ namespace SomeName.Core.Items.Interfaces
 {
     public class Chest : Armor
     {
+        public Chest()
+            : base()
+        {
+            ItemTypes = ItemType.Chest;
+        }
+
         protected void CloneTo(Chest item)
             => base.CloneTo(item);
     }
