@@ -26,6 +26,7 @@ namespace SomeName.Core.Items.Bonuses
         public ItemBonuses Build()
             => _itemBonuses;
 
+        // TODO : Убрать все методы CalculateXxx в словарь.
         private static readonly Dictionary<ItemBonusesEnum, Func<ItemBonusesBuilder, double, ItemBonusesBuilder>> _itemBonusesCalculators
             = new Dictionary<ItemBonusesEnum, Func<ItemBonusesBuilder, double, ItemBonusesBuilder>>
             {

@@ -17,6 +17,7 @@ namespace SomeName.Core.Skills
         public double AccuracyKoef = 1.0;
         public double TriggerChance;
 
+        // TODO : Переименовать StartBattle и EndBattle.
         public override void StartBattle()
         {
             base.StartBattle();

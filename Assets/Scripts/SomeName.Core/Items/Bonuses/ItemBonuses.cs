@@ -8,6 +8,7 @@ using static System.Environment;
 
 namespace SomeName.Core.Items.Bonuses
 {
+    // TODO : Объеденить статы в отдельный класс.
     public class ItemBonuses
     {
         public BaseKoefValue<int> Power { get; set; } = new BaseKoefValue<int>();
