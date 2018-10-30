@@ -11,7 +11,7 @@ namespace SomeName.Core.Items.Interfaces
         {
             Quantity = 1;
             MaxQuantity = 1;
-            ItemTypes = ItemType.Equippment;
+            ItemType = ItemType.Equippment;
         }
 
         public ItemBonuses Bonuses { get; set; }

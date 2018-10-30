@@ -23,7 +23,9 @@ namespace SomeName.Core.Forge.Cube
             var iCanBeEnchanted = Get<ICanBeEnchanted>();
             var scrollOfEnchant = Get<ScrollOfEnchant>();
             var enchantResult = EnchantManager.TryEnchant(iCanBeEnchanted, scrollOfEnchant);
-            Cube.Remove(scrollOfEnchant);
+            scrollOfEnchant.Quantity -= 1;
+            if (scrollOfEnchant.Quantity <= 0)
+                Cube.Remove(scrollOfEnchant);
             if (!enchantResult)
                 EnchantManager.SetEnchantmentLevel(iCanBeEnchanted, 0);
         }

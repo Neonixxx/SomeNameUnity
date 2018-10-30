@@ -1,5 +1,4 @@
 ﻿using SomeName.Core.Items.Interfaces;
-using UnityEngine;
 
 namespace SomeName.Core.Items.Impl
 {
@@ -10,7 +9,7 @@ namespace SomeName.Core.Items.Impl
         {
             Description = "Свиток заточки брони";
             ImageId = "ScrollOfEnchantArmor";
-            ItemTypes = ItemType.ScrollOfEnchantArmor;
+            ItemType = ItemType.ScrollOfEnchantArmor;
         }
 
         public override IItem Clone()

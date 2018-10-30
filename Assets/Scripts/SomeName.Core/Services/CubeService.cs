@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using SomeName.Core.Domain;
 using SomeName.Core.Forge.Cube;
@@ -35,19 +36,44 @@ namespace SomeName.Core.Services
 
         public void Put(IItem item)
         {
-            if (_cube.Count < _maxCubeItemsCount)
+            var stacks = _cube.Where(i => i.Description == item.Description && i.Quantity < i.MaxQuantity).ToArray();
+            // Заполняем их.
+            foreach (var stack in stacks)
             {
-                _cube.Add(item);
-                InventoryService.Remove(item);
+                var quantityToAdd = Math.Min(stack.MaxQuantity - stack.Quantity, item.Quantity);
+                stack.Quantity += quantityToAdd;
+                item.Quantity -= quantityToAdd;
+                if (item.Quantity == 0)
+                {
+                    InventoryService.Remove(item);
+                    return;
+                }
             }
+            if (_cube.Count >= _maxCubeItemsCount)
+                return;
+            // Создаем новые стеки.
+            while (item.Quantity > 0)
+            {
+                var quantityToAdd = Math.Min(item.Quantity, item.MaxQuantity);
+                var itemToAdd = item.Clone();
+                itemToAdd.Quantity = quantityToAdd;
+                _cube.Add(itemToAdd);
+                item.Quantity -= quantityToAdd;
+            }
+            InventoryService.Remove(item);
         }
 
-        public void Pull(IItem item)
+        public void Pull(IItem item, int quantity = 1)
         {
             if (_cube.Contains(item))
             {
-                _cube.Remove(item);
-                InventoryService.AddItem(item);
+                var quantityToRemove = Math.Min(item.Quantity, quantity);
+                item.Quantity -= quantityToRemove;
+                if (item.Quantity <= 0)
+                    _cube.Remove(item);
+                var itemToAdd = item.Clone();
+                itemToAdd.Quantity = quantityToRemove;
+                InventoryService.AddItem(itemToAdd);
             }
         }
 

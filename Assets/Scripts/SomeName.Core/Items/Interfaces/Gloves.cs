@@ -1,11 +1,11 @@
 ﻿namespace SomeName.Core.Items.Interfaces
 {
-    public class Gloves : Armor
+    public abstract class Gloves : Armor
     {
         public Gloves()
             : base()
         {
-            ItemTypes = ItemType.Gloves;
+            ItemType = ItemType.Gloves;
         }
 
         protected void CloneTo(Gloves item)

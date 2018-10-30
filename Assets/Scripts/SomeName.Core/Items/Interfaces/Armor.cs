@@ -1,11 +1,5 @@
-﻿using SomeName.Core.Domain;
-using SomeName.Core.Items.Bonuses;
-using SomeName.Core.Items.Impl;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
+using SomeName.Core.Domain;
 using static System.Environment;
 
 namespace SomeName.Core.Items.Interfaces
@@ -15,7 +9,7 @@ namespace SomeName.Core.Items.Interfaces
         public Armor()
             : base()
         {
-            ItemTypes = ItemType.Armor;
+            ItemType = ItemType.Armor;
         }
 
         public MainStat<long> Defence { get; set; } = new MainStat<long>();
@@ -34,7 +28,7 @@ namespace SomeName.Core.Items.Interfaces
         protected void CloneTo(Armor item)
         {
             base.CloneTo(item);
-            item.Defence = Defence.Clone();
+            item.Defence = (MainStat<long>)Defence.Clone();
         }
     }
 }

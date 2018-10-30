@@ -16,6 +16,7 @@ namespace SomeName.Core.Items.ItemFactories
             var item = new ScrollOfEnchantArmor()
             {
                 Level = newLevel,
+                Quantity = 1,
             };
             item.GoldValue.Base = GetItemGoldValue(newLevel);
             item.UpdateGoldValueKoef();

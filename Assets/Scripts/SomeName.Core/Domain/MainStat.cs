@@ -6,7 +6,7 @@
 
         public override T Value => (T)((dynamic)Base * Koef * EnchantKoef);
 
-        public override MainStat<T> Clone()
+        public override BaseKoefValue<T> Clone()
             => new MainStat<T>
             {
                 Base = this.Base,

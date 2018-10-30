@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using SomeName.Core.Domain;
-using UnityEngine;
 using static System.Environment;
 
 namespace SomeName.Core.Items.Interfaces
@@ -8,7 +7,7 @@ namespace SomeName.Core.Items.Interfaces
     public abstract class Item : IItem
     {
         [JsonIgnore]
-        public ItemType ItemType { get; }
+        public ItemType ItemType { get; protected set; }
 
         public int Level { get; set; }
 
@@ -33,6 +32,7 @@ namespace SomeName.Core.Items.Interfaces
                 $"{NewLine}Level: {Level}";
             if (Quantity > 1)
                 result += $"{NewLine}Quantity: {Quantity}/{MaxQuantity}";
+            return result;
         }
 
         public abstract IItem Clone();

@@ -50,16 +50,17 @@ namespace SomeName.Core.Services
         public void AddGold(long value)
             => _inventory.Gold += value;
 
+        // TODO : Вынести логику инвентаря и распространить на куб, магазин и т. д.
         public void AddItem(IItem item)
         {
             // Возможно есть неполные стеки таких же предметов.
-            var stacks = Inventory.Where(i => i.Description == item.Description && i.Quantity < i.MaxQuantity).ToArray();
+            var stacks = Inventory.Bag.Where(i => i.Description == item.Description && i.Quantity < i.MaxQuantity).ToArray();
             // Заполняем их.
             foreach (var stack in stacks)
             {
                 var quantityToAdd = Math.Min(stack.MaxQuantity - stack.Quantity, item.Quantity);
                 stack.Quantity += quantityToAdd;
-                item.Quantity += quantityToAdd;
+                item.Quantity -= quantityToAdd;
                 if (item.Quantity == 0)
                     return;
             }
@@ -69,7 +70,8 @@ namespace SomeName.Core.Services
                 var quantityToAdd = Math.Min(item.Quantity, item.MaxQuantity);
                 var itemToAdd = item.Clone();
                 itemToAdd.Quantity = quantityToAdd;
-                Inventory.Add(itemToAdd);
+                Inventory.Bag.Add(itemToAdd);
+                item.Quantity -= quantityToAdd;
             }
         }
 

@@ -58,7 +58,7 @@ namespace SomeName.Core.Services
             Player.Inventory.Gold -= GetBuyGoldCost(item, quantity);
             var itemToAdd = item.Clone();
             itemToAdd.Quantity = quantity;
-            Player.Inventory.AddItem(itemToAdd);
+            Player.InventoryService.AddItem(itemToAdd);
 
             item.Quantity -= quantity;
             if (item.Quantity <= 0)
@@ -73,7 +73,7 @@ namespace SomeName.Core.Services
             return false;
         }
 
-        public int GetMaxQuantityCanBuy(IItem item)
+        public long GetMaxQuantityCanBuy(IItem item)
             => Player.Inventory.Gold / GetBuyGoldCost(item);
 
         public long GetBuyGoldCost(IItem item, int quantity = 1)
@@ -84,7 +84,7 @@ namespace SomeName.Core.Services
             if (!CanSell(item) || quantity > item.Quantity)
                 throw new ArgumentException("Ошибка при продаже предмета.");
 
-            Player.Inventory.Remove(item, quantity);
+            Player.InventoryService.Remove(item, quantity);
             Player.Inventory.Gold += GetSellGoldCost(item, quantity);
             var soldItem = item.Clone();
             soldItem.Quantity = quantity;
