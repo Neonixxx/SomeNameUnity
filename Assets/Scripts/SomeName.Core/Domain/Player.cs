@@ -129,16 +129,16 @@ namespace SomeName.Core.Domain
         public void TakeDrop(Drop drop)
         {
             TakeExp(drop.Exp);
-            InventoryService.AddDrop(drop);
+            InventoryService.Add(drop);
         }
 
         public void TakeExp(long exp)
             => ExperienceManager.TakeExp(exp);
 
         public void TakeItem(IItem item)
-            => InventoryService.AddItem(item);
+            => InventoryService.Add(item);
 
         public void TakeItems(List<IItem> items)
-            => InventoryService.AddItems(items);
+            => InventoryService.AddRange(items);
     }
 }

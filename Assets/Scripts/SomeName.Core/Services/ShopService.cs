@@ -27,15 +27,19 @@ namespace SomeName.Core.Services
         private const int SellingItemsRounds = 2;
         private const double SellItemsKoef = 0.3;
 
-        private List<IItem> _sellingItems = new List<IItem>();
+        private InventoryList _sellingItems = new InventoryList(new List<IItem>());
 
-        public int Count { get { return _sellingItems.Count; } }
+        public int Count
+            => _sellingItems.Count;
 
-        public IItem Get(int index)
+        public IItem this[int index]
             => _sellingItems[index];
 
+        public IItem Get(int index)
+            => _sellingItems.Get(index);
+
         public List<IItem> GetSellingItems()
-            => _sellingItems;
+            => _sellingItems.ToList();
 
         public void RefreshSellingItems(Level level)
         {
@@ -58,11 +62,9 @@ namespace SomeName.Core.Services
             Player.Inventory.Gold -= GetBuyGoldCost(item, quantity);
             var itemToAdd = item.Clone();
             itemToAdd.Quantity = quantity;
-            Player.InventoryService.AddItem(itemToAdd);
+            Player.InventoryService.Add(itemToAdd);
 
-            item.Quantity -= quantity;
-            if (item.Quantity <= 0)
-                _sellingItems.Remove(item);
+            _sellingItems.Remove(item, quantity);
         }
 
         public bool CanBuy(IItem item, int quantity = 1)

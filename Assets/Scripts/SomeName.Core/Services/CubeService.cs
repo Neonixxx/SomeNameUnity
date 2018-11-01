@@ -14,6 +14,7 @@ namespace SomeName.Core.Services
         private readonly BaseRecipe[] _cubeRecipies;
 
         private readonly List<IItem> _cube;
+        private readonly InventoryList _cubeList;
         private int _maxCubeItemsCount = 4;
 
         public CubeService(Player player)
@@ -22,6 +23,7 @@ namespace SomeName.Core.Services
             if (InventoryService.Inventory.Cube == null)
                 InventoryService.Inventory.Cube = new List<IItem>();
             _cube = InventoryService.Inventory.Cube;
+            _cubeList = new InventoryList(_cube, _maxCubeItemsCount);
             _cubeRecipies = new BaseRecipe[]
             {
                 new EnchantRecipe(_cube)
@@ -29,38 +31,19 @@ namespace SomeName.Core.Services
         }
 
         public int Count
-            => _cube.Count;
+            => _cubeList.Count;
+
+        public IItem this[int index]
+            => _cubeList[index];
 
         public IItem Get(int index)
-            => _cube[index];
+            => _cubeList.Get(index);
 
-        public void Put(IItem item)
+        public void Put(IItem item, int quantity = 1)
         {
-            var stacks = _cube.Where(i => i.Description == item.Description && i.Quantity < i.MaxQuantity).ToArray();
-            // Заполняем их.
-            foreach (var stack in stacks)
-            {
-                var quantityToAdd = Math.Min(stack.MaxQuantity - stack.Quantity, item.Quantity);
-                stack.Quantity += quantityToAdd;
-                item.Quantity -= quantityToAdd;
-                if (item.Quantity == 0)
-                {
-                    InventoryService.Remove(item);
-                    return;
-                }
-            }
-            if (_cube.Count >= _maxCubeItemsCount)
-                return;
-            // Создаем новые стеки.
-            while (item.Quantity > 0)
-            {
-                var quantityToAdd = Math.Min(item.Quantity, item.MaxQuantity);
-                var itemToAdd = item.Clone();
-                itemToAdd.Quantity = quantityToAdd;
-                _cube.Add(itemToAdd);
-                item.Quantity -= quantityToAdd;
-            }
-            InventoryService.Remove(item);
+            _cubeList.Add(item, quantity);
+            if (item.Quantity == 0)
+                InventoryService.Remove(item);
         }
 
         public void Pull(IItem item, int quantity = 1)
@@ -73,7 +56,7 @@ namespace SomeName.Core.Services
                     _cube.Remove(item);
                 var itemToAdd = item.Clone();
                 itemToAdd.Quantity = quantityToRemove;
-                InventoryService.AddItem(itemToAdd);
+                InventoryService.Add(itemToAdd);
             }
         }
 

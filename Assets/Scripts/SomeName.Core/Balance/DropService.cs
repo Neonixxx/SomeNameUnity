@@ -46,8 +46,7 @@ namespace SomeName.Core.Balance
                 var currentItemDropValue = itemDropValue * dropItem.DropKoef;
                 var dropKoef = currentItemDropValue / dropItem.ItemFactory.GetItemGoldValue(level);
                 var itemsCount = GetDroppedItemsCount(dropKoef);
-                for (int i = 0; i < itemsCount; i++)
-                    items.Add(dropItem.ItemFactory.Build(level));
+                items.AddRange(dropItem.ItemFactory.Build(level, itemsCount));
             }
             return items;
         }

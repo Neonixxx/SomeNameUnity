@@ -110,7 +110,7 @@ namespace DepelopMenu
             item.Bonuses.HealthPerHit.Base = (long)itemStats[8];
             item.Bonuses.HealthPerHit.Koef = 1.0;
 
-            _inventoryService.AddItem(item);
+            _inventoryService.Add(item);
         }
 
         private void SetEnchantmentLevel()

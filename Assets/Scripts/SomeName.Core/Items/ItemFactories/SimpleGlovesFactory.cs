@@ -1,4 +1,6 @@
-﻿using SomeName.Core.Items.Bonuses;
+﻿using System.Collections.Generic;
+using System.Linq;
+using SomeName.Core.Items.Bonuses;
 using SomeName.Core.Items.Impl;
 using SomeName.Core.Items.Interfaces;
 
@@ -9,21 +11,28 @@ namespace SomeName.Core.Items.ItemFactories
         public override long GetItemGoldValue(int level)
             => GetBaseGlovesGoldValue(GetItemLevel(level));
 
-        public override Item Build(int level)
+        public override IItem Build(int level)
+            => Build(level, 1).ElementAt(0);
+
+        public override IEnumerable<IItem> Build(int level, int count)
         {
+            var result = new IItem[count];
             var newLevel = GetItemLevel(level);
-
-            var globalDamageValueKoef = RollGlobalItemDamageKoef(level);
-            var item = new SimpleGloves()
+            var baseGoldValue = GetBaseGlovesGoldValue(newLevel);
+            for (int i = 0; i < count; i++)
             {
-                Level = newLevel,
-                Defence = GlovesStatsBalance.GetDefence(newLevel, RollItemStatDamageKoef(level, globalDamageValueKoef)),
-                Bonuses = ItemBonusesFactory.Build(GlovesStatsBalance, newLevel, globalDamageValueKoef)
-            };
-            item.GoldValue.Base = GetBaseGlovesGoldValue(newLevel);
-            item.UpdateGoldValueKoef();
-
-            return item;
+                var globalDamageValueKoef = RollGlobalItemDamageKoef(level);
+                var item = new SimpleGloves()
+                {
+                    Level = newLevel,
+                    Defence = GlovesStatsBalance.GetDefence(newLevel, RollItemStatDamageKoef(level, globalDamageValueKoef)),
+                    Bonuses = ItemBonusesFactory.Build(GlovesStatsBalance, newLevel, globalDamageValueKoef),
+                };
+                item.GoldValue.Base = baseGoldValue;
+                item.UpdateGoldValueKoef();
+                result[i] = item;
+            }
+            return result;
         }
     }
 }
