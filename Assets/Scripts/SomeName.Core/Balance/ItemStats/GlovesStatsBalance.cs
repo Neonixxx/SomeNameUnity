@@ -8,6 +8,7 @@ namespace SomeName.Core.Balance.ItemStats
         {
             ItemBonusesEnum.Power,
             ItemBonusesEnum.Vitality,
+            ItemBonusesEnum.Accuracy,
             ItemBonusesEnum.CritChance,
             ItemBonusesEnum.CritDamage
         };

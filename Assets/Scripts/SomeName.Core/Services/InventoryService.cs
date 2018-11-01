@@ -30,6 +30,7 @@ namespace SomeName.Core.Services
                 case ItemType.Weapon: return Inventory.EquippedItems.Weapon;
                 case ItemType.Gloves: return Inventory.EquippedItems.Gloves;
                 case ItemType.Chest: return Inventory.EquippedItems.Chest;
+                case ItemType.Helmet: return Inventory.EquippedItems.Helmet;
             }
             throw new ArgumentException();
         }
@@ -111,6 +112,15 @@ namespace SomeName.Core.Services
                 var itemToEquip = item.Clone();
                 Remove(item);
                 Inventory.EquippedItems.Gloves = (Gloves)itemToEquip;
+                return true;
+            }
+            if (item as Helmet != null)
+            {
+                if (Inventory.EquippedItems.Helmet != null)
+                    Add(Inventory.EquippedItems.Helmet);
+                var itemToEquip = item.Clone();
+                Remove(item);
+                Inventory.EquippedItems.Helmet = (Helmet)itemToEquip;
                 return true;
             }
 

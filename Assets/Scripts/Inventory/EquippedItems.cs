@@ -28,11 +28,13 @@ namespace Inventory
             var weaponSlot = GameObject.Find("WeaponSlot").GetComponent<InventorySlot>();
             var glovesSlot = GameObject.Find("GlovesSlot").GetComponent<InventorySlot>();
             var chestSlot = GameObject.Find("ChestSlot").GetComponent<InventorySlot>();
+            var helmetSlot = GameObject.Find("HelmetSlot").GetComponent<InventorySlot>();
             _equippedItemSlots = new Dictionary<InventorySlot, ItemType>
             {
                 { weaponSlot, ItemType.Weapon },
                 { glovesSlot, ItemType.Gloves },
-                { chestSlot, ItemType.Chest }
+                { chestSlot, ItemType.Chest },
+                { helmetSlot, ItemType.Helmet },
             };
             Inventory.InventoryService = InventoryService;
             EventsSubscribe();

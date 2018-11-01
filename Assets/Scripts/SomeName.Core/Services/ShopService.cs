@@ -20,6 +20,7 @@ namespace SomeName.Core.Services
             new ShopItem(new SimpleSwordFactory(), 0.4),
             new ShopItem(new SimpleChestFactory(), 0.4),
             new ShopItem(new SimpleGlovesFactory(), 0.4),
+            new ShopItem(new SimpleHelmetFactory(), 0.4),
             new ShopItem(new ScrollOfEnchantWeaponFactory(), 0.2, 80),
             new ShopItem(new ScrollOfEnchantArmorFactory(), 0.2, 80)
         };

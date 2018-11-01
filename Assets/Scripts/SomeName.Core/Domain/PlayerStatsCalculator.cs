@@ -1,9 +1,5 @@
-﻿using SomeName.Core.Items.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using SomeName.Core.Items.Interfaces;
 using static System.Convert;
 
 namespace SomeName.Core.Domain

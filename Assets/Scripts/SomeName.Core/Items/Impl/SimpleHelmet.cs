@@ -2,18 +2,18 @@
 
 namespace SomeName.Core.Items.Impl
 {
-    public class SimpleSword : Weapon
+    public class SimpleHelmet : Helmet
     {
-        public SimpleSword()
+        public SimpleHelmet()
             : base()
         {
-            Description = "Стальной меч";
-            ImageId = "SimpleSword";
+            Description = "Шлем";
+            ImageId = "SimpleHelmet";
         }
 
         public override IItem Clone()
         {
-            var item = new SimpleSword();
+            var item = new SimpleHelmet();
             base.CloneTo(item);
             return item;
         }

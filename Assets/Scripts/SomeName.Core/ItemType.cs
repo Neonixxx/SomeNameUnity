@@ -11,6 +11,7 @@ namespace SomeName.Core
         Weapon = 2,
         Chest = 3,
         Gloves = 4,
+        Helmet = 5,
 
 
         ScrollOfEnchant = 20,
@@ -26,8 +27,10 @@ namespace SomeName.Core
             Tuple.Create(ItemType.Weapon, ItemType.Equippment),
             Tuple.Create(ItemType.Chest, ItemType.Armor),
             Tuple.Create(ItemType.Gloves, ItemType.Armor),
+            Tuple.Create(ItemType.Helmet, ItemType.Armor),
             Tuple.Create(ItemType.Chest, ItemType.Equippment),
             Tuple.Create(ItemType.Gloves, ItemType.Equippment),
+            Tuple.Create(ItemType.Helmet, ItemType.Equippment),
             Tuple.Create(ItemType.ScrollOfEnchantWeapon, ItemType.ScrollOfEnchant),
             Tuple.Create(ItemType.ScrollOfEnchantArmor, ItemType.ScrollOfEnchant),
         };

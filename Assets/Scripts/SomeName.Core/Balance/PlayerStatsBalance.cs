@@ -149,7 +149,8 @@ namespace SomeName.Core.Balance
             {
                 new WeaponStatsBalance(),
                 new ChestStatsBalance(),
-                new GlovesStatsBalance()
+                new GlovesStatsBalance(),
+                new HelmetStatsBalance()
             }
         };
     }
