@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using SomeName.Core.Services;
+﻿using SomeName.Core.Services;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,7 +14,6 @@ namespace Shop
         private InventoryService InventoryService;
         private ShopService ShopService;
 
-        private RectTransform _canvasRect;
         private RectTransform _inventoryPanelRect;
         private RectTransform _shopPanelRect;
 
@@ -29,7 +26,6 @@ namespace Shop
             ShopService = new ShopService(player);
             ShopService.RefreshSellingItems(player.Level);
             Shop.InventoryService = ShopService;
-            _canvasRect = GameObject.Find("Canvas").GetComponent<RectTransform>();
             _inventoryPanelRect = Inventory.GetComponent<RectTransform>();
             _shopPanelRect = Shop.GetComponent<RectTransform>();
             EventsSubscribe();

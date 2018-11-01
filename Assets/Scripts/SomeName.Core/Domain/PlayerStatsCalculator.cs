@@ -7,21 +7,21 @@ namespace SomeName.Core.Domain
     public class PlayerStatsCalculator
     {
         private static readonly long StartDefence = 0;
-        private static readonly long DefencePerLevel = 10;
+        private static readonly long DefencePerLevel = 0;
 
         private static readonly int StartPower = 20;
-        private static readonly int PowerPerLevel = 10;
+        private static readonly int PowerPerLevel = 2;
 
         private static readonly int StartVitality = 20;
-        private static readonly int VitalityPerLevel = 10;
+        private static readonly int VitalityPerLevel = 2;
 
         private static readonly double HitChanceKoef = 0.7;
 
         private static readonly int StartAccuracy = 20;
-        private static readonly int AccuracyPerLevel = 10;
+        private static readonly int AccuracyPerLevel = 5;
 
         private static readonly int StartEvasion = 20;
-        private static readonly int EvasionPerLevel = 10;
+        private static readonly int EvasionPerLevel = 5;
 
         private static readonly double StartCritChance = 0.05;
 

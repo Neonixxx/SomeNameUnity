@@ -1,7 +1,6 @@
 ﻿using System;
 using SomeName.Core.Domain;
 using SomeName.Core.Services;
-using UnityEngine;
 
 namespace SomeName.Core.Skills
 {

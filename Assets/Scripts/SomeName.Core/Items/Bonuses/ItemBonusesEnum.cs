@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SomeName.Core.Items.Bonuses
+﻿namespace SomeName.Core.Items.Bonuses
 {
     public enum ItemBonusesEnum
     {

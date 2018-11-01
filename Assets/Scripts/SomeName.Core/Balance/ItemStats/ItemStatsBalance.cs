@@ -92,6 +92,6 @@ namespace SomeName.Core.Balance.ItemStats
             => new BaseKoefValue<long> { Base = GetBaseHealthPerHit(level), Koef = damageValueKoef };
 
         private long GetBaseHealthPerHit(int level)
-            => ToInt64(PlayerStatsBalance.Standard.GetDefaultMaxHealth(level) * HealthPerSecondKoef / 350);
+            => ToInt64(PlayerStatsBalance.Standard.GetDefaultMaxHealth(level) * HealthPerSecondKoef / 650);
     }
 }

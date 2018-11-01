@@ -12,8 +12,8 @@ namespace SomeName.Core.Balance.ItemStats
             ItemBonusesEnum.Power,
             ItemBonusesEnum.Vitality,
             ItemBonusesEnum.Accuracy,
-            ItemBonusesEnum.Evasion,
-            ItemBonusesEnum.HealthPerHit
+            ItemBonusesEnum.HealthPerHit,
+            ItemBonusesEnum.CritDamage,
         };
 
         protected override double PowerKoef => 1.0;
@@ -22,9 +22,9 @@ namespace SomeName.Core.Balance.ItemStats
 
         protected override double AccuracyKoef => 1.0;
 
-        protected override double EvasionKoef => 1.0;
-
         protected override double HealthPerSecondKoef => 1.0;
+
+        protected override double CritDamageKoef => 1.0 ;
 
 
         public MainStat<long> GetDamage(int level, double damageValueKoef)
