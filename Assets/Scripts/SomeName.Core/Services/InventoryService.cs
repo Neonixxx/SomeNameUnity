@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using SomeName.Core.Domain;
+using SomeName.Core.Items.Impl;
 using SomeName.Core.Items.Interfaces;
 
 namespace SomeName.Core.Services
@@ -52,10 +53,26 @@ namespace SomeName.Core.Services
             => Inventory.Gold += value;
 
         public void Add(IItem item)
-            => _bag.Add(item);
+        {
+            if (item as SoulShot != null)
+            {
+                if (Inventory.SoulShot == null)
+                    Inventory.SoulShot = (SoulShot)item;
+                else
+                {
+                    Inventory.SoulShot.Quantity += item.Quantity;
+                    item.Quantity = 0;
+                }
+                return;
+            }
+            _bag.Add(item);
+        }
 
         public void AddRange(IEnumerable<IItem> items)
-            => _bag.AddRange(items);
+        {
+            foreach (var item in items)
+                Add(item);
+        }
 
         public void Remove(int itemIndex, int quantity = 1)
             => Remove(Get(itemIndex), quantity);
@@ -64,6 +81,8 @@ namespace SomeName.Core.Services
         {
             if (BagContains(item))
                 _bag.Remove(item, quantity);
+            else if (item == Inventory.SoulShot)
+                item.Quantity -= Math.Min(item.Quantity, quantity);
             else if (IsEquipped(item))
             {
                 item.Quantity -= quantity;

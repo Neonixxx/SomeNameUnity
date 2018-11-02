@@ -18,7 +18,15 @@ namespace SomeName.Core.Balance
             => GetBaseItemDamageKoef(level);
 
         private double GetBaseItemDamageKoef(int level)
-            => 1.2 + level * 0.010;
+            => 1.2 + level * 0.018;
+
+        private double GetDamageKoef(int level)
+            => GetSoulShotDamageKoef(level);
+
+        private double GetSoulShotDamageKoef(int level)
+            => level > 70
+                ? 1.0 + (0.65 * (level - 70) / 30)
+                : 1.0;
 
 
         public static double GetTapsPerSecond(int level)
@@ -29,7 +37,7 @@ namespace SomeName.Core.Balance
             => ToInt64(GetDefaultDamage(level) * GetTapsPerSecond(level));
 
         public long GetDefaultDamage(int level)
-            => GetDamage(level, GetDefaultItemDamageKoef(level));
+            => ToInt64(GetDamage(level, GetDefaultItemDamageKoef(level)) * GetDamageKoef(level));
 
         public int GetDefaultAccuracy(int level)
             => GetAccuracy(level, GetDefaultItemDamageKoef(level));

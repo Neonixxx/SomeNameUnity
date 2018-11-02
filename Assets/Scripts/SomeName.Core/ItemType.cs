@@ -14,9 +14,10 @@ namespace SomeName.Core
         Helmet = 5,
 
 
-        ScrollOfEnchant = 20,
-        ScrollOfEnchantWeapon = 21,
-        ScrollOfEnchantArmor = 22,
+        Consumable = 20,
+        ScrollOfEnchant = 21,
+        ScrollOfEnchantWeapon = 22,
+        ScrollOfEnchantArmor = 23,
     }
 
     public static class ItemTypeExtensions

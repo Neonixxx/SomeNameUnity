@@ -17,6 +17,7 @@ namespace Inventory
         private InventoryService InventoryService;
 
         private Dictionary<InventorySlot, ItemType> _equippedItemSlots;
+        private InventorySlot _soulShotSlot;
         private InventorySlot _activeSlot;
 
         // Use this for initialization
@@ -29,6 +30,7 @@ namespace Inventory
             var glovesSlot = GameObject.Find("GlovesSlot").GetComponent<InventorySlot>();
             var chestSlot = GameObject.Find("ChestSlot").GetComponent<InventorySlot>();
             var helmetSlot = GameObject.Find("HelmetSlot").GetComponent<InventorySlot>();
+            _soulShotSlot = GameObject.Find("SoulShotSlot").GetComponent<InventorySlot>();
             _equippedItemSlots = new Dictionary<InventorySlot, ItemType>
             {
                 { weaponSlot, ItemType.Weapon },
@@ -50,6 +52,7 @@ namespace Inventory
                 item.Key.FirstClick += (obj, e) => SetActiveSlot((InventorySlot)obj);
                 item.Key.DoubleClick += (obj, e) => UnequipItem((InventorySlot)obj);
             }
+            _soulShotSlot.FirstClick += (obj, e) => SetActiveSlot((InventorySlot)obj);
         }
 
         private void OnDragEnded(InventorySlot inventorySlot, Vector2 pointerPosition)
@@ -76,11 +79,10 @@ namespace Inventory
             }
         }
 
-        // Update is called once per frame
         void Update()
         {
             // Отрисовка экипированных предметов.
-            foreach (var item in _equippedItemSlots)//*
+            foreach (var item in _equippedItemSlots)
             {
                 item.Key.BackgroundSpriteIsActive(false);
                 if (InventoryService.IsEquipped(item.Value))
@@ -96,6 +98,19 @@ namespace Inventory
                     item.Key.SetMainSprite(null);
                 }
             }
+            _soulShotSlot.BackgroundSpriteIsActive(false);
+            var soulShot = InventoryService.Inventory.SoulShot;
+            if (soulShot.Quantity > 0)
+            {
+                _soulShotSlot.IsWithItem = true;
+                _soulShotSlot.SetMainSprite(
+                    _resourceManager.GetSprite(soulShot.ImageId));
+            }
+            else
+            {
+                _soulShotSlot.IsWithItem = false;
+                _soulShotSlot.SetMainSprite(null);
+            }
             ActiveSlotUpdate();
         }
 
@@ -110,8 +125,10 @@ namespace Inventory
             if (_activeSlot.IsWithItem)
             {
                 _activeSlot.BackgroundSpriteIsActive(true);
-                ActiveSlotDescription.text = InventoryService.GetEquipped(_equippedItemSlots[_activeSlot])
-                    .ToString();
+
+                ActiveSlotDescription.text = _activeSlot == _soulShotSlot
+                    ? InventoryService.Inventory.SoulShot.ToString()
+                    : InventoryService.GetEquipped(_equippedItemSlots[_activeSlot]).ToString();
             }
             else
             {

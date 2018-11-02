@@ -48,7 +48,7 @@ namespace SomeName.Core.Services
 
         public void Pull(IItem item, int quantity = 1)
         {
-            if (_cube.Contains(item))
+            if (_cubeList.Contains(item))
             {
                 var quantityToRemove = Math.Min(item.Quantity, quantity);
                 item.Quantity -= quantityToRemove;
