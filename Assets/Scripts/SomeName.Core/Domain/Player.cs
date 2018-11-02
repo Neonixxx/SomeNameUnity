@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using SomeName.Core.Items.Impl;
 using SomeName.Core.Items.Interfaces;
 using SomeName.Core.Locations;
 using SomeName.Core.Managers;
@@ -114,31 +115,22 @@ namespace SomeName.Core.Domain
             IsDead = false;
         }
 
-        //public void SellItem(ShopManager shopService, IItem item)
-        //{
-        //    if (Inventory.Contains(item))
-        //    {
-        //        Inventory.Remove(item);
-        //        Gold += shopService.GetSellItemValue(item);
-        //    }
-        //}
-
-        public void Attack()
-            => SkillService.Skills.DefaultSkill.StartCasting();
-
         public void TakeDrop(Drop drop)
         {
             TakeExp(drop.Exp);
-            InventoryService.AddDrop(drop);
+            InventoryService.Add(drop);
         }
 
         public void TakeExp(long exp)
             => ExperienceManager.TakeExp(exp);
 
         public void TakeItem(IItem item)
-            => InventoryService.AddItem(item);
+            => InventoryService.Add(item);
 
         public void TakeItems(List<IItem> items)
-            => InventoryService.AddItems(items);
+            => InventoryService.AddRange(items);
+
+        public SoulShot GetSoulShot()
+            => Inventory.SoulShot;
     }
 }

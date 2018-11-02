@@ -1,11 +1,8 @@
-﻿using Newtonsoft.Json;
-using SomeName.Core.Items.Interfaces;
-using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
+using SomeName.Core.Items.Interfaces;
 
 namespace SomeName.Core.Domain
 {
@@ -17,6 +14,8 @@ namespace SomeName.Core.Domain
         public Chest Chest { get; set; }
 
         public Gloves Gloves { get; set; }
+
+        public Helmet Helmet { get; set; }
 
         public long GetDefence()
             => this.Sum(i => (i as Armor)?.Defence.Value ?? 0);
@@ -47,6 +46,7 @@ namespace SomeName.Core.Domain
             yield return Weapon;
             yield return Chest;
             yield return Gloves;
+            yield return Helmet;
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -62,6 +62,9 @@ namespace SomeName.Core.Domain
 
             if (equippment == Gloves)
                 Gloves = null;
+
+            if (equippment == Helmet)
+                Helmet = null;
         }
     }
 }

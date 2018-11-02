@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SomeName.Core.Domain;
+﻿using System.Collections.Generic;
+using SomeName.Core.Items.Impl;
 using SomeName.Core.Items.Interfaces;
 
 namespace SomeName.Core.Domain
@@ -15,6 +11,8 @@ namespace SomeName.Core.Domain
         public List<IItem> Bag { get; set; } = new List<IItem>();
 
         public List<IItem> Cube { get; set; } = new List<IItem>();
+
+        public SoulShot SoulShot { get; set; }
 
         public long Gold { get; set; }
     }

@@ -20,6 +20,7 @@ namespace SomeName.Core.Services
             new ShopItem(new SimpleSwordFactory(), 0.4),
             new ShopItem(new SimpleChestFactory(), 0.4),
             new ShopItem(new SimpleGlovesFactory(), 0.4),
+            new ShopItem(new SimpleHelmetFactory(), 0.4),
             new ShopItem(new ScrollOfEnchantWeaponFactory(), 0.2, 80),
             new ShopItem(new ScrollOfEnchantArmorFactory(), 0.2, 80)
         };
@@ -27,15 +28,19 @@ namespace SomeName.Core.Services
         private const int SellingItemsRounds = 2;
         private const double SellItemsKoef = 0.3;
 
-        private List<IItem> _sellingItems = new List<IItem>();
+        private InventoryList _sellingItems = new InventoryList(new List<IItem>());
 
-        public int Count { get { return _sellingItems.Count; } }
+        public int Count
+            => _sellingItems.Count;
 
-        public IItem Get(int index)
+        public IItem this[int index]
             => _sellingItems[index];
 
+        public IItem Get(int index)
+            => _sellingItems.Get(index);
+
         public List<IItem> GetSellingItems()
-            => _sellingItems;
+            => _sellingItems.ToList();
 
         public void RefreshSellingItems(Level level)
         {
@@ -50,41 +55,49 @@ namespace SomeName.Core.Services
             }
         }
 
-        public void Buy(IItem item)
+        public void Buy(IItem item, int quantity = 1)
         {
             if (!CanBuy(item))
                 throw new ArgumentException("Ошибка при покупке предмета.");
 
-            Player.Inventory.Gold -= item.GoldValue.Value;
-            _sellingItems.Remove(item);
-            Player.TakeItem(item);
+            Player.Inventory.Gold -= GetBuyGoldCost(item, quantity);
+            var itemToAdd = item.Clone();
+            itemToAdd.Quantity = quantity;
+            Player.InventoryService.Add(itemToAdd);
+
+            _sellingItems.Remove(item, quantity);
         }
 
-        public bool CanBuy(IItem item)
+        public bool CanBuy(IItem item, int quantity = 1)
         {
-            if (_sellingItems.Contains(item) && Player.Inventory.Gold >= GetBuyGoldCost(item))
+            if (_sellingItems.Contains(item) && Player.Inventory.Gold >= GetBuyGoldCost(item, quantity))
                 return true;
 
             return false;
         }
 
-        public long GetBuyGoldCost(IItem item)
-            => item.GoldValue.Value;
+        public long GetMaxQuantityCanBuy(IItem item)
+            => Player.Inventory.Gold / GetBuyGoldCost(item);
 
-        public void Sell(IItem item)
+        public long GetBuyGoldCost(IItem item, int quantity = 1)
+            => item.GoldValue.Value * quantity;
+
+        public void Sell(IItem item, int quantity = 1)
         {
-            if (!CanSell(item))
+            if (!CanSell(item) || quantity > item.Quantity)
                 throw new ArgumentException("Ошибка при продаже предмета.");
 
-            Player.Inventory.Bag.Remove(item);
-            _sellingItems.Add(item);
-            Player.Inventory.Gold += GetSellGoldCost(item);
+            Player.InventoryService.Remove(item, quantity);
+            Player.Inventory.Gold += GetSellGoldCost(item, quantity);
+            var soldItem = item.Clone();
+            soldItem.Quantity = quantity;
+            _sellingItems.Add(soldItem);
         }
 
         public bool CanSell(IItem item)
             => Player.Inventory.Bag.Contains(item);
 
-        public long GetSellGoldCost(IItem item)
-            => Convert.ToInt64(item.GoldValue.Value * SellItemsKoef);
+        public long GetSellGoldCost(IItem item, int quantity = 1)
+            => Convert.ToInt64(item.GoldValue.Value * SellItemsKoef * quantity);
     }
 }

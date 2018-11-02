@@ -1,4 +1,5 @@
 ﻿using System;
+using SomeName.Core.Items.Impl;
 
 namespace SomeName.Core.Domain
 {
@@ -17,5 +18,7 @@ namespace SomeName.Core.Domain
         void OnHit();
 
         event EventHandler OnEvade;
+
+        SoulShot GetSoulShot();
     }
 }

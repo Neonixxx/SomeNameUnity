@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SomeName.Core.Balance;
 using SomeName.Core.Items.Bonuses;
 using SomeName.Core.Items.Interfaces;
@@ -23,7 +20,9 @@ namespace SomeName.Core.Items.ItemFactories
         /// </summary>
         /// <param name="level"></param>
         /// <returns></returns>
-        public abstract Item Build(int level);
+        public abstract IItem Build(int level);
+
+        public abstract IEnumerable<IItem> Build(int level, int count);
 
 
         protected readonly ItemBonusesFactory ItemBonusesFactory = new ItemBonusesFactory();

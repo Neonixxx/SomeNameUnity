@@ -6,6 +6,14 @@ namespace SomeName.Core.Items.Interfaces
 {
     public abstract class Equippment : Item, ICanBeEnchanted, IEquippment
     {
+        public Equippment()
+            : base()
+        {
+            Quantity = 1;
+            MaxQuantity = 1;
+            ItemType = ItemType.Equippment;
+        }
+
         public ItemBonuses Bonuses { get; set; }
 
         public abstract MainStat<long> MainStat { get; set; }
@@ -26,6 +34,13 @@ namespace SomeName.Core.Items.Interfaces
                 result.Append($"+{EnchantmentLevel} ");
             result.Append(base.ToString());
             return result.ToString();
+        }
+
+        protected void CloneTo(Equippment item)
+        {
+            base.CloneTo(item);
+            item.Bonuses = Bonuses.Clone();
+            item.EnchantmentLevel = EnchantmentLevel;
         }
     }
 }

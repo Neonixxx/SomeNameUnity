@@ -1,10 +1,6 @@
-﻿using SomeName.Core.Domain;
+﻿using System;
+using SomeName.Core.Domain;
 using SomeName.Core.Items.Bonuses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static System.Convert;
 using static System.Math;
 
@@ -96,6 +92,6 @@ namespace SomeName.Core.Balance.ItemStats
             => new BaseKoefValue<long> { Base = GetBaseHealthPerHit(level), Koef = damageValueKoef };
 
         private long GetBaseHealthPerHit(int level)
-            => ToInt64(PlayerStatsBalance.Standard.GetDefaultMaxHealth(level) * HealthPerSecondKoef / 350);
+            => ToInt64(PlayerStatsBalance.Standard.GetDefaultMaxHealth(level) * HealthPerSecondKoef / 650);
     }
 }

@@ -1,10 +1,6 @@
-﻿using SomeName.Core.Balance.ItemStats;
-using SomeName.Core.Items.Bonuses;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SomeName.Core.Balance.ItemStats;
 
 namespace SomeName.Core.Items.Bonuses
 {

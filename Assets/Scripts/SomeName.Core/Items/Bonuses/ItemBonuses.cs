@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using SomeName.Core.Domain;
 using static System.Environment;
 
@@ -76,5 +73,17 @@ namespace SomeName.Core.Items.Bonuses
 
             return result.ToString();
         }
+
+        public ItemBonuses Clone()
+            => new ItemBonuses
+            {
+                Power = Power.Clone(),
+                Vitality = Vitality.Clone(),
+                Accuracy = Accuracy.Clone(),
+                Evasion = Evasion.Clone(),
+                CritChance = CritChance.Clone(),
+                CritDamage = CritDamage.Clone(),
+                HealthPerHit = HealthPerHit.Clone()
+            };
     }
 }

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using SomeName.Core;
 using SomeName.Core.Difficulties;
 using SomeName.Core.Domain;
+using SomeName.Core.Forge.Cube;
 using SomeName.Core.Items.Impl;
 using SomeName.Core.Items.Interfaces;
 using SomeName.Core.Services;
@@ -110,7 +110,7 @@ namespace DepelopMenu
             item.Bonuses.HealthPerHit.Base = (long)itemStats[8];
             item.Bonuses.HealthPerHit.Koef = 1.0;
 
-            _inventoryService.AddItem(item);
+            _inventoryService.Add(item);
         }
 
         private void SetEnchantmentLevel()

@@ -2,91 +2,100 @@
 using System.Collections.Generic;
 using System.Linq;
 using SomeName.Core.Domain;
+using SomeName.Core.Items.Impl;
 using SomeName.Core.Items.Interfaces;
 
 namespace SomeName.Core.Services
 {
     public class InventoryService : IInventoryBag
     {
-        private readonly SomeName.Core.Domain.Inventory _inventory;
+        public Domain.Inventory Inventory { get; }
 
-        public SomeName.Core.Domain.Inventory Inventory { get { return _inventory; } }
+        private InventoryList _bag;
 
-        public InventoryService(SomeName.Core.Domain.Inventory inventory)
+        public InventoryService(Domain.Inventory inventory)
         {
-            _inventory = inventory;
+            Inventory = inventory;
+            _bag = new InventoryList(Inventory.Bag);
         }
 
+        public IItem this[int index]
+            => _bag[index];
 
-        public int Count => _inventory.Bag.Count;
+        public int Count => _bag.Count;
 
         public IItem GetEquipped(ItemType itemType)
         {
             switch(itemType)
             {
-                case ItemType.Weapon: return _inventory.EquippedItems.Weapon;
-                case ItemType.Gloves: return _inventory.EquippedItems.Gloves;
-                case ItemType.Chest: return _inventory.EquippedItems.Chest;
+                case ItemType.Weapon: return Inventory.EquippedItems.Weapon;
+                case ItemType.Gloves: return Inventory.EquippedItems.Gloves;
+                case ItemType.Chest: return Inventory.EquippedItems.Chest;
+                case ItemType.Helmet: return Inventory.EquippedItems.Helmet;
             }
             throw new ArgumentException();
         }
 
         public IItem Get(int index)
+            => _bag.Get(index);
+
+        public void Add(Drop drop)
         {
-
-            if (index < 0 || index >= Count)
-                throw new ArgumentException($"{nameof(index)} вне диапазона");
-
-            return _inventory.Bag[index];
-
+            Add(drop.Gold);
+            AddRange(drop.Items);
         }
 
-        public void AddDrop(Drop drop)
+        /// <summary>
+        /// Добавить золото в инвентарь.
+        /// </summary>
+        /// <param name="value">Количество добавляемого золота.</param>
+        public void Add(long value)
+            => Inventory.Gold += value;
+
+        public void Add(IItem item)
         {
-            AddGold(drop.Gold);
-            AddItems(drop.Items);
+            if (item as SoulShot != null)
+            {
+                if (Inventory.SoulShot == null)
+                    Inventory.SoulShot = (SoulShot)item;
+                else
+                {
+                    Inventory.SoulShot.Quantity += item.Quantity;
+                    item.Quantity = 0;
+                }
+                return;
+            }
+            _bag.Add(item);
         }
 
-        public void AddGold(long value)
-            => _inventory.Gold += value;
+        public void AddRange(IEnumerable<IItem> items)
+        {
+            foreach (var item in items)
+                Add(item);
+        }
 
-        public void AddItem(IItem item)
-            => _inventory.Bag.Add(item);
+        public void Remove(int itemIndex, int quantity = 1)
+            => Remove(Get(itemIndex), quantity);
 
-        public void AddItems(List<IItem> items)
-            => _inventory.Bag.AddRange(items);
-
-        public void Remove(int itemIndex)
-            => Remove(Get(itemIndex));
-
-        public void Remove(IItem item)
+        public void Remove(IItem item, int quantity = 1)
         {
             if (BagContains(item))
-                _inventory.Bag.Remove(item);
+                _bag.Remove(item, quantity);
+            else if (item == Inventory.SoulShot)
+                item.Quantity -= Math.Min(item.Quantity, quantity);
             else if (IsEquipped(item))
-                _inventory.EquippedItems.Remove(item);
-        }
-
-        public void Swap(int itemIndex1, int itemIndex2)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Swap(IItem item, int itemIndex)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Swap(IItem item1, IItem item2)
-        {
-            throw new NotImplementedException();
+            {
+                item.Quantity -= quantity;
+                if (item.Quantity <= 0)
+                    Inventory.EquippedItems.Remove(item);
+            }
         }
 
         public bool BagContains(IItem item)
-            => _inventory.Bag.Contains(item);
+            => _bag.Contains(item);
 
         public bool IsEquipped(IItem item)
-            => _inventory.EquippedItems.Any(i => i == item);
+            => Inventory.EquippedItems.Any(i => i == item);
 
         public bool IsEquipped(ItemType itemType)
             => GetEquipped(itemType) != null;
@@ -99,26 +108,38 @@ namespace SomeName.Core.Services
         {
             if (item as Weapon != null)
             {
-                if (_inventory.EquippedItems.Weapon != null)
-                    AddItem(_inventory.EquippedItems.Weapon);
+                if (Inventory.EquippedItems.Weapon != null)
+                    Add(Inventory.EquippedItems.Weapon);
+                var itemToEquip = item.Clone();
                 Remove(item);
-                _inventory.EquippedItems.Weapon = (Weapon)item;
+                Inventory.EquippedItems.Weapon = (Weapon)itemToEquip;
                 return true;
             }
             if (item as Chest != null)
             {
-                if (_inventory.EquippedItems.Chest != null)
-                    AddItem(_inventory.EquippedItems.Chest);
+                if (Inventory.EquippedItems.Chest != null)
+                    Add(Inventory.EquippedItems.Chest);
+                var itemToEquip = item.Clone();
                 Remove(item);
-                _inventory.EquippedItems.Chest = (Chest)item;
+                Inventory.EquippedItems.Chest = (Chest)itemToEquip;
                 return true;
             }
             if (item as Gloves != null)
             {
-                if (_inventory.EquippedItems.Gloves != null)
-                    AddItem(_inventory.EquippedItems.Gloves);
+                if (Inventory.EquippedItems.Gloves != null)
+                    Add(Inventory.EquippedItems.Gloves);
+                var itemToEquip = item.Clone();
                 Remove(item);
-                _inventory.EquippedItems.Gloves = (Gloves)item;
+                Inventory.EquippedItems.Gloves = (Gloves)itemToEquip;
+                return true;
+            }
+            if (item as Helmet != null)
+            {
+                if (Inventory.EquippedItems.Helmet != null)
+                    Add(Inventory.EquippedItems.Helmet);
+                var itemToEquip = item.Clone();
+                Remove(item);
+                Inventory.EquippedItems.Helmet = (Helmet)itemToEquip;
                 return true;
             }
 
@@ -130,26 +151,26 @@ namespace SomeName.Core.Services
             switch (itemType)
             {
                 case ItemType.Weapon:
-                    if (_inventory.EquippedItems.Weapon != null)
+                    if (Inventory.EquippedItems.Weapon != null)
                     {
-                        AddItem(_inventory.EquippedItems.Weapon);
-                        _inventory.EquippedItems.Weapon = null;
+                        Add(Inventory.EquippedItems.Weapon);
+                        Inventory.EquippedItems.Weapon = null;
                     }
                     break;
 
                 case ItemType.Chest:
-                    if (_inventory.EquippedItems.Chest != null)
+                    if (Inventory.EquippedItems.Chest != null)
                     {
-                        AddItem(_inventory.EquippedItems.Chest);
-                        _inventory.EquippedItems.Chest = null;
+                        Add(Inventory.EquippedItems.Chest);
+                        Inventory.EquippedItems.Chest = null;
                     }
                     break;
 
                 case ItemType.Gloves:
-                    if (_inventory.EquippedItems.Gloves != null)
+                    if (Inventory.EquippedItems.Gloves != null)
                     {
-                        AddItem(_inventory.EquippedItems.Gloves);
-                        _inventory.EquippedItems.Gloves = null;
+                        Add(Inventory.EquippedItems.Gloves);
+                        Inventory.EquippedItems.Gloves = null;
                     }
                     break;
             }

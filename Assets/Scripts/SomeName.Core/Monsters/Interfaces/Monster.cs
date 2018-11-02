@@ -1,6 +1,7 @@
 ﻿using System;
 using SomeName.Core.Domain;
 using SomeName.Core.Exceptions;
+using SomeName.Core.Items.Impl;
 
 namespace SomeName.Core.Monsters.Interfaces
 {
@@ -74,5 +75,8 @@ namespace SomeName.Core.Monsters.Interfaces
 
         public void OnEvadeActivate(object obj, EventArgs e)
             => OnEvade?.Invoke(obj, e);
+
+        public SoulShot GetSoulShot()
+            => null;
     }
 }

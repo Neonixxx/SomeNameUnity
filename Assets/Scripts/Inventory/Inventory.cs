@@ -25,11 +25,9 @@ namespace Inventory
         private RectTransform _draggingItemRect;
         private List<InventorySlot> _inventorySlots;
         private InventorySlot _activeSlot;
-        private InventorySlot _draggingSlot;
         private int _currentPage = 1;
         private int _maxPage = 1;
         private int _itemsPerPage;
-        private bool _isDragging;
 
         // Use this for initialization
         protected virtual void Start()
@@ -60,8 +58,6 @@ namespace Inventory
 
         private void DragStarted(InventorySlot inventorySlot, Vector2 pointerPosition)
         {
-            _isDragging = true;
-            _draggingSlot = inventorySlot;
             DraggingInventorySlot.GetComponent<InventorySlot>().SetMainSprite(inventorySlot.MainSprite);
             DraggingInventorySlot.SetActive(true);
         }
@@ -73,8 +69,6 @@ namespace Inventory
 
         private void OnDragEnded(InventorySlot inventorySlot, Vector2 pointerPosition)
         {
-            _isDragging = false;
-            _draggingSlot = null;
             DraggingInventorySlot.GetComponent<InventorySlot>().SetMainSprite(null);
             DraggingInventorySlot.SetActive(false);
             DragEnded?.Invoke(inventorySlot, pointerPosition);

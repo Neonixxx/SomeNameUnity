@@ -46,8 +46,7 @@ namespace SomeName.Core.Balance
                 var currentItemDropValue = itemDropValue * dropItem.DropKoef;
                 var dropKoef = currentItemDropValue / dropItem.ItemFactory.GetItemGoldValue(level);
                 var itemsCount = GetDroppedItemsCount(dropKoef);
-                for (int i = 0; i < itemsCount; i++)
-                    items.Add(dropItem.ItemFactory.Build(level));
+                items.AddRange(dropItem.ItemFactory.Build(level, itemsCount));
             }
             return items;
         }
@@ -65,8 +64,10 @@ namespace SomeName.Core.Balance
             new DropItem(new SimpleSwordFactory(), 100),
             new DropItem(new SimpleChestFactory(), 100),
             new DropItem(new SimpleGlovesFactory(), 100),
+            new DropItem(new SimpleHelmetFactory(), 100),
             new DropItem(new ScrollOfEnchantWeaponFactory(), 20, 80),
-            new DropItem(new ScrollOfEnchantArmorFactory(), 20, 80)
+            new DropItem(new ScrollOfEnchantArmorFactory(), 20, 80),
+            new DropItem(new SoulShotFactory(), 10, 70)
         );
     }
 }
