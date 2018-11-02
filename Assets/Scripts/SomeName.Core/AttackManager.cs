@@ -14,6 +14,8 @@ namespace SomeName.Core
 
         public IAttacker Attacker { get; private set; }
 
+        public bool IsSoulShotActive { get; set; } = true;
+
         public Func<IAttacker, long> AttackerDamageFactory { get; set; } = a => a.GetDamage();
 
         public Func<IAttacker, int> AttackerAccuracyFactory { get; set; } = a => a.GetAccuracy();
@@ -38,6 +40,17 @@ namespace SomeName.Core
             }
 
             var attackerDamage = AttackerDamageFactory(Attacker);
+            // TODO : Подумать как здесь сделать нормально, а то лезет не в свою зону ответственности.
+            if (IsSoulShotActive)
+            {
+                var soulShot = Attacker.GetSoulShot();
+                if (soulShot != null && soulShot.IsActivated && soulShot.Quantity > 0)
+                {
+                    soulShot.Quantity -= 1;
+                    attackerDamage = attackerDamage + Convert.ToInt64(attackerDamage * soulShot.BonusDamageKoef);
+                }
+            }
+            // End of TODO.
             var attackerCritChance = AttackerCritChanceFactory(Attacker);
             if (Dice.TryGetChance(attackerCritChance))
             {

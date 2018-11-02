@@ -6,6 +6,8 @@ namespace SomeName.Core.Items.Impl
     {
         public double BonusDamageKoef => 0.65;
 
+        public bool IsActivated { get; set; }
+
         public SoulShot()
             : base()
         {
