@@ -12,12 +12,21 @@ namespace SomeName.Core.Skills
             ImageId = "PowerStrike";
         }
 
+        public override void Initialize(SkillService skillService, IAttacker attacker)
+        {
+            base.Initialize(skillService, attacker);
+            _attackManager = new AttackManager(attacker)
+            {
+                AttackerDamageFactory = a => Convert.ToInt64(a.GetDamage() * DamageKoef) + BonusDamage
+            };
+        }
+
         public long RequiredMana { get; set; } // TODO : Доделать потребление маны.
         public double DamageKoef { get; set; }
         public long BonusDamage { get; set; }
         public double AccuracyKoef { get; set; }
 
-        public PlayerStatsCalculator PlayerStatsCalculator = PlayerStatsCalculator.Standard;
+        private AttackManager _attackManager;
 
         public override void StartCasting()
         {
@@ -60,46 +69,7 @@ namespace SomeName.Core.Skills
             }
         }
 
-        // TODO : Вынести в отдельное место.
         protected void DealStrike(IAttackTarget attackTarget)
-        {
-            var damage = Convert.ToInt64(Attacker.GetDamage() * DamageKoef) + BonusDamage;
-
-            if (!IsHitSuccesful(Convert.ToInt32(Attacker.GetAccuracy() * AccuracyKoef), attackTarget.GetEvasion()))
-            {
-                attackTarget.OnEvadeActivate(Attacker, null);
-                return;
-            }
-
-            var critChance = Attacker.GetCritChance();
-            if (Dice.TryGetChance(critChance))
-                damage = Convert.ToInt64(damage * Attacker.GetCritDamage());
-
-            var damageDealt = DealDamage(attackTarget, damage);
-            Attacker.OnHit();
-        }
-
-        protected bool IsHitSuccesful(int accuracy, int evasion)
-        {
-            var hitChance = PlayerStatsCalculator.CalculateHitChance(accuracy, evasion);
-            return Dice.TryGetChance(hitChance);
-        }
-
-        protected long DealDamage(IAttackTarget attackTarget, long damage)
-        {
-            var dealtDamage = GetDealtDamage(attackTarget, damage);
-            attackTarget.Health -= dealtDamage;
-            if (attackTarget.Health == 0)
-                attackTarget.IsDead = true;
-            return dealtDamage;
-        }
-
-        private long GetDealtDamage(IAttackTarget attackTarget, long damage)
-        {
-            var dealtDamage = Convert.ToInt64(damage * (1 - attackTarget.GetDefenceKoef()));
-            return attackTarget.Health - dealtDamage >= 0
-                ? dealtDamage
-                : attackTarget.Health;
-        }
+            => _attackManager.DealDamage(attackTarget);
     }
 }

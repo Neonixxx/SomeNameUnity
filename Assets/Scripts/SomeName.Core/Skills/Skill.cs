@@ -6,7 +6,7 @@ namespace SomeName.Core.Skills
 {
     public abstract class Skill : ISkill
     {
-        public void Initialize(SkillService skillService, IAttacker attacker)
+        public virtual void Initialize(SkillService skillService, IAttacker attacker)
         {
             SkillService = skillService;
             Attacker = attacker;
