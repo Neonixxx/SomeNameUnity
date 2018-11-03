@@ -47,7 +47,7 @@ namespace SomeName.Core.Domain
 
 
         public double CalculateDefenceKoef(Player player)
-            => CalculateDefenceKoef(player.Level.Normal, CalculateDefence(player));
+            => CalculateDefenceKoef(player.Level.Normal, player.GetDefence());
 
         public double CalculateDefenceKoef(int level, long defence)
             => ToDouble(defence) / (defence + GetBaseDefenceValue(level));
@@ -74,7 +74,7 @@ namespace SomeName.Core.Domain
 
 
         public long CalculateMaxHealth(Player player)
-            => CalculateMaxHealth(player.Level.Normal, CalculateVitality(player));
+            => CalculateMaxHealth(player.Level.Normal, player.GetVitality());
 
         public long CalculateMaxHealth(int level, int playerVitality)
             => ToInt64(GetMaxHealthPerVitality(level)) * playerVitality;

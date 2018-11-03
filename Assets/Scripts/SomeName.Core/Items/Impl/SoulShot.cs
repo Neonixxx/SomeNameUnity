@@ -13,6 +13,7 @@ namespace SomeName.Core.Items.Impl
         {
             Description = "Заряд души";
             ImageId = "SoulShot";
+            MaxQuantity = 50000;
         }
 
         public override IItem Clone()
