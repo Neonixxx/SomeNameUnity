@@ -1,7 +1,7 @@
 ﻿using System;
 using SomeName.Core.Domain;
 
-namespace SomeName.Core
+namespace SomeName.Core.Managers
 {
     public class AttackManager
     {

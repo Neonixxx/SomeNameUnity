@@ -1,5 +1,6 @@
 ﻿using System;
 using SomeName.Core.Domain;
+using SomeName.Core.Managers;
 using SomeName.Core.Services;
 
 namespace SomeName.Core.Skills
