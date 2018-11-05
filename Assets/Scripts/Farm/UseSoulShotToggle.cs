@@ -13,8 +13,13 @@ namespace Farm
         {
             _soulShot = FindObjectOfType<GameState>().Player.InventoryService.Inventory.SoulShot;
             useSoulShotToggle = GetComponent<Toggle>();
-            useSoulShotToggle.isOn = _soulShot.IsActivated;
-            useSoulShotToggle.onValueChanged.AddListener(isOn => _soulShot.IsActivated = isOn);
+            if (_soulShot != null)
+            {
+                useSoulShotToggle.isOn = _soulShot.IsActivated;
+                useSoulShotToggle.onValueChanged.AddListener(isOn => _soulShot.IsActivated = isOn);
+            }
+            else
+                useSoulShotToggle.gameObject.SetActive(false);
         }
     }
 }

@@ -6,7 +6,7 @@ namespace SomeName.Core.Domain
 {
     public class PlayerStatsCalculator
     {
-        private static readonly long StartDefence = 0;
+        private static readonly long StartDefence = 30;
         private static readonly long DefencePerLevel = 0;
 
         private static readonly int StartPower = 20;

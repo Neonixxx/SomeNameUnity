@@ -100,7 +100,7 @@ namespace Inventory
             }
             _soulShotSlot.BackgroundSpriteIsActive(false);
             var soulShot = InventoryService.Inventory.SoulShot;
-            if (soulShot.Quantity > 0)
+            if (soulShot != null)
             {
                 _soulShotSlot.IsWithItem = true;
                 _soulShotSlot.SetMainSprite(
