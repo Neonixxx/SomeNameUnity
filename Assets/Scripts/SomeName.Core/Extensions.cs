@@ -32,15 +32,23 @@ namespace SomeName.Core
         public static bool ContainsOnly<T>(this IEnumerable<T> enumerable, params T[] items)
             => enumerable.Count() == enumerable.Intersect(items).Count();
 
-        public static IEnumerable<T> TakeRandom<T>(this IEnumerable<T> list, int count)
+        public static IEnumerable<T> TakeRandom<T>(this IEnumerable<T> source, int count)
         {
-            var result = new List<T>(list);
+            var result = new List<T>(source);
             var resultCount = result.Count;
-            for (int i = 0; i < list.Count() - count; i++)
+            for (int i = 0; i < source.Count() - count; i++)
             {
                 resultCount--;
                 result.RemoveAt(Dice.GetRange(0, resultCount));
             }
+            return result;
+        }
+
+        public static double Multiply<T>(this IEnumerable<T> source, Func<T, double> selector)
+        {
+            var result = 1.0;
+            foreach (var item in source)
+                result *= selector(item);
             return result;
         }
 

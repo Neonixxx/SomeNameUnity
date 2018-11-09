@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using SomeName.Core.Domain;
+using SomeName.Core.Effects;
 using SomeName.Core.Monsters.Interfaces;
 using SomeName.Core.Services;
 using SomeName.Core.Skills;
@@ -13,7 +15,6 @@ public class FarmContoller : MonoBehaviour
     public SimpleHealthBar PlayerHealthBar;
     public SimpleHealthBar ExpBar;
 
-    // TODO : Внедрить зависимости в Unity.
     public Button FightBossButton;
     public SimpleHealthBar FightBossValueProgressBar;
 
@@ -23,15 +24,19 @@ public class FarmContoller : MonoBehaviour
     public InventorySlot DefaultSkillSlot;
     public InventorySlot[] ActiveSkillSlots;
 
+    public GameObject EffectPrefab;
+    private Dictionary<Effect, GameObject> _effectSlots = new Dictionary<Effect, GameObject>();
+    private Transform _canvasTransform;
+
     private SimpleHealthBar _defaultSkillCooldownBar;
     private SimpleHealthBar[] _activeSkillCooldownBars;
 
-    // TODO : Внедрить зависимости в Unity.
     public InventorySlot MonsterCastingSkillSlot;
     public SimpleHealthBar MonsterCastingSkillCooldownBar;
 
     private Player _player;
     private SkillService _skillService;
+    private EffectService _effectService;
     private ResourceManager _resourceManager;
     private SomeName.Core.Services.LocationService _locationService;
 
@@ -45,8 +50,11 @@ public class FarmContoller : MonoBehaviour
         var gameState = GameObject.Find("GameState").GetComponent<GameState>();
         _player = gameState.Player;
         _skillService = _player.SkillService;
+        _effectService = _player.EffectService;
         _resourceManager = FindObjectOfType<ResourceManager>();
         _locationService = _player.LocationService;
+
+        _canvasTransform = GameObject.Find("Canvas").transform;
 
         _defaultSkillCooldownBar = DefaultSkillSlot.GetComponentInChildren<SimpleHealthBar>();
         _activeSkillCooldownBars = ActiveSkillSlots.Select(s => s.GetComponentInChildren<SimpleHealthBar>()).ToArray();
@@ -78,6 +86,7 @@ public class FarmContoller : MonoBehaviour
         if (_player.IsDead)
             return;
 
+        EffectsUpdate();
         SkillsUpdate();
 
         if (_monster.IsDead)
@@ -111,6 +120,40 @@ public class FarmContoller : MonoBehaviour
         GoldText.text = _player.Inventory.Gold.ToString();
 
         UpdateFightBoss();
+    }
+
+    private void EffectsUpdate()
+    {
+        _effectService.Update(Time.deltaTime);
+
+        foreach (var effect in _effectService.Effects.All)
+            if (!_effectSlots.ContainsKey(effect))
+                _effectSlots.Add(effect, Instantiate(EffectPrefab, _canvasTransform));
+
+        var x = -270f;
+        var y = -670f;
+        var xStep = 95f;
+
+        foreach (var item in _effectSlots)
+        {
+            var effect = item.Key;
+            var gameObject = item.Value;
+            if (!_effectService.Effects.All.Contains(effect))
+            {
+                Destroy(gameObject);
+                continue;
+            }
+
+            var slot = gameObject.GetComponent<InventorySlot>();
+            var durationBar = gameObject.GetComponentInChildren<SimpleHealthBar>();
+
+            gameObject.transform.localPosition = new Vector3(x, y);
+            x += xStep;
+            var sprite = _resourceManager.GetSprite(effect.ImageId);
+            slot.SetMainSprite(sprite);
+            durationBar.StringFormatValue = 0;
+            durationBar.UpdateBar((float)effect.DurationLeft, (float)effect.Duration);
+        }
     }
 
     /// <summary>

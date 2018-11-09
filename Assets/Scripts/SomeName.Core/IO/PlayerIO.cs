@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using SomeName.Core.Balance;
 using SomeName.Core.Domain;
+using SomeName.Core.Effects;
 using SomeName.Core.Items.Impl;
 using SomeName.Core.Locations;
 using SomeName.Core.Skills;
@@ -34,6 +35,13 @@ namespace SomeName.Core.IO
             player.Skills.ActiveSkills.Add(new PowerStrike() { CastingTime = 0.9, DamageKoef = 7, AccuracyKoef = 1.6, Cooldown = 8 });
             player.Skills.TrigerringSkills.Add(new CounterEvasion() { TriggerChance = 1.0, DamageKoef = 0.6 });
             player.Initialize();
+            player.EffectService.Add(new Effect
+            {
+                ImageId = "MightSkill",
+                Description = "Усиление урона",
+                Duration = 3600,
+                DamageBonus = 70,
+            });
             return player;
         }
 

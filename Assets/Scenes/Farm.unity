@@ -1583,6 +1583,8 @@ MonoBehaviour:
   DefaultSkillSlot: {fileID: 893735827}
   ActiveSkillSlots:
   - {fileID: 1487394134}
+  EffectPrefab: {fileID: 1783906869545070, guid: dee4f3530f9e51447a0f327f0699266b,
+    type: 2}
   MonsterCastingSkillSlot: {fileID: 1625401466}
   MonsterCastingSkillCooldownBar: {fileID: 713317605}
 --- !u!4 &1060059548
@@ -3054,7 +3056,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -12, y: -595}
+  m_AnchoredPosition: {x: -0.0025024, y: -467}
   m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2131412853

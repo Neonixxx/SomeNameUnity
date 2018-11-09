@@ -16,7 +16,7 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler, IBeginDragHand
     public bool IsUnderPointer;
     public bool IsWithItem;
 	// Use this for initialization
-	void Start ()
+	public void Awake ()
     {
         var background = transform.Find("Background");
         _image = background.Find("Front").GetComponent<Image>();

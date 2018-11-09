@@ -53,6 +53,8 @@ public class SimpleHealthBar : MonoBehaviour
 	/// </summary>
 	float targetFill = 0.0f;
 
+    public int StringFormatValue { get; set; } = 1;
+
 
 	/// <summary>
 	/// Displays the text.
@@ -74,8 +76,9 @@ public class SimpleHealthBar : MonoBehaviour
 			{
                     barText.text = GetCurrentFraction == 0
                         ? ""
-                        : additionalText + (GetCurrentFraction * _maxValue).ToString("F1");
-			}break;
+                        : additionalText + (GetCurrentFraction * _maxValue).ToString($"F{StringFormatValue}");
+            }
+                break;
 			case DisplayText.CurrentAndMaxValues:
 			{
 				barText.text = additionalText + ( GetCurrentFraction * _maxValue ).ToString( "F0" ) + " / " + _maxValue.ToString();

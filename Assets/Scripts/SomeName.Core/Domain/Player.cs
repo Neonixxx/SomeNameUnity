@@ -30,6 +30,9 @@ namespace SomeName.Core.Domain
         [JsonIgnore]
         public LocationService LocationService { get; set; }
 
+        [JsonIgnore]
+        public EffectService EffectService { get; set; }
+
         public Player()
         {
             PlayerStatsCalculator = PlayerStatsCalculator.Standard;
@@ -47,6 +50,7 @@ namespace SomeName.Core.Domain
             InventoryService = new InventoryService(Inventory);
             CubeService = new CubeService(this);
             SkillService = new SkillService(this, Skills);
+            EffectService = new EffectService(Effects);
         }
 
         public Level Level { get; set; } = new Level();
@@ -65,8 +69,15 @@ namespace SomeName.Core.Domain
 
         public LocationsInfo LocationsInfo { get; set; } = new LocationsInfo();
 
+        public Effects.Effects Effects { get; set; } = new Effects.Effects();
+
         public long GetDamage()
-            => PlayerStatsCalculator.CalculateDamage(this);
+        {
+            var result = PlayerStatsCalculator.CalculateDamage(this);
+            result = Convert.ToInt64(result * EffectService.GetDamageKoef());
+            result += EffectService.GetDamageBonus();
+            return result;
+        }
 
         public long GetDefence()
             => PlayerStatsCalculator.CalculateDefence(this);
