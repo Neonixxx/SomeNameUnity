@@ -15,7 +15,7 @@ namespace SomeName.Core.Domain
 
         double GetCritDamage();
 
-        void OnHit();
+        void OnHitActivate();
 
         event EventHandler OnEvade;
 

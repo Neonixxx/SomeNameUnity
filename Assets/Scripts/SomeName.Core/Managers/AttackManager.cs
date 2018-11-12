@@ -75,7 +75,7 @@ namespace SomeName.Core.Managers
 
             var damageDealt = DealDamage(attackTarget, attackerDamage);
             if (IsAttackerEventsActive)
-                Attacker.OnHit();
+                Attacker.OnHitActivate();
             return damageDealt;
         }
 

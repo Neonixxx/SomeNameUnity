@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using SomeName.Core.Items.Impl;
-using SomeName.Core.Items.Interfaces;
 using SomeName.Core.Locations;
 using SomeName.Core.Managers;
 using SomeName.Core.Services;
@@ -10,7 +7,7 @@ using SomeName.Core.Services;
 namespace SomeName.Core.Domain
 {
     // TODO : Сделать конвертер Player -> StatsInfo.
-    public class Player : IBattleUnit
+    public class Player : BattleUnit
     {
         [JsonIgnore]
         public PlayerStatsCalculator PlayerStatsCalculator { get; set; }
@@ -22,26 +19,15 @@ namespace SomeName.Core.Domain
         public CubeService CubeService { get; set; }
 
         [JsonIgnore]
-        public SkillService SkillService { get; set; }
-
-        [JsonIgnore]
         public ExperienceManager ExperienceManager { get; set; }
 
         [JsonIgnore]
         public LocationService LocationService { get; set; }
 
-        [JsonIgnore]
-        public EffectService EffectService { get; set; }
-
         public Player()
         {
             PlayerStatsCalculator = PlayerStatsCalculator.Standard;
         }
-
-        public event EventHandler OnEvade;
-
-        public void OnEvadeActivate(object obj, EventArgs e)
-            => OnEvade?.Invoke(obj, e);
 
         public void Initialize()
         {
@@ -59,35 +45,12 @@ namespace SomeName.Core.Domain
 
         public long Exp { get; set; }
 
-        public long Health { get; set; }
-
-        public bool IsDead { get; set; }
-
         public Inventory Inventory { get; set; } = new Inventory();
 
-        public Skills.Skills Skills { get; set; } = new Skills.Skills();
-
         public LocationsInfo LocationsInfo { get; set; } = new LocationsInfo();
+        
 
-        public Effects.Effects Effects { get; set; } = new Effects.Effects();
-
-        public long GetDamage()
-        {
-            var result = PlayerStatsCalculator.CalculateDamage(this);
-            result = Convert.ToInt64(result * EffectService.GetDamageKoef());
-            result += EffectService.GetDamageBonus();
-            return result;
-        }
-
-        public long GetDefence()
-        {
-            var result = PlayerStatsCalculator.CalculateDefence(this);
-            result = Convert.ToInt64(result * EffectService.GetDefenceKoef());
-            result += EffectService.GetDefenceBonus();
-            return result;
-        }
-
-        public double GetDefenceKoef()
+        public override double GetDefenceKoef()
             => PlayerStatsCalculator.CalculateDefenceKoef(this);
 
         public long GetMaxHealth()
@@ -99,34 +62,35 @@ namespace SomeName.Core.Domain
         public int GetVitality()
             => PlayerStatsCalculator.CalculateVitality(this);
 
-        public int GetAccuracy()
-            => PlayerStatsCalculator.CalculateAccuracy(this);
-
-        public int GetEvasion()
-            => PlayerStatsCalculator.CalculateEvasion(this);
-
-        public double GetCritChance()
-            => PlayerStatsCalculator.CalculateCritChance(this);
-
-        public double GetCritDamage()
-            => PlayerStatsCalculator.CalculateCritDamage(this);
-
         public long GetHealthPerHit()
             => PlayerStatsCalculator.CalculateHealthPerHit(this);
 
+        protected override long GetDamageInternal()
+            => PlayerStatsCalculator.CalculateDamage(this);
 
-        public void OnHit()
+        protected override long GetDefenceInternal()
+            => PlayerStatsCalculator.CalculateDefence(this);
+
+        protected override int GetAccuracyInternal()
+            => PlayerStatsCalculator.CalculateAccuracy(this);
+
+        protected override int GetEvasionInternal()
+            => PlayerStatsCalculator.CalculateEvasion(this);
+
+        protected override double GetCritChanceInternal()
+            => PlayerStatsCalculator.CalculateCritChance(this);
+
+        protected override double GetCritDamageInternal()
+            => PlayerStatsCalculator.CalculateCritDamage(this);
+
+
+        public override void OnHitActivate()
         {
             var healthResult = Health + GetHealthPerHit();
             var maxHealth = GetMaxHealth();
             Health = healthResult > maxHealth
                 ? maxHealth
                 : healthResult;
-        }
-
-        public void OnDeathActivate(object attacker, EventArgs e)
-        {
-            EffectService.RemoveAll();
         }
 
 
@@ -145,13 +109,7 @@ namespace SomeName.Core.Domain
         public void TakeExp(long exp)
             => ExperienceManager.TakeExp(exp);
 
-        public void TakeItem(IItem item)
-            => InventoryService.Add(item);
-
-        public void TakeItems(List<IItem> items)
-            => InventoryService.AddRange(items);
-
-        public SoulShot GetSoulShot()
+        public override SoulShot GetSoulShot()
             => Inventory.SoulShot;
     }
 }
