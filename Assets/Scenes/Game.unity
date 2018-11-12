@@ -1743,7 +1743,7 @@ GameObject:
   - component: {fileID: 1439256023}
   - component: {fileID: 1439256026}
   m_Layer: 5
-  m_Name: DifficultyDropDown
+  m_Name: LocationDropDown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

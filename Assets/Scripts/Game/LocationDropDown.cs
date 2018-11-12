@@ -3,7 +3,7 @@ using SomeName.Core.Locations;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DifficultyDropDown : MonoBehaviour
+public class LocationDropDown : MonoBehaviour
 {
     private SomeName.Core.Services.LocationService _locationService;
     private List<Location> _locations;
