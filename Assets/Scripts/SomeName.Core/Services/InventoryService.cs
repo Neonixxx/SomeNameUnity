@@ -173,6 +173,14 @@ namespace SomeName.Core.Services
                         Inventory.EquippedItems.Gloves = null;
                     }
                     break;
+
+                case ItemType.Helmet:
+                    if (Inventory.EquippedItems.Helmet != null)
+                    {
+                        Add(Inventory.EquippedItems.Helmet);
+                        Inventory.EquippedItems.Helmet = null;
+                    }
+                    break;
             }
         }
 
