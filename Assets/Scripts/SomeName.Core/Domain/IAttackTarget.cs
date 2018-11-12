@@ -11,5 +11,7 @@ namespace SomeName.Core.Domain
         int GetEvasion();
 
         void OnEvadeActivate(object obj, EventArgs e);
+
+        void OnDeathActivate(object obj, EventArgs e);
     }
 }

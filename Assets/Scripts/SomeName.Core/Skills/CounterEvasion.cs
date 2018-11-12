@@ -7,7 +7,7 @@ namespace SomeName.Core.Skills
 {
     public class CounterEvasion : Skill
     {
-        public override void Initialize(SkillService skillService, IAttacker attacker)
+        public override void Initialize(SkillService skillService, IBattleUnit attacker)
         {
             base.Initialize(skillService, attacker);
             _attackManager = new AttackManager(attacker)
@@ -22,7 +22,7 @@ namespace SomeName.Core.Skills
         public double TriggerChance;
 
         private AttackManager _attackManager;
-        private IAttackTarget _attackTarget;
+        private IBattleUnit _attackTarget;
 
         // TODO : Переименовать StartBattle и EndBattle.
         public override void StartBattle()
@@ -31,7 +31,7 @@ namespace SomeName.Core.Skills
             Attacker.OnEvade += Attack;
         }
 
-        public override void Update(IAttackTarget attackTarget, double timeDelta)
+        public override void Update(IBattleUnit attackTarget, double timeDelta)
         {
             base.Update(attackTarget, timeDelta);
             _attackTarget = attackTarget;

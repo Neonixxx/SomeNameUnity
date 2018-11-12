@@ -19,9 +19,9 @@ namespace SomeName.Core.Skills
 
         void StopCasting();
 
-        void Update(IAttackTarget attackTarget, double timeDelta);
+        void Update(IBattleUnit attackTarget, double timeDelta);
 
-        void Initialize(SkillService skillService, IAttacker attacker);
+        void Initialize(SkillService skillService, IBattleUnit attacker);
 
         void StartBattle();
 

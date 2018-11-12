@@ -1,9 +1,12 @@
 ﻿using System;
+using Newtonsoft.Json;
 
 namespace SomeName.Core.Effects
 {
     public class Effect
     {
+        public Effect() { }
+
         public string ImageId { get; set; }
 
         public string Description { get; set; }
@@ -13,22 +16,34 @@ namespace SomeName.Core.Effects
         public double DurationLeft { get; set; }
 
         public long DamageBonus { get; set; } = 0;
-
         public double DamageKoef { get; set; } = 1.0;
 
-        public void Start()
+        public long DefenceBonus { get; set; } = 0;
+        public double DefenceKoef { get; set; } = 1.0;
+
+        [JsonIgnore]
+        public IBattleUnit EffectOwner { get; set; }
+
+        public virtual void Start(IBattleUnit effectOwner)
         {
             DurationLeft = Duration;
+            EffectOwner = effectOwner;
+            InternalStart(effectOwner);
         }
 
-        public void End()
+        protected virtual void InternalStart(IBattleUnit effectOwner) { }
+
+        public virtual void End()
         {
 
         }
 
-        public void Update(double timeDelta)
+        public virtual void Update(double timeDelta)
         {
             DurationLeft = Math.Max(DurationLeft - timeDelta, 0);
+            InternalUpdate(timeDelta);
         }
+
+        protected virtual void InternalUpdate(double timeDelta) { }
     }
 }

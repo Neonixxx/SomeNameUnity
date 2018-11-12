@@ -6,17 +6,20 @@ namespace SomeName.Core.Skills
 {
     public abstract class Skill : ISkill
     {
-        public virtual void Initialize(SkillService skillService, IAttacker attacker)
+        public virtual void Initialize(SkillService skillService, IBattleUnit attacker)
         {
             SkillService = skillService;
             Attacker = attacker;
+            InitializeInternal(skillService, attacker);
         }
+
+        protected virtual void InitializeInternal(SkillService skillService, IBattleUnit attacker) { }
 
         [JsonIgnore]
         public SkillService SkillService { get; set; }
 
         [JsonIgnore]
-        public IAttacker Attacker { get; set; }
+        public IBattleUnit Attacker { get; set; }
 
         public string Description { get; set; }
 
@@ -36,7 +39,7 @@ namespace SomeName.Core.Skills
 
         public virtual void StopCasting() { }
 
-        public virtual void Update(IAttackTarget attackTarget, double timeDelta) { }
+        public virtual void Update(IBattleUnit attackTarget, double timeDelta) { }
 
         public virtual void StartBattle()
         {

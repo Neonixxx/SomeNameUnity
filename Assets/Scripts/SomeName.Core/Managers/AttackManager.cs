@@ -5,6 +5,16 @@ namespace SomeName.Core.Managers
 {
     public class AttackManager
     {
+        public AttackManager()
+        {
+            AttackerDamageFactory = a => 0;
+            AttackerAccuracyFactory = a => 0;
+            AttackerCritChanceFactory = a => 0;
+            AttackerCritDamageFactory = a => 0;
+            IsSoulShotActive = false;
+            IsAttackerEventsActive = false;
+        }
+
         public AttackManager(IAttacker attacker)
         {
             Attacker = attacker;
@@ -15,6 +25,10 @@ namespace SomeName.Core.Managers
         public IAttacker Attacker { get; private set; }
 
         public bool IsSoulShotActive { get; set; } = true;
+
+        public bool IsAttackerEventsActive { get; set; } = true;
+
+        public bool IsAttackTargetEventsActive { get; set; } = true;
 
         public Func<IAttacker, long> AttackerDamageFactory { get; set; } = a => a.GetDamage();
 
@@ -28,14 +42,15 @@ namespace SomeName.Core.Managers
 
         public Func<IAttackTarget, double> AttackTargetDefenceKoefFactory { get; set; } = a => a.GetDefenceKoef();
 
-        public long DealDamage(IAttackTarget attackTarget)
+        public virtual long DealDamage(IAttackTarget attackTarget)
         {
             var attackerAccuracy = AttackerAccuracyFactory(Attacker);
             var attackTargetEvasion = AttackTargetEvasionFactory(attackTarget);
 
             if (!IsHitSuccesful(attackerAccuracy, attackTargetEvasion))
             {
-                attackTarget.OnEvadeActivate(Attacker, null);
+                if (IsAttackTargetEventsActive)
+                    attackTarget.OnEvadeActivate(Attacker, null);
                 return 0;
             }
 
@@ -59,7 +74,8 @@ namespace SomeName.Core.Managers
             }
 
             var damageDealt = DealDamage(attackTarget, attackerDamage);
-            Attacker.OnHit();
+            if (IsAttackerEventsActive)
+                Attacker.OnHit();
             return damageDealt;
         }
 
@@ -74,7 +90,10 @@ namespace SomeName.Core.Managers
             var dealtDamage = GetDealtDamage(attackTarget, damage);
             attackTarget.Health -= dealtDamage;
             if (attackTarget.Health == 0)
+            {
                 attackTarget.IsDead = true;
+                attackTarget.OnDeathActivate(Attacker, null);
+            }
             return dealtDamage;
         }
 

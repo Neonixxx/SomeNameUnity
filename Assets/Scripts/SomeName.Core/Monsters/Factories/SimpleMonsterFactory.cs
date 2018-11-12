@@ -2,6 +2,7 @@
 using SomeName.Core.Domain;
 using SomeName.Core.Monsters.Impl;
 using SomeName.Core.Monsters.Interfaces;
+using SomeName.Core.Services;
 using SomeName.Core.Skills;
 
 namespace SomeName.Core.Monsters.Factories
@@ -26,9 +27,15 @@ namespace SomeName.Core.Monsters.Factories
             monster.Skills.DefaultSkill = new AutoAttackSkill { Cooldown = 0.3, CastingTime = 0.7 };
 
             if (monsterType == MonsterType.Boss && level.Normal > 50)
+            {
                 monster.Skills.ActiveSkills.Add(new PowerStrike() { CastingTime = 1.6, DamageKoef = 4, AccuracyKoef = 1.5, Cooldown = 8 });
+            }
+            if (Dice.TryGetChance(0.2))
+                monster.Skills.ActiveSkills.Add(new Poison() { DamagePerSecondKoef = 0.6, Duration = 5, CastingTime = 2.7, Cooldown = 13 });
 
-            monster.MonsterSkillController = new MonsterSkillController(monster, monster.Skills);
+            monster.SkillService = new MonsterSkillController(monster, monster.Skills);
+
+            monster.EffectService = new EffectService(monster, monster.Effects);
 
             return monster;
         }

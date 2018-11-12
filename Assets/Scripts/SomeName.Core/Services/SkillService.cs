@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Linq;
-using SomeName.Core.Domain;
 using SomeName.Core.Skills;
 
 namespace SomeName.Core.Services
 {
     public class SkillService
     {
-        public SkillService(IAttacker attacker, Skills.Skills skills)
+        public SkillService(IBattleUnit attacker, Skills.Skills skills)
         {
             Attacker = attacker;
             Skills = skills;
@@ -16,13 +15,13 @@ namespace SomeName.Core.Services
             Skills.TrigerringSkills.ForEach(s => s.Initialize(this, Attacker));
         }
 
-        public IAttacker Attacker { get; set; }
+        public IBattleUnit Attacker { get; set; }
 
         public Skills.Skills Skills { get; set; }
 
         public bool IsCasting { get; set; }
 
-        public virtual void Update(IAttackTarget attackTarget, double timeDelta)
+        public virtual void Update(IBattleUnit attackTarget, double timeDelta)
         {
             Skills.DefaultSkill.Update(attackTarget, timeDelta);
             foreach (var skill in Skills.ActiveSkills)

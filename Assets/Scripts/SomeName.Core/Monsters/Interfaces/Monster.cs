@@ -2,14 +2,19 @@
 using SomeName.Core.Domain;
 using SomeName.Core.Exceptions;
 using SomeName.Core.Items.Impl;
+using SomeName.Core.Services;
 
 namespace SomeName.Core.Monsters.Interfaces
 {
-    public abstract class Monster : IAttacker, IAttackTarget
+    public abstract class Monster : IBattleUnit
     {
-        public MonsterSkillController MonsterSkillController { get; set; }
+        public SkillService SkillService { get; set; }
+
+        public EffectService EffectService { get; set; }
 
         public Skills.Skills Skills { get; set; } = new Skills.Skills();
+
+        public Effects.Effects Effects { get; set; } = new Effects.Effects();
 
         public int Level { get; set; }
 
@@ -35,10 +40,6 @@ namespace SomeName.Core.Monsters.Interfaces
 
         public event EventHandler OnEvade;
 
-
-        public void Update(IAttackTarget target, double timeDelta)
-            => MonsterSkillController.Update(target, timeDelta);
-
         public Drop GetDrop()
         {
             if (!IsDead)
@@ -52,7 +53,12 @@ namespace SomeName.Core.Monsters.Interfaces
             $"{Environment.NewLine}Level {Level} {Description}";
 
         public long GetDamage()
-            => Damage;
+        {
+            var result = Damage;
+            result = Convert.ToInt64(result * EffectService.GetDamageKoef());
+            result += EffectService.GetDamageBonus();
+            return result;
+        }
 
         public int GetAccuracy()
             => Accuracy;
@@ -68,6 +74,7 @@ namespace SomeName.Core.Monsters.Interfaces
             => Evasion;
 
         // TODO : Сделать защиту монстра.
+        // TODO : Доделать изменение защиты эффектами.
         public double GetDefenceKoef()
             => 0.0;
 
@@ -75,6 +82,11 @@ namespace SomeName.Core.Monsters.Interfaces
 
         public void OnEvadeActivate(object obj, EventArgs e)
             => OnEvade?.Invoke(obj, e);
+
+        public void OnDeathActivate(object attacker, EventArgs e)
+        {
+            EffectService.RemoveAll();
+        }
 
         public SoulShot GetSoulShot()
             => null;

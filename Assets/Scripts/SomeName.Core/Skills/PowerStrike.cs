@@ -5,7 +5,7 @@ using SomeName.Core.Services;
 
 namespace SomeName.Core.Skills
 {
-    public class PowerStrike : Skill
+    public class PowerStrike : ActiveSkill
     {
         public PowerStrike()
         {
@@ -13,9 +13,8 @@ namespace SomeName.Core.Skills
             ImageId = "PowerStrike";
         }
 
-        public override void Initialize(SkillService skillService, IAttacker attacker)
+        protected override void InitializeInternal(SkillService skillService, IBattleUnit attacker)
         {
-            base.Initialize(skillService, attacker);
             _attackManager = new AttackManager(attacker)
             {
                 AttackerDamageFactory = a => Convert.ToInt64(a.GetDamage() * DamageKoef) + BonusDamage
@@ -29,48 +28,7 @@ namespace SomeName.Core.Skills
 
         private AttackManager _attackManager;
 
-        public override void StartCasting()
-        {
-            base.StartCasting();
-            if (SkillService.IsCasting || CurrentCooldown > 0)
-                return;
-            CurrentCastingTime = 0;
-            IsCasting = true;
-            SkillService.IsCasting = true;
-        }
-
-        public override void StopCasting()
-        {
-            base.StopCasting();
-            if (IsCasting)
-            {
-                SkillService.IsCasting = false;
-                IsCasting = false;
-                CurrentCooldown = Cooldown;
-            }
-        }
-
-        public override void Update(IAttackTarget attackTarget, double timeDelta)
-        {
-            base.Update(attackTarget, timeDelta);
-            if (IsCasting)
-            {
-                CurrentCastingTime += timeDelta;
-                if (CurrentCastingTime >= CastingTime)
-                {
-                    DealStrike(attackTarget);
-                    StopCasting();
-                }
-            }
-            else
-            {
-                CurrentCooldown = CurrentCooldown > timeDelta
-                    ? CurrentCooldown - timeDelta
-                    : 0;
-            }
-        }
-
-        protected void DealStrike(IAttackTarget attackTarget)
+        protected override void DoSkill(IBattleUnit attackTarget, double timeDelta)
             => _attackManager.DealDamage(attackTarget);
     }
 }

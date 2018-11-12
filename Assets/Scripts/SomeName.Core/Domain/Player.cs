@@ -10,7 +10,7 @@ using SomeName.Core.Services;
 namespace SomeName.Core.Domain
 {
     // TODO : Сделать конвертер Player -> StatsInfo.
-    public class Player : IAttacker, IAttackTarget
+    public class Player : IBattleUnit
     {
         [JsonIgnore]
         public PlayerStatsCalculator PlayerStatsCalculator { get; set; }
@@ -50,7 +50,7 @@ namespace SomeName.Core.Domain
             InventoryService = new InventoryService(Inventory);
             CubeService = new CubeService(this);
             SkillService = new SkillService(this, Skills);
-            EffectService = new EffectService(Effects);
+            EffectService = new EffectService(this, Effects);
         }
 
         public Level Level { get; set; } = new Level();
@@ -80,7 +80,12 @@ namespace SomeName.Core.Domain
         }
 
         public long GetDefence()
-            => PlayerStatsCalculator.CalculateDefence(this);
+        {
+            var result = PlayerStatsCalculator.CalculateDefence(this);
+            result = Convert.ToInt64(result * EffectService.GetDefenceKoef());
+            result += EffectService.GetDefenceBonus();
+            return result;
+        }
 
         public double GetDefenceKoef()
             => PlayerStatsCalculator.CalculateDefenceKoef(this);
@@ -117,6 +122,11 @@ namespace SomeName.Core.Domain
             Health = healthResult > maxHealth
                 ? maxHealth
                 : healthResult;
+        }
+
+        public void OnDeathActivate(object attacker, EventArgs e)
+        {
+            EffectService.RemoveAll();
         }
 
 
