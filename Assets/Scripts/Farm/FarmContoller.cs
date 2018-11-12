@@ -134,13 +134,15 @@ public class FarmContoller : MonoBehaviour
         var y = -670f;
         var xStep = 95f;
 
-        foreach (var item in _effectSlots)
+        for (int i = 0; i < _effectSlots.Count; i++)
         {
-            var effect = item.Key;
-            var gameObject = item.Value;
+            var effect = _effectSlots.Keys.ElementAt(i);
+            var gameObject = _effectSlots.Values.ElementAt(i);
             if (!_effectService.Effects.All.Contains(effect))
             {
                 Destroy(gameObject);
+                _effectSlots.Remove(effect);
+                i--;
                 continue;
             }
 

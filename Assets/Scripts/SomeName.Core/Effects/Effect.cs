@@ -35,7 +35,7 @@ namespace SomeName.Core.Effects
 
         public virtual void End()
         {
-
+            EffectOwner = null;
         }
 
         public virtual void Update(double timeDelta)
