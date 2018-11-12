@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using SomeName.Core.Balance;
 using SomeName.Core.Difficulties;
 using SomeName.Core.Domain;
 using SomeName.Core.Forge.Cube;
 using SomeName.Core.Items.Impl;
 using SomeName.Core.Items.Interfaces;
+using SomeName.Core.Locations;
+using SomeName.Core.Monsters.Factories;
+using SomeName.Core.Monsters.Interfaces;
 using SomeName.Core.Services;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,16 +22,18 @@ namespace DepelopMenu
         public Dropdown CommandsDropDown;
         public InputField ArgumentsInputField;
 
-        private List<BattleDifficulty> _difficulties;
+        private DropService _dropService = DropService.Standard;
+        private MonsterStatsBalance _monsterStatsBalance = MonsterStatsBalance.Get(MonsterType.Boss);
         private InventoryService _inventoryService;
-        // Use this for initialization
+        private SomeName.Core.Services.LocationService _locationService;
+        private Player _player;
+
         void Start()
         {
             GetComponent<Button>().onClick.AddListener(Parse);
-            _difficulties = (List<BattleDifficulty>)(typeof(BattleDifficulty)
-                .GetField("BattleDifficulties", BindingFlags.GetField | BindingFlags.NonPublic | BindingFlags.Static)
-                .GetValue(null));
-            _inventoryService = FindObjectOfType<GameState>().Player.InventoryService;
+            _player = FindObjectOfType<GameState>().Player;
+            _inventoryService = _player.InventoryService;
+            _locationService = _player.LocationService;
         }
 
         private void Parse()
@@ -35,7 +41,7 @@ namespace DepelopMenu
             switch (CommandsDropDown.value)
             {
                 case 0:
-                    AddDifficulty();
+                    KillBoss();
                     break;
                 case 1:
                     GetItem();
@@ -43,31 +49,41 @@ namespace DepelopMenu
                 case 2:
                     SetEnchantmentLevel();
                     break;
-
+                case 3:
+                    OpenLocation();
+                    break;
             }
         }
 
-        private void AddDifficulty()
-        {
-            var args = ArgumentsInputField.text
-                .Split(new string[] { ",", ", " }, StringSplitOptions.RemoveEmptyEntries)
+        private string[] GetArgs()
+            => ArgumentsInputField.text
+                .Split(new string[] { ",", ", ", " " }, StringSplitOptions.RemoveEmptyEntries)
                 .ToArray();
 
-            if (args.Length != 6)
+        private void KillBoss()
+        {
+            var args = GetArgs();
+
+            if (args.Length == 0 || args.Length > 2)
                 return;
 
-            var difficultyName = args[0];
-            var koefs = args.Skip(1)
-                .Select(s => Convert.ToDouble(s))
-                .ToArray();
-            _difficulties.Add(new BattleDifficulty(difficultyName, koefs[0], koefs[1], koefs[2], koefs[3], koefs[4]));
+            var bossLevel = Convert.ToInt32(args[0]);
+            var count = 1;
+
+            if (args.Length == 2)
+                count = Convert.ToInt32(args[1]);
+
+            for (int i = 0; i < count; i++)
+            {
+                var dropValue = _monsterStatsBalance.GetDefaultDropValue(bossLevel);
+                var drop = _dropService.Build(bossLevel, dropValue);
+                _player.TakeDrop(drop);
+            }
         }
 
         private void GetItem()
         {
-            var args = ArgumentsInputField.text
-                .Split(new string[] { ",", ", " }, StringSplitOptions.RemoveEmptyEntries)
-                .ToArray();
+            var args = GetArgs();
 
             if (args.Length != 10)
                 return;
@@ -89,6 +105,9 @@ namespace DepelopMenu
                 case "gloves":
                     item = new SimpleGloves();
                     break;
+                case "helmet":
+                    item = new SimpleHelmet();
+                    break;
             }
             item.Level = (int)itemStats[0];
             item.MainStat.Base = (long)itemStats[1];
@@ -109,26 +128,55 @@ namespace DepelopMenu
             item.Bonuses.CritDamage.Koef = 1.0;
             item.Bonuses.HealthPerHit.Base = (long)itemStats[8];
             item.Bonuses.HealthPerHit.Koef = 1.0;
+            item.UpdateGoldValueKoef();
 
             _inventoryService.Add(item);
         }
 
         private void SetEnchantmentLevel()
         {
-            var args = ArgumentsInputField.text
-                .Split(new string[] { ",", ", " }, StringSplitOptions.RemoveEmptyEntries)
-                .ToArray();
+            var args = GetArgs();
 
-            if (args.Length != 2)
+            if (args.Length > 2)
                 return;
 
-            var itemIndex = args[0] == "last"
-                ? _inventoryService.Count - 1
-                : Convert.ToInt32(args[0]);
-            var enchantmentLevel = Convert.ToInt32(args[1]);
+            var itemIndex = _inventoryService.Count - 1;
+            int enchantmentLevel;
+            if (args.Length == 1)
+                enchantmentLevel = Convert.ToInt32(args[0]);
+            else if (args.Length == 2)
+            {
+                if (args[0] != "last")
+                    itemIndex = Convert.ToInt32(args[0]);
+                enchantmentLevel = Convert.ToInt32(args[1]);
+            }
+            else
+                return;
 
             var item = _inventoryService.Get(itemIndex);
             new EnchantManager().SetEnchantmentLevel((ICanBeEnchanted)item, enchantmentLevel);
+        }
+
+        private void OpenLocation()
+        {
+            var args = GetArgs();
+
+            if (args.Length == 1)
+            {
+                if (args[0] == "all")
+                {
+                    Location.BaseLocations.Where(l => !_player.LocationsInfo.Contains(l.Id))
+                        .Select(l => l.Id)
+                        .ToList()
+                        .ForEach(l => _player.LocationsInfo.Add(l));
+                }
+                else
+                {
+                    var locationId = Convert.ToInt32(args[0]);
+                    if (!_player.LocationsInfo.Contains(locationId))
+                        _player.LocationsInfo.Add(locationId);
+                }
+            }
         }
     }
 }

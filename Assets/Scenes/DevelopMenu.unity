@@ -654,7 +654,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Add difficulty
+  m_Text: Kill boss (lvl, times)
 --- !u!222 &916620975
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1394,11 +1394,13 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: Add difficulty
+    - m_Text: Kill boss (lvl, times)
       m_Image: {fileID: 0}
     - m_Text: Get item
       m_Image: {fileID: 0}
-    - m_Text: Set enchantment level
+    - m_Text: Set enchantment level (index[last], lvl)
+      m_Image: {fileID: 0}
+    - m_Text: Open location (id[all])
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
