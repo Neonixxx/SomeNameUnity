@@ -1,4 +1,7 @@
-﻿using SomeName.Core.Services;
+﻿using System.Collections.Generic;
+using System.Linq;
+using SomeName.Core.Services;
+using SomeName.Core.Skills;
 
 namespace SomeName.Core.Monsters
 {
@@ -14,10 +17,11 @@ namespace SomeName.Core.Monsters
             if (IsCasting)
                 return;
 
-            foreach (var skill in Skills.ActiveSkills)
-                skill.StartCasting();
-
-            Skills.DefaultSkill.StartCasting();
+            GetSkillsToCast().TakeRandomOne().StartCasting();
         }
+
+        private IEnumerable<ISkill> GetSkillsToCast()
+            => Skills.ActiveSkills.Where(s => !s.IsCasting && s.CurrentCooldown == 0)
+                .Union(new[] { Skills.DefaultSkill });
     }
 }

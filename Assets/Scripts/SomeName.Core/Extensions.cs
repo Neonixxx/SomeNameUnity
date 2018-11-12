@@ -44,6 +44,9 @@ namespace SomeName.Core
             return result;
         }
 
+        public static T TakeRandomOne<T>(this IEnumerable<T> source)
+            => source.ElementAt(Dice.GetRange(0, source.Count() - 1));
+
         public static double Multiply<T>(this IEnumerable<T> source, Func<T, double> selector)
         {
             var result = 1.0;

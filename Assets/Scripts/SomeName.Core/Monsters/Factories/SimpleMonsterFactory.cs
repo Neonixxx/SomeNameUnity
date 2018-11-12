@@ -1,4 +1,5 @@
-﻿using SomeName.Core.Balance;
+﻿using System.Linq;
+using SomeName.Core.Balance;
 using SomeName.Core.Domain;
 using SomeName.Core.Monsters.Impl;
 using SomeName.Core.Monsters.Interfaces;
@@ -9,6 +10,12 @@ namespace SomeName.Core.Monsters.Factories
 {
     public class SimpleMonsterFactory : MonsterFactory
     {
+        private readonly ISkill[] PossibleBossActiveSkills = new ISkill[]
+        {
+            new PowerStrike() { DamageKoef = 4, AccuracyKoef = 1.5, CastingTime = 1.6, Cooldown = 8 },
+            new Poison() { DamagePerSecondKoef = 0.7, Duration = 5, CastingTime = 2.7, Cooldown = 13 }
+        };
+
         public override Monster Build(Level level, MonsterType monsterType = MonsterType.Normal)
         {
             var monster =  new SimpleMonster();
@@ -28,9 +35,10 @@ namespace SomeName.Core.Monsters.Factories
 
             if (monsterType == MonsterType.Boss && level.Normal > 50)
             {
-                monster.Skills.ActiveSkills.Add(new PowerStrike() { CastingTime = 1.6, DamageKoef = 4, AccuracyKoef = 1.5, Cooldown = 8 });
-                if (Dice.TryGetChance(0.2))
-                    monster.Skills.ActiveSkills.Add(new Poison() { DamagePerSecondKoef = 0.6, Duration = 5, CastingTime = 2.7, Cooldown = 13 });
+                var skillsCount = level.Normal > 100 ? 2 : 1;
+                PossibleBossActiveSkills.TakeRandom(skillsCount)
+                    .ToList()
+                    .ForEach(s => monster.Skills.ActiveSkills.Add(s));
             }
 
             monster.SkillService = new MonsterSkillController(monster, monster.Skills);
