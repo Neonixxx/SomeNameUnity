@@ -67,7 +67,7 @@ namespace SomeName.Core.Balance
             new DropItem(new SimpleHelmetFactory(), 100),
             new DropItem(new ScrollOfEnchantWeaponFactory(), 20, 80),
             new DropItem(new ScrollOfEnchantArmorFactory(), 20, 80),
-            new DropItem(new SoulShotFactory(), 10, 70)
+            new DropItem(new SoulShotFactory(), 20, 70)
         );
     }
 }

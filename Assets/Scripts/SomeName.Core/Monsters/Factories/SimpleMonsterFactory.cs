@@ -10,11 +10,29 @@ namespace SomeName.Core.Monsters.Factories
 {
     public class SimpleMonsterFactory : MonsterFactory
     {
-        private readonly ISkill[] PossibleBossActiveSkills = new ISkill[]
+        private readonly ISkill[] _possibleBossActiveSkills;
+
+        public SimpleMonsterFactory()
         {
-            new PowerStrike() { DamageKoef = 4, AccuracyKoef = 1.5, CastingTime = 1.6, Cooldown = 8 },
-            new Poison() { DamagePerSecondKoef = 0.7, Duration = 5, CastingTime = 2.7, Cooldown = 13 }
-        };
+            var debuffCooldown = 25.0;
+            var debuffCastingTime = 2.5;
+
+            var damageDebuff = SimpleDebuf.GetDamageDebuff(0.65, 15);
+            damageDebuff.Cooldown = debuffCooldown;
+            damageDebuff.CastingTime = debuffCastingTime;
+
+            var defenceDebuff = SimpleDebuf.GetDefenceDebuff(0.65, 15);
+            defenceDebuff.Cooldown = debuffCooldown;
+            defenceDebuff.CastingTime = debuffCastingTime;
+
+            _possibleBossActiveSkills = new ISkill[]
+            {
+                new PowerStrike() { DamageKoef = 4, AccuracyKoef = 1.5, CastingTime = 1.6, Cooldown = 8 },
+                new Poison() { DamagePerSecondKoef = 0.7, Duration = 5, CastingTime = debuffCastingTime, Cooldown = 13 },
+                damageDebuff,
+                defenceDebuff
+            };
+        }
 
         public override Monster Build(Level level, MonsterType monsterType = MonsterType.Normal)
         {
@@ -35,8 +53,12 @@ namespace SomeName.Core.Monsters.Factories
 
             if (monsterType == MonsterType.Boss && level.Normal > 50)
             {
-                var skillsCount = level.Normal > 100 ? 2 : 1;
-                PossibleBossActiveSkills.TakeRandom(skillsCount)
+                var skillsCount = 1;
+                if (level.Normal > 80)
+                    skillsCount++;
+                if (level.Normal > 110)
+                    skillsCount++;
+                _possibleBossActiveSkills.TakeRandom(skillsCount)
                     .ToList()
                     .ForEach(s => monster.Skills.ActiveSkills.Add(s));
             }

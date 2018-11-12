@@ -18,7 +18,7 @@ namespace SomeName.Core.Balance
             => GetBaseItemDamageKoef(level);
 
         private double GetBaseItemDamageKoef(int level)
-            => 1.2 + level * 0.018;
+            => 1.2 + level * 0.012;
 
         private double GetDamageKoef(int level)
             => GetSoulShotDamageKoef(level);
