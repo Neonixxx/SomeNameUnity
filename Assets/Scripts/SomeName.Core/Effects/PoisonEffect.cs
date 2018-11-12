@@ -1,6 +1,5 @@
 ﻿using System;
 using SomeName.Core.Managers;
-using UnityEngine;
 
 namespace SomeName.Core.Effects
 {
@@ -13,8 +12,8 @@ namespace SomeName.Core.Effects
         public long DamagePerSecond { get; set; }
 
         private double _currentTime;
-
         private long _currentDamage;
+        private long _damageDealt;
 
         protected override void InternalStart(IBattleUnit effectOwner)
         {
@@ -27,12 +26,16 @@ namespace SomeName.Core.Effects
                 IsAttackTargetEventsActive = false,
                 IsSoulShotActive = false
             };
+            _currentTime = 0;
+            _currentDamage = 0;
+            _damageDealt = 0;
         }
 
         protected override void InternalUpdate(double timeDelta)
         {
-            _currentTime = timeDelta;
-            _currentDamage = Convert.ToInt64(_currentTime * DamagePerSecond);
+            _currentTime += timeDelta;
+            _currentDamage += Convert.ToInt64((Duration - DurationLeft) * DamagePerSecond) - _damageDealt;
+            _damageDealt += _currentDamage;
             _attackManager.DealDamage(EffectOwner);
         }
     }

@@ -5,18 +5,18 @@ namespace SomeName.Core.Locations
 {
     public class LocationsInfo
     {
-        public List<LocationInfo> OpenedLocationIds { get; set; } = new List<LocationInfo>();
+        public List<LocationInfo> OpenedLocationInfoes { get; set; } = new List<LocationInfo>();
 
         public int CurrentLocationId { get; set; }
 
 
         public void Add(int locationId)
-            => OpenedLocationIds.Add(new LocationInfo { Id = locationId });
+            => OpenedLocationInfoes.Add(new LocationInfo { Id = locationId });
 
         public bool Contains(int locationId)
-            => OpenedLocationIds.Any(s => s.Id == locationId);
+            => OpenedLocationInfoes.Any(s => s.Id == locationId);
 
         public LocationInfo GetById(int locationId)
-            => OpenedLocationIds.First(s => s.Id == locationId);
+            => OpenedLocationInfoes.First(s => s.Id == locationId);
     }
 }

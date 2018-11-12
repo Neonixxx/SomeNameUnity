@@ -28,7 +28,7 @@ namespace SomeName.Core.IO
                 },
                 LocationsInfo = new LocationsInfo
                 {
-                    OpenedLocationIds = new List<Locations.LocationInfo> { new Locations.LocationInfo { Id = 1 } },
+                    OpenedLocationInfoes = new List<Locations.LocationInfo> { new Locations.LocationInfo { Id = 1 } },
                     CurrentLocationId = 1,
                 },
             };

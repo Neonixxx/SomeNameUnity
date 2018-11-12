@@ -49,7 +49,7 @@ namespace SomeName.Core.Services
             => _currentLocation;
 
         public List<Location> GetOpenedLocations()
-            => LocationsInfo.OpenedLocationIds.Join(Location.BaseLocations
+            => LocationsInfo.OpenedLocationInfoes.Join(Location.BaseLocations
                 , li => li.Id
                 , bl => bl.Id
                 , (li, bl) => bl).OrderBy(s => s.Id).ToList();
